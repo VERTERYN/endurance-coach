@@ -12,421 +12,350 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--border:#334155;
-  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
-  --red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--green:#22c55e;
-  --emerald:#10b981;--yellow:#eab308;--orange:#f97316;
-  --accent:#3b82f6;
-}
+:root{--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--border:#334155;--text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--green:#22c55e;--emerald:#10b981;--yellow:#eab308;--orange:#f97316;--accent:#3b82f6}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
-.mono{font-family:'JetBrains Mono',monospace}
+.m{font-family:'JetBrains Mono',monospace}
 .container{max-width:640px;margin:0 auto;padding:12px 16px 80px}
-
-/* Header */
 .header{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
 .header h1{font-size:18px;font-weight:700;letter-spacing:-0.5px}
-.header h1 span:first-child{color:var(--accent)}
-.header h1 span:last-child{color:var(--text3)}
-.header .badge{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,0.15);color:var(--green);font-weight:600}
-.subtitle{font-size:11px;color:var(--text3);margin-bottom:16px}
-
-/* Tab bar */
-.tabs{display:flex;gap:4px;margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.header h1 .a{color:var(--accent)}.header h1 .b{color:var(--text3)}
+.badge{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,0.15);color:var(--green);font-weight:600}
+.sub{font-size:11px;color:var(--text3);margin-bottom:16px}
+.tabs{display:flex;gap:4px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
-.tab{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;border:none;transition:all .2s;background:var(--bg2);color:var(--text3)}
-.tab:hover{background:var(--bg3);color:var(--text2)}
-.tab.active{background:var(--accent);color:#fff}
-
-/* Cards */
+.tab{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;border:none;background:var(--bg2);color:var(--text3);transition:all .2s}
+.tab:hover{background:var(--bg3);color:var(--text2)}.tab.on{background:var(--accent);color:#fff}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
-.card.warn{background:rgba(234,179,8,0.06);border-color:rgba(234,179,8,0.2)}
-.card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px}
-
-/* Day blocks */
+.card.w{background:rgba(234,179,8,0.06);border-color:rgba(234,179,8,0.2)}
+.ct{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:12px}
 .day{background:rgba(15,23,42,0.5);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px}
-.day-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.day-name{font-size:13px;font-weight:700}
-.day-note{font-size:10px;color:var(--text3);font-style:italic}
-.session{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px}
-.session:last-child{margin-bottom:0}
-.session-tag{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:600;white-space:nowrap;flex-shrink:0}
-.tag-run{background:rgba(239,68,68,0.15);color:var(--red)}
-.tag-strength{background:rgba(168,85,247,0.15);color:var(--purple)}
-.tag-yoga{background:rgba(34,197,94,0.15);color:var(--green)}
-.tag-walk{background:rgba(16,185,129,0.15);color:var(--emerald)}
-.tag-endurance{background:rgba(59,130,246,0.15);color:var(--blue)}
-.tag-core{background:rgba(99,102,241,0.15);color:#818cf8}
-.session-body{flex:1;min-width:0}
-.session-desc{font-size:12px;color:var(--text)}
-.session-params{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
-.session-params span{font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace}
-
-/* Stats grid */
+.dh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dn{font-size:13px;font-weight:700}
+.dnote{font-size:10px;color:var(--text3);font-style:italic}
+.sess{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px}
+.sess:last-child{margin-bottom:0}
+.st{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.tr{background:rgba(239,68,68,0.15);color:var(--red)}
+.ts{background:rgba(168,85,247,0.15);color:var(--purple)}
+.ty{background:rgba(34,197,94,0.15);color:var(--green)}
+.tw{background:rgba(16,185,129,0.15);color:var(--emerald)}
+.te{background:rgba(59,130,246,0.15);color:var(--blue)}
+.tc{background:rgba(99,102,241,0.15);color:#818cf8}
+.sb{flex:1;min-width:0}
+.sd{font-size:12px;color:var(--text)}
+.sp{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.sp span{font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 @media(min-width:480px){.stats{grid-template-columns:repeat(4,1fr)}}
-.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3)}
-.stat-value{font-size:18px;font-weight:700;color:var(--text);margin-top:2px}
-.stat-value .unit{font-size:12px;font-weight:400;color:var(--text3);margin-left:2px}
-.stat-sub{font-size:10px;color:var(--text3);margin-top:1px}
-
-/* Zone bars */
-.zone-bar{display:flex;border-radius:4px;overflow:hidden;height:10px}
-.zone-legend{display:flex;gap:10px;margin-top:6px}
-.zone-legend span{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--text3)}
-.zone-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-
-/* Charts */
-.chart-wrap{position:relative;height:180px;margin:8px 0}
-
-/* Progress bars */
-.prog-row{margin-bottom:12px}
-.prog-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
-.prog-label{font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace}
-.prog-value{font-size:13px;font-weight:700;color:var(--text)}
-.prog-bar{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
-.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(239,68,68,0.6),var(--red))}
-.prog-sub{font-size:10px;color:var(--text3);margin-top:2px}
-
-/* Run rows */
-.run-row{margin-bottom:8px}
-.run-header{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:3px;font-family:'JetBrains Mono',monospace}
-
-/* Milestones */
-.milestone{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
-.milestone-icon{font-size:12px;margin-top:2px;flex-shrink:0}
-.milestone-text{font-size:13px;font-weight:500;color:var(--text)}
-.milestone-sub{font-size:11px;color:var(--text3)}
-
-/* Pace cards */
-.pace-card{background:rgba(15,23,42,0.4);border-radius:8px;padding:8px 10px;margin-bottom:6px}
-.pace-row{display:flex;justify-content:space-between;align-items:baseline}
-.pace-name{font-size:13px;font-weight:600;color:var(--text)}
-.pace-val{font-size:13px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace}
-.pace-sub{display:flex;justify-content:space-between;margin-top:2px}
-.pace-sub span{font-size:10px;color:var(--text3)}
-.pace-sub .hr{color:var(--blue);font-family:'JetBrains Mono',monospace}
-
-/* Methods */
-.method-text{font-size:13px;line-height:1.6;color:var(--text2);white-space:pre-wrap}
-
-/* Override card */
-.override p{font-size:12px;color:var(--text2);margin-bottom:4px}
-
-/* Phase buttons */
-.phases{display:flex;gap:4px;margin-bottom:12px}
-.phase-btn{flex:1;padding:8px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:var(--bg2);color:var(--text3);transition:all .2s}
-.phase-btn.active{background:var(--accent);color:#fff}
-
-/* Table */
+.sl{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3)}
+.sv{font-size:18px;font-weight:700;color:var(--text);margin-top:2px}
+.ss{font-size:10px;color:var(--text3);margin-top:1px}
+.zb{display:flex;border-radius:4px;overflow:hidden;height:10px}
+.zl{display:flex;gap:10px;margin-top:6px}
+.zl span{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--text3)}
+.zd{width:8px;height:8px;border-radius:2px;flex-shrink:0;display:inline-block}
+.cw{position:relative;height:200px;margin:8px 0}
+.pr{margin-bottom:14px}.prh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.prl{font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace}
+.prv{font-size:13px;font-weight:700;color:var(--text)}
+.prb{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.prf{height:100%;border-radius:4px;background:linear-gradient(90deg,rgba(239,68,68,0.6),var(--red))}
+.prs{font-size:10px;color:var(--text3);margin-top:2px}
+.ms{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+.mi{font-size:12px;margin-top:2px;flex-shrink:0}
+.mt{font-size:13px;font-weight:500;color:var(--text)}
+.msub{font-size:11px;color:var(--text3)}
+.pc{background:rgba(15,23,42,0.4);border-radius:8px;padding:8px 10px;margin-bottom:6px}
+.pcr{display:flex;justify-content:space-between;align-items:baseline}
 .tbl{width:100%;font-size:11px;border-collapse:collapse}
 .tbl th{text-align:left;padding:6px 8px;color:var(--text3);text-transform:uppercase;font-size:10px;letter-spacing:0.5px}
 .tbl td{padding:6px 8px;border-top:1px solid rgba(51,65,85,0.4)}
 .tbl .r{text-align:right}
-.tbl .mono{font-family:'JetBrains Mono',monospace}
+.ctx{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.hi{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.15);border-radius:8px;padding:10px;font-size:11px;color:rgba(147,197,253,0.9);margin-top:8px}
+.phase-desc{font-size:12px;color:var(--text2);line-height:1.6;padding:10px;background:rgba(15,23,42,0.4);border-radius:8px;margin-bottom:12px}
+footer{text-align:center;font-size:10px;color:var(--text3);margin-top:24px;padding-bottom:20px}
 </style>
 </head>
 <body>
 <div class="container" id="app"></div>
 <script>
-// ═══════════════════════════════════════
-// DATA — Garmin Connect 2026-03-15
-// No personal name for privacy
-// ═══════════════════════════════════════
 var B={lthr:174,maxHr:187,restHr:44,vo2max:50,vdot:35,best5k:"26:38",ltPace:"5:12",
+garminStatus:"Maintaining",garminFeedback:"Aerobic high shortage",readiness:"N/A",
 zones:[{n:"Z1 Recovery",lo:0,hi:148,c:"#94a3b8"},{n:"Z2 Aerobic",lo:148,hi:155,c:"#60a5fa"},{n:"Z3 Tempo",lo:157,hi:164,c:"#34d399"},{n:"Z4 Sub-Threshold",lo:165,hi:172,c:"#fbbf24"},{n:"Z5a Supra",lo:174,hi:177,c:"#f97316"},{n:"Z5b VO2max",lo:179,hi:184,c:"#ef4444"},{n:"Z5c Anaerobic",lo:184,hi:220,c:"#dc2626"}],
 paces:{E:"6:00\u20136:15",T:"5:10\u20135:20",I:"4:45\u20134:55",R:"~4:20"}};
 
 var RUNS=[
-{d:"01-20",km:5.51,m:27.6,hr:158,p:"5:00",z:[2,2,11,78,6],lb:"Tempo"},
-{d:"01-30",km:5.49,m:27.5,hr:163,p:"5:01",z:[1,2,5,78,14],lb:"LT"},
-{d:"02-03",km:7.34,m:36.9,hr:162,p:"5:03",z:[1,2,12,63,22],lb:"LT"},
-{d:"02-11",km:5.58,m:27.6,hr:166,p:"4:57",z:[1,2,7,56,34],lb:"LT"},
-{d:"02-21",km:7.52,m:41,hr:162,p:"5:27",z:[0,2,9,84,5],lb:"LT"},
-{d:"02-24",km:7.39,m:38.4,hr:165,p:"5:11",z:[1,2,5,73,19],lb:"LT"},
-{d:"03-01",km:5.01,m:26.6,hr:156,p:"5:19",z:[1,2,17,79,0],lb:"Tempo"}];
+{d:"Jan 20",km:5.51,min:27.6,hr:158,p:"5:00",z:[2,2,11,78,6],lb:"Tempo"},
+{d:"Jan 30",km:5.49,min:27.5,hr:163,p:"5:01",z:[1,2,5,78,14],lb:"LT"},
+{d:"Feb 3",km:7.34,min:36.9,hr:162,p:"5:03",z:[1,2,12,63,22],lb:"LT"},
+{d:"Feb 11",km:5.58,min:27.6,hr:166,p:"4:57",z:[1,2,7,56,34],lb:"LT"},
+{d:"Feb 21",km:7.52,min:41,hr:162,p:"5:27",z:[0,2,9,84,5],lb:"LT"},
+{d:"Feb 24",km:7.39,min:38.4,hr:165,p:"5:11",z:[1,2,5,73,19],lb:"LT"},
+{d:"Mar 1",km:5.01,min:26.6,hr:156,p:"5:19",z:[1,2,17,79,0],lb:"Tempo"}];
 
 var WK=[
-{w:"W3",rKm:5.5,sKm:18.5},{w:"W4",rKm:5.5,sKm:9.8},{w:"W5",rKm:7.3,sKm:23.7},
-{w:"W6",rKm:5.6,sKm:0},{w:"W7",rKm:7.5,sKm:15.8},{w:"W8",rKm:12.4,sKm:25.4},
-{w:"W9",rKm:5,sKm:35.2},{w:"W10",rKm:0,sKm:84.7}];
+{w:"Jan 19",rKm:5.5,sKm:18.5,str:5,rN:1},{w:"Jan 26",rKm:5.5,sKm:9.8,str:6,rN:1},
+{w:"Feb 2",rKm:7.3,sKm:23.7,str:9,rN:1},{w:"Feb 9",rKm:5.6,sKm:0,str:8,rN:1},
+{w:"Feb 16",rKm:7.5,sKm:15.8,str:5,rN:1},{w:"Feb 23",rKm:12.4,sKm:25.4,str:4,rN:2},
+{w:"Mar 2",rKm:5,sKm:35.2,str:1,rN:1},{w:"Mar 9",rKm:0,sKm:84.7,str:0,rN:0}];
 
 var ZC=["#94a3b8","#60a5fa","#10b981","#f59e0b","#f97316","#ef4444","#dc2626"];
 var TABS=["This Week","Progress","Plan","Profile","Methods"];
 var activeTab=0;
-var activePhase=0;
+var currentWeek=1;
+var currentPhase=1;
 
-function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e}
+function zb(z){if(!z)return'<span style="color:var(--text3);font-size:10px">\u2014</span>';var h='<div class="zb">';for(var i=0;i<z.length;i++){if(z[i]>0)h+='<div style="width:'+z[i]+'%;background:'+ZC[i]+'"></div>';}return h+'</div>';}
+function zl(){var n=["Z1","Z2","Z3","Z4","Z5"];var h='<div class="zl">';for(var i=0;i<5;i++)h+='<span><span class="zd" style="background:'+ZC[i]+'"></span>'+n[i]+'</span>';return h+'</div>';}
 
-function zoneBar(z){
-  if(!z)return'<span style="color:var(--text3);font-size:10px">\u2014</span>';
-  var h='<div class="zone-bar">';
-  for(var i=0;i<z.length;i++){if(z[i]>0)h+='<div style="width:'+z[i]+'%;background:'+ZC[i]+'"></div>';}
-  return h+'</div>';
-}
-
-function zoneLegend(){
-  var names=["Z1","Z2","Z3","Z4","Z5"];
-  var h='<div class="zone-legend">';
-  for(var i=0;i<5;i++)h+='<span><span class="zone-dot" style="background:'+ZC[i]+'"></span>'+names[i]+'</span>';
-  return h+'</div>';
-}
-
-// ═══════════ THIS WEEK TAB ═══════════
+// ═══════════════════════════════════════
+// THIS WEEK — All 7 days, full detail
+// ═══════════════════════════════════════
 function renderThisWeek(){
-  var days=[
-    {day:"Monday",color:"var(--blue)",note:"Arms before run \u2014 zero interference",sessions:[
-      {tag:"tag-run",label:"Easy Run",desc:"Flat route, conversational",params:["45 min","~7 km","6:00\u20136:15/km","HR <148 bpm"]},
-    ],extra:"\u25b8 Lunch walk 30min \u00b7 Arms 40min"},
-    {day:"Wednesday",color:"var(--red)",note:"Key quality session",sessions:[
-      {tag:"tag-run",label:"Threshold Run",desc:"1.5km warmup \u2192 20min @ threshold \u2192 1.5km cooldown",params:["~6 km","5:10\u20135:20/km","HR 165\u2013172","~35 min"]},
-    ]},
-    {day:"Saturday",color:"var(--blue)",note:"Aerobic base \u2014 Z1\u2013Z2 only",sessions:[
-      {tag:"tag-endurance",label:"Long Endurance",desc:"Snowshoe, cycle, hike, or ski",params:["2\u20135 hrs","Z1\u2013Z2","HR <155","easy if legs sore from Fri"]},
-    ]},
-    {day:"Sunday",color:"var(--green)",note:"Active recovery, not fitness",sessions:[
-      {tag:"tag-endurance",label:"Light Outdoor",desc:"Easy snowshoe, hike, or walk",params:["45\u201390 min","Z1 only","HR <140 bpm"]},
-    ]},
-  ];
-  var h='<div class="card"><div class="card-title">Week 1 \u2014 Phase 1</div>';
-  h+='<div style="display:flex;gap:16px;margin-bottom:12px;font-size:12px"><span style="color:var(--red)" class="mono">2 runs \u00b7 ~80min</span><span style="color:var(--green)" class="mono">56% easy</span></div>';
-  for(var i=0;i<days.length;i++){
-    var d=days[i];
-    h+='<div class="day"><div class="day-header"><span class="day-name" style="color:'+d.color+'">'+d.day+'</span>';
-    if(d.note)h+='<span class="day-note">'+d.note+'</span>';
-    h+='</div>';
-    for(var j=0;j<d.sessions.length;j++){
-      var s=d.sessions[j];
-      h+='<div class="session"><span class="session-tag '+s.tag+'">'+s.label+'</span><div class="session-body"><div class="session-desc">'+s.desc+'</div>';
-      if(s.params){h+='<div class="session-params">';for(var k=0;k<s.params.length;k++)h+='<span>'+s.params[k]+'</span>';h+='</div>';}
-      h+='</div></div>';
-    }
-    if(d.extra)h+='<div style="font-size:10px;color:var(--text3);margin-top:4px;padding-left:4px">'+d.extra+'</div>';
-    h+='</div>';
-  }
+  var h='<div class="card"><div class="ct">Week '+currentWeek+' \u2014 Phase '+currentPhase+'</div>';
+  h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">2 runs \u00b7 ~80min</span><span style="color:var(--green)" class="m">56% easy</span></div>';
+  h+='<p class="ctx">First week of structured running. One easy run added on Monday. Your existing threshold run stays on Wednesday. Everything else unchanged from your current routine.</p>';
+
+  // Monday
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Monday</span><span class="dnote">Arms + running = zero interference</span></div>';
+  h+='<div class="sess"><span class="st ty">Yoga</span><div class="sb"><span class="sd">Morning stretch</span></div></div>';
+  h+='<div class="sess"><span class="st ts">Arms</span><div class="sb"><span class="sd">Curls, triceps, etc.</span><div class="sp"><span>40 min</span></div></div></div>';
+  h+='<div class="sess"><span class="st tw">Lunch Walk</span><div class="sb"><span class="sd">Easy pace around town</span><div class="sp"><span>30 min</span><span>Z1</span><span>&lt;120 bpm</span></div></div></div>';
+  h+='<div class="sess"><span class="st tr">Easy Run</span><div class="sb"><span class="sd">Flat route, conversational pace</span><div class="sp"><span>45 min</span><span>~7 km</span><span>6:00\u20136:15/km</span><span>HR &lt;148 bpm</span></div></div></div>';
   h+='</div>';
 
-  // Scheduling notes
-  h+='<div class="card" style="font-size:12px;color:var(--text2)">';
-  h+='<div class="card-title">Scheduling Notes</div>';
-  h+='<p style="margin-bottom:4px">\u25b8 <strong style="color:var(--yellow)">Fri: Legs day</strong> \u2014 no running Fri/Sat morning. 48hrs before next hard effort.</p>';
-  h+='<p style="margin-bottom:4px">\u25b8 <strong style="color:var(--emerald)">Walks</strong> Mon/Tue/Thu 30min \u2014 zero fatigue cost, aids recovery</p>';
-  h+='<p>\u25b8 <strong style="color:var(--text2)">Yoga</strong> every morning as usual</p>';
+  // Tuesday
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Tuesday</span></div>';
+  h+='<div class="sess"><span class="st ty">Yoga</span><div class="sb"><span class="sd">Morning stretch</span></div></div>';
+  h+='<div class="sess"><span class="st tc">Core</span><div class="sb"><span class="sd">Sit-ups, planks, trunk</span><div class="sp"><span>30 min</span></div></div></div>';
+  h+='<div class="sess"><span class="st tw">Lunch Walk</span><div class="sb"><span class="sd">Recovery walk</span><div class="sp"><span>30 min</span></div></div></div>';
+  h+='<div class="sess"><span class="st ts">Upper Chest</span><div class="sb"><span class="sd">Bench press, flyes</span><div class="sp"><span>40 min</span></div></div></div>';
   h+='</div>';
+
+  // Wednesday
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--red)">Wednesday</span><span class="dnote">Key quality session</span></div>';
+  h+='<div class="sess"><span class="st ty">Yoga</span><div class="sb"><span class="sd">Morning stretch</span></div></div>';
+  h+='<div class="sess"><span class="st tr">Threshold Run</span><div class="sb"><span class="sd">1.5km warmup \u2192 20min @ threshold \u2192 1.5km cooldown</span><div class="sp"><span>~6 km</span><span>5:10\u20135:20/km</span><span>HR 165\u2013172</span><span>~35 min</span></div></div></div>';
+  h+='</div>';
+
+  // Thursday
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Thursday</span><span class="dnote">No running \u2014 recovery from Wed threshold</span></div>';
+  h+='<div class="sess"><span class="st ty">Yoga</span><div class="sb"><span class="sd">Morning stretch</span></div></div>';
+  h+='<div class="sess"><span class="st ts">Arms</span><div class="sb"><span class="sd">Curls, triceps, etc.</span><div class="sp"><span>40 min</span></div></div></div>';
+  h+='<div class="sess"><span class="st tw">Lunch Walk</span><div class="sb"><span class="sd">Aids recovery</span><div class="sp"><span>30 min</span></div></div></div>';
+  h+='<div class="sess"><span class="st tc">Core</span><div class="sb"><span class="sd">Sit-ups, planks</span><div class="sp"><span>30 min</span></div></div></div>';
+  h+='</div>';
+
+  // Friday
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Friday</span><span class="dnote">No running. 48hrs before next hard effort.</span></div>';
+  h+='<div class="sess"><span class="st ty">Yoga</span><div class="sb"><span class="sd">Morning stretch</span></div></div>';
+  h+='<div class="sess"><span class="st ts">Legs</span><div class="sb"><span class="sd">Deadlift, squats \u2014 heaviest session</span><div class="sp"><span>40\u201350 min</span></div></div></div>';
+  h+='<div class="sess"><span class="st ts">Lower Chest</span><div class="sb"><span class="sd">Incline/decline work</span><div class="sp"><span>30 min</span></div></div></div>';
+  h+='</div>';
+
+  // Saturday
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Saturday</span><span class="dnote">Aerobic base \u2014 Z1\u2013Z2 only</span></div>';
+  h+='<div class="sess"><span class="st ty">Yoga</span><div class="sb"><span class="sd">Morning stretch</span></div></div>';
+  h+='<div class="sess"><span class="st te">Long Endurance</span><div class="sb"><span class="sd">Snowshoe, cycle, hike, or ski \u2014 your choice</span><div class="sp"><span>2\u20135 hrs</span><span>Z1\u2013Z2</span><span>HR &lt;155</span><span>easy if legs sore from Fri</span></div></div></div>';
+  h+='</div>';
+
+  // Sunday
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Sunday</span><span class="dnote">Active recovery, not a workout</span></div>';
+  h+='<div class="sess"><span class="st ty">Yoga</span><div class="sb"><span class="sd">Morning stretch</span></div></div>';
+  h+='<div class="sess"><span class="st te">Light Outdoor</span><div class="sb"><span class="sd">Easy snowshoe, hike, or walk. Fresh air &amp; movement.</span><div class="sp"><span>45\u201390 min</span><span>Z1 only</span><span>HR &lt;140</span></div></div></div>';
+  h+='</div>';
+
+  h+='</div>'; // close card
 
   // Override rules
-  h+='<div class="card warn"><div class="card-title">Override Rules</div><div class="override">';
-  h+='<p>\u2022 Garmin Readiness <30 for 2+ days \u2192 skip threshold, do easy or rest</p>';
-  h+='<p>\u2022 Easy run HR above 148 \u2192 slow down next time</p>';
-  h+='<p>\u2022 Legs sore from Friday \u2192 Saturday Z1 only</p>';
-  h+='<p>\u2022 Cold below \u221215\u00b0C \u2192 HR only, ignore pace</p>';
+  h+='<div class="card w"><div class="ct">Override Rules</div><div style="font-size:12px;color:var(--text2)">';
+  h+='<p style="margin-bottom:4px">\u2022 Garmin Readiness &lt;30 for 2+ days \u2192 skip threshold, do easy or rest</p>';
+  h+='<p style="margin-bottom:4px">\u2022 Easy run HR consistently above 148 \u2192 slow down, don\'t chase the pace</p>';
+  h+='<p style="margin-bottom:4px">\u2022 Legs very sore from Friday \u2192 Saturday Z1 only or swap to upper body</p>';
+  h+='<p style="margin-bottom:4px">\u2022 Missed a full week \u2192 restart previous phase, not current</p>';
+  h+='<p>\u2022 Cold below \u221215\u00b0C or icy \u2192 HR only, ignore all pace targets</p>';
+  h+='</div></div>';
+
+  // Garmin status
+  h+='<div class="card"><div class="ct">Current Garmin Status (Mar 14)</div>';
+  h+='<div class="stats">';
+  h+='<div><div class="sl">Training Status</div><div class="sv" style="font-size:14px;color:var(--yellow)">Maintaining</div></div>';
+  h+='<div><div class="sl">Garmin Feedback</div><div class="sv" style="font-size:14px;color:var(--orange)">Aerobic High Shortage</div><div class="ss">Needs more intense aerobic work</div></div>';
+  h+='<div><div class="sl">VO2max</div><div class="sv">50</div><div class="ss">Stable since Jan</div></div>';
+  h+='<div><div class="sl">Resting HR</div><div class="sv">44</div><div class="ss">Good recovery capacity</div></div>';
   h+='</div></div>';
   return h;
 }
 
-// ═══════════ PROGRESS TAB ═══════════
+// ═══════════════════════════════════════
+// PROGRESS — Charts with context
+// ═══════════════════════════════════════
 function renderProgress(){
-  var h='<div class="card"><div class="card-title">Weekly Running Volume</div><div class="chart-wrap"><canvas id="volChart"></canvas></div></div>';
-  h+='<div class="card"><div class="card-title">Run Zone Distribution \u2014 Every Run is Threshold</div>';
-  h+='<p style="font-size:11px;color:var(--text3);margin-bottom:8px">Target: 80% Z1\u2013Z2 (gray/blue). Currently: ~0% easy.</p>';
+  var h='';
+
+  // Running volume chart
+  h+='<div class="card"><div class="ct">Weekly Running Volume</div>';
+  h+='<p class="ctx">This shows how many kilometers you ran each week. The red bars should grow steadily from ~5km to ~20+km over 8 weeks. Snowshoe volume (blue) shows your existing aerobic base. The goal is to add running volume on top of what you already do.</p>';
+  h+='<div class="cw"><canvas id="volChart"></canvas></div></div>';
+
+  // Zone distribution
+  h+='<div class="card"><div class="ct">Run Zone Distribution</div>';
+  h+='<p class="ctx">Each bar shows how you split your time across HR zones during a run. Yellow (Z4) and orange (Z5) = threshold/hard. Gray (Z1) and blue (Z2) = easy. Right now every single run is dominated by yellow \u2014 meaning 100% of your running is hard. The goal is to flip this: 70\u201380% should be gray/blue (easy) with only one session per week staying yellow (threshold).</p>';
   for(var i=0;i<RUNS.length;i++){
     var r=RUNS[i];
-    h+='<div class="run-row"><div class="run-header"><span>'+r.d+' \u00b7 '+r.km+'km \u00b7 '+r.p+'/km</span><span>avg '+r.hr+'bpm \u00b7 '+r.lb+'</span></div>'+zoneBar(r.z)+'</div>';
+    h+='<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:3px" class="m"><span>'+r.d+' \u00b7 '+r.km+'km \u00b7 '+r.p+'/km</span><span>avg '+r.hr+'bpm \u00b7 '+r.lb+'</span></div>'+zb(r.z)+'</div>';
   }
-  h+=zoneLegend();
+  h+=zl();
   h+='</div>';
-  h+='<div class="card"><div class="card-title">Easy/Hard Split Target</div>';
-  h+='<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:3px"><span>Current: 0% easy</span><span>Target: 70% easy</span></div>';
-  h+='<div class="zone-bar" style="height:14px"><div style="width:100%;background:var(--yellow)"></div></div>';
-  h+='<div style="display:flex;gap:10px;margin-top:4px;font-size:10px;color:var(--text3)"><span><span class="zone-dot" style="background:var(--yellow);display:inline-block;vertical-align:middle"></span> Threshold</span><span><span class="zone-dot" style="background:#94a3b8;display:inline-block;vertical-align:middle"></span> Easy (target)</span></div>';
+
+  // Easy/hard ratio
+  h+='<div class="card"><div class="ct">Easy vs Hard Running Time</div>';
+  h+='<p class="ctx">Seiler\'s polarized model says 70\u201380% of your running time should be easy (below lactate threshold). This bar shows your current ratio. Right now it\'s 0% easy / 100% hard. Each week as you add easy runs, this bar should shift leftward toward gray. When it reaches ~70% gray, you\'re properly polarized.</p>';
+  h+='<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:3px"><span>Current: 0% easy</span><span>Target: 70% easy</span></div>';
+  h+='<div class="zb" style="height:16px"><div style="width:100%;background:var(--yellow)"></div></div>';
+  h+='<div style="display:flex;gap:12px;margin-top:6px;font-size:10px;color:var(--text3)"><span><span class="zd" style="background:#94a3b8;vertical-align:middle"></span> Easy (Z1\u2013Z2)</span><span><span class="zd" style="background:var(--yellow);vertical-align:middle"></span> Threshold (Z4+)</span></div>';
   h+='</div></div>';
+
+  // Weekly stats table
+  h+='<div class="card"><div class="ct">Week-by-Week History</div>';
+  h+='<p class="ctx">Your training history since January. Notice: running volume is very low (5\u20137km most weeks), always 1 session, while snowshoe volume is massive. The imbalance is why running fitness isn\'t improving despite great cardiovascular fitness.</p>';
+  h+='<table class="tbl"><thead><tr><th>Week</th><th class="r">Run</th><th class="r">Snow</th><th class="r">Runs</th><th class="r">Str</th></tr></thead><tbody>';
+  for(var i=0;i<WK.length;i++){
+    var w=WK[i];
+    h+='<tr><td class="m">'+w.w+'</td><td class="r m" style="color:var(--red)">'+(w.rKm>0?w.rKm+'km':'\u2014')+'</td><td class="r m" style="color:var(--blue)">'+(w.sKm>0?w.sKm+'km':'\u2014')+'</td><td class="r m">'+w.rN+'\u00d7</td><td class="r m" style="color:var(--purple)">'+(w.str>0?w.str+'\u00d7':'\u2014')+'</td></tr>';
+  }
+  h+='</tbody></table></div>';
   return h;
 }
 
-// ═══════════ PLAN TAB ═══════════
+// ═══════════════════════════════════════
+// PLAN — 8 week roadmap with descriptions
+// ═══════════════════════════════════════
 function renderPlan(){
-  var phases=[
-    {n:"Weeks 1\u20132",d:"Add first easy run + walks",rKm:"~13",runs:"2\u00d7/wk",easy:"56%",pct:43},
-    {n:"Weeks 3\u20134",d:"Add second easy run",rKm:"~20",runs:"3\u00d7/wk",easy:"68%",pct:67},
-    {n:"Weeks 5\u20138",d:"Extend easy runs",rKm:"~24",runs:"3\u00d7/wk",easy:"72%",pct:80},
-  ];
-  var h='<div class="card"><div class="card-title">8-Week Progression</div>';
-  // Current
-  h+='<div class="prog-row"><div class="prog-header"><span class="prog-label">Now</span><span class="prog-value">5\u20137 km/wk</span></div><div class="prog-bar"><div class="prog-fill" style="width:23%"></div></div><div class="prog-sub">1\u00d7/wk \u00b7 0% easy \u00b7 All threshold</div></div>';
-  for(var i=0;i<phases.length;i++){
-    var p=phases[i];
-    h+='<div class="prog-row"><div class="prog-header"><span class="prog-label">'+p.n+'</span><span class="prog-value">'+p.rKm+' km/wk</span></div><div class="prog-bar"><div class="prog-fill" style="width:'+p.pct+'%"></div></div><div class="prog-sub">'+p.runs+' \u00b7 '+p.easy+' easy \u00b7 '+p.d+'</div></div>';
-  }
+  var h='';
+
+  // Current status
+  h+='<div class="card"><div class="ct">Where You Are Now</div>';
+  h+='<p class="ctx">You\'ve been running ~1\u00d7/week, always at threshold intensity (HR 156\u2013166). Zero easy running. Your Garmin says "Maintaining" with "Aerobic High Shortage" \u2014 meaning you have the cardiovascular base (from snowshoeing) but your running-specific aerobic fitness isn\'t developing. Your VO2max (50) suggests VDOT ~45\u201348, but your actual 5K (26:38) gives VDOT ~35. That gap is running economy \u2014 which only improves with more running, specifically easy running.</p>';
   h+='</div>';
 
-  // Race preds
-  h+='<div class="card"><div class="card-title">Race Predictions</div>';
-  h+='<table class="tbl"><thead><tr><th>Distance</th><th class="r">Now (V35)</th><th class="r">12wk (V38\u201340)</th></tr></thead><tbody>';
+  // Phase 1
+  h+='<div class="card" style="border-left:3px solid var(--blue)"><div class="ct">Phase 1: Weeks 1\u20132 \u2014 Add First Easy Run</div>';
+  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> One easy run added on Monday (45min, 6:00\u20136:15/km, HR &lt;148). Three 30-min lunch walks added Mon/Tue/Thu. Everything else stays exactly the same \u2014 same threshold run, same strength schedule, same Saturday endurance.<br><br><strong style="color:var(--text)">Why:</strong> Your body needs to adapt to running impact at low intensity before adding more volume. Connective tissue (tendons, cartilage) adapts slower than your cardiovascular system. The easy pace will feel absurdly slow \u2014 that\'s correct. HR governs, not ego.<br><br><strong style="color:var(--text)">Watch for:</strong> If easy run HR creeps above 148 consistently, slow down. If anything hurts (knees, shins, Achilles), take an extra rest day before the next run.</div>';
+  h+='<div class="prh"><span class="prl">~13 km/wk</span><span class="prv">2\u00d7 runs \u00b7 56% easy</span></div><div class="prb"><div class="prf" style="width:43%"></div></div>';
+  h+='</div>';
+
+  // Phase 2
+  h+='<div class="card" style="border-left:3px solid var(--emerald)"><div class="ct">Phase 2: Weeks 3\u20134 \u2014 Add Second Easy Run</div>';
+  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> Sunday becomes a second easy run (40min) instead of light outdoor activity. Monday easy run stays at 45min. Threshold run extends slightly (22min threshold block, ~6.5km total).<br><br><strong style="color:var(--text)">Why:</strong> After 2 weeks your connective tissue has had an initial adaptation to running impact. Adding a third run session (Sunday) builds the frequency your neuromuscular system needs to improve running economy. The Sunday run is shorter than Monday because it follows Saturday\'s long endurance session.<br><br><strong style="color:var(--text)">Watch for:</strong> How legs feel on Monday after Sunday run + Saturday endurance. If consistently heavy, keep Sunday at 30min or swap back to a walk.</div>';
+  h+='<div class="prh"><span class="prl">~20 km/wk</span><span class="prv">3\u00d7 runs \u00b7 68% easy</span></div><div class="prb"><div class="prf" style="width:67%"></div></div>';
+  h+='</div>';
+
+  // Phase 3
+  h+='<div class="card" style="border-left:3px solid var(--orange)"><div class="ct">Phase 3: Weeks 5\u20138 \u2014 Extend Easy Runs</div>';
+  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> Easy runs extend to 50\u201355min (Monday) and 45\u201350min (Sunday). Threshold run gets a longer threshold block (25min, ~7.5km total). Total running hits ~24km/week.<br><br><strong style="color:var(--text)">Why:</strong> By week 5 your connective tissue can handle more volume. Longer easy runs improve fat oxidation, capillary density, and mitochondrial density in running-specific muscles. The extended threshold block pushes lactate clearance capacity.<br><br><strong style="color:var(--text)">End of phase 3:</strong> Retest 5K. Your VDOT should have moved from ~35 toward 38\u201340. Also do a 30-min lactate threshold field test to validate your LTHR (Garmin auto-detect has ~11bpm error). New VDOT and LTHR feed back into pace and zone recalculation for the next training block.</div>';
+  h+='<div class="prh"><span class="prl">~24 km/wk</span><span class="prv">3\u00d7 runs \u00b7 72% easy</span></div><div class="prb"><div class="prf" style="width:80%"></div></div>';
+  h+='</div>';
+
+  // Race predictions
+  h+='<div class="card"><div class="ct">Race Time Predictions</div>';
+  h+='<p class="ctx">Based on Daniels\' VDOT tables. Current predictions from your 5K time; 12-week projections assume VDOT improves to 38\u201340 with consistent training. The VO2max gap (50 vs VDOT 35) means your potential improvement is larger than typical because your cardiovascular fitness already supports faster running.</p>';
+  h+='<table class="tbl"><thead><tr><th>Distance</th><th class="r">Now (VDOT 35)</th><th class="r">12wk target</th></tr></thead><tbody>';
   var races=[["5K","26:38","24:30\u201325:30"],["10K","~56:00","~52:00\u201354:00"],["Half","~2:05","~1:55\u20132:00"]];
-  for(var i=0;i<races.length;i++){
-    var r=races[i];
-    h+='<tr><td>'+r[0]+'</td><td class="r mono" style="color:var(--text3)">'+r[1]+'</td><td class="r mono" style="color:var(--green)">'+r[2]+'</td></tr>';
-  }
-  h+='</tbody></table><p style="font-size:10px;color:var(--text3);margin-top:8px">VO2max gap = large improvement potential from running volume alone.</p></div>';
+  for(var i=0;i<races.length;i++){h+='<tr><td>'+races[i][0]+'</td><td class="r m" style="color:var(--text3)">'+races[i][1]+'</td><td class="r m" style="color:var(--green)">'+races[i][2]+'</td></tr>';}
+  h+='</tbody></table></div>';
 
   // Milestones
-  h+='<div class="card"><div class="card-title">Milestones</div>';
+  h+='<div class="card"><div class="ct">Milestones</div>';
   var ms=[
-    {t:"First easy run (Mon)",s:"This week. 45min @ <148bpm.",a:true},
-    {t:"Add lunch walks",s:"This week. Mon/Tue/Thu. 30min.",a:true},
-    {t:"Add Sunday easy run",s:"Week 3. After 2 weeks of Mon easy running.",a:false},
-    {t:"15+ km/week running",s:"By week 4. 3\u00d7/week consistently.",a:false},
-    {t:"Retest 5K",s:"After week 8. Track VDOT change.",a:false},
-    {t:"30-min LT field test",s:"After week 8. Validate LTHR.",a:false},
+    {t:"First easy run (Monday)",s:"This week. 45min @ &lt;148bpm. Discover your actual easy pace.",a:true},
+    {t:"Add lunch walks Mon/Tue/Thu",s:"This week. 30min each. Zero fatigue cost.",a:true},
+    {t:"Add second easy run (Sunday)",s:"Week 3. After 2 weeks of connective tissue adaptation.",a:false},
+    {t:"Consistent 15+ km/week running",s:"By week 4. The minimum effective dose for running improvement.",a:false},
+    {t:"Retest 5K",s:"After week 8. Track VDOT change \u2014 expect 3\u20135 point improvement.",a:false},
+    {t:"30-min LT field test",s:"After week 8. Validate LTHR. Garmin auto-detect has ~11bpm error.",a:false},
   ];
   for(var i=0;i<ms.length;i++){
-    var m=ms[i];
-    h+='<div class="milestone"><span class="milestone-icon" style="color:'+(m.a?'var(--blue)':'var(--text3)')+'">'+(m.a?'\u2192':'\u25cb')+'</span><div><div class="milestone-text">'+m.t+'</div><div class="milestone-sub">'+m.s+'</div></div></div>';
+    var m=ms[i];h+='<div class="ms"><span class="mi" style="color:'+(m.a?'var(--blue)':'var(--text3)')+'">'+(m.a?'\u2192':'\u25cb')+'</span><div><div class="mt">'+m.t+'</div><div class="msub">'+m.s+'</div></div></div>';
   }
   h+='</div>';
   return h;
 }
 
-// ═══════════ PROFILE TAB ═══════════
+// ═══════════════════════════════════════
+// PROFILE
+// ═══════════════════════════════════════
 function renderProfile(){
-  var stats=[
-    {l:"Running LTHR",v:B.lthr+" bpm",s:"Garmin Feb 24 \u00b7 running only"},
-    {l:"Max HR",v:B.maxHr+" bpm",s:"Observed Feb 24"},
-    {l:"Resting HR",v:B.restHr+" bpm",s:""},
-    {l:"VO2max",v:B.vo2max,s:"Garmin estimate"},
-    {l:"VDOT",v:"~"+B.vdot,s:"From 5K: 26:38"},
-    {l:"Best 5K",v:B.best5k,s:"Mar 1"},
-    {l:"LT Pace",v:B.ltPace+"/km",s:"Feb 24"},
-    {l:"Easy Pace",v:"~6:00\u20136:15",s:"HR <148 bpm"},
-  ];
-  var h='<div class="card"><div class="card-title">Running Baseline</div><div class="stats">';
-  for(var i=0;i<stats.length;i++){
-    var s=stats[i];
-    h+='<div><div class="stat-label">'+s.l+'</div><div class="stat-value">'+s.v+'</div>';
-    if(s.s)h+='<div class="stat-sub">'+s.s+'</div>';
-    h+='</div>';
-  }
+  var h='<div class="card"><div class="ct">Running Baseline (from Garmin)</div><div class="stats">';
+  var stats=[{l:"Running LTHR",v:B.lthr+" bpm",s:"Garmin Feb 24 \u00b7 running only"},{l:"Max HR",v:B.maxHr+" bpm",s:"Observed Feb 24"},{l:"Resting HR",v:B.restHr+" bpm",s:""},{l:"VO2max",v:""+B.vo2max,s:"Garmin \u00b75% error"},{l:"VDOT",v:"~"+B.vdot,s:"From 5K: 26:38"},{l:"Best 5K",v:B.best5k,s:"Mar 1"},{l:"LT Pace",v:B.ltPace+"/km",s:"Feb 24"},{l:"Easy Pace",v:"~6:00\u20136:15",s:"HR &lt;148 bpm"}];
+  for(var i=0;i<stats.length;i++){var s=stats[i];h+='<div><div class="sl">'+s.l+'</div><div class="sv">'+s.v+'</div>';if(s.s)h+='<div class="ss">'+s.s+'</div>';h+='</div>';}
   h+='</div></div>';
 
-  // VO2/VDOT gap
-  h+='<div class="card warn"><div class="card-title">VO2max 50 vs VDOT 35 \u2014 The Gap</div>';
-  h+='<p style="font-size:12px;color:rgba(234,179,8,0.8)">Your cardio engine supports VDOT ~45\u201348. Your 5K gives VDOT ~35. This 10+ point gap = your heart is ready, running economy is the limiter. Easy running volume closes this gap.</p></div>';
+  h+='<div class="card w"><div class="ct">VO2max 50 vs VDOT 35 \u2014 The Gap</div>';
+  h+='<p style="font-size:12px;color:rgba(234,179,8,0.85)">Your cardiovascular engine (built through snowshoeing, cycling, and general fitness) supports a VDOT of ~45\u201348. But your actual 5K gives VDOT ~35. This 10+ point gap means your heart and lungs are ready \u2014 running economy, neuromuscular coordination, and connective tissue are the limiters. Easy running volume is the most direct way to close this gap. Not more threshold work.</p></div>';
 
-  // Zones
-  h+='<div class="card"><div class="card-title">Friel HR Zones (Running LTHR '+B.lthr+')</div>';
-  h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">Running only. Cycling/snowshoe thresholds differ.</p>';
-  for(var i=0;i<B.zones.length;i++){
-    var z=B.zones[i];
-    h+='<div style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:4px"><span class="zone-dot" style="background:'+z.c+'"></span><span style="color:var(--text2);flex:1">'+z.n+'</span><span class="mono" style="color:var(--text)">'+(z.lo>0?z.lo:'<')+(z.lo>0?'\u2013':'')+z.hi+'</span></div>';
-  }
+  h+='<div class="card"><div class="ct">Friel HR Zones (Running LTHR '+B.lthr+')</div>';
+  h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">These apply to running only. Cycling LTHR is typically 5\u201310 bpm lower. Snowshoeing has no established LTHR protocol.</p>';
+  for(var i=0;i<B.zones.length;i++){var z=B.zones[i];h+='<div style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:4px"><span class="zd" style="background:'+z.c+'"></span><span style="color:var(--text2);flex:1">'+z.n+'</span><span class="m" style="color:var(--text)">'+(z.lo>0?z.lo:'&lt;')+(z.lo>0?'\u2013':'')+z.hi+'</span></div>';}
   h+='</div>';
 
-  // Paces
-  h+='<div class="card"><div class="card-title">Daniels Training Paces (VDOT '+B.vdot+')</div>';
-  h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">Performance categories. HR overrides pace in cold/wind/snow.</p>';
-  var prows=[
-    {z:"Easy",p:B.paces.E,hr:"<148 bpm",d:"Conversational. Should be able to talk."},
-    {z:"Threshold",p:B.paces.T,hr:"165\u2013172",d:"Comfortably hard. ~60min race effort."},
-    {z:"Interval",p:B.paces.I,hr:"174\u2013184",d:"3\u20135min reps at VO2max."},
-    {z:"Repetition",p:B.paces.R,hr:"pace only",d:"200\u2013400m speed work."},
-  ];
-  for(var i=0;i<prows.length;i++){
-    var r=prows[i];
-    h+='<div class="pace-card"><div class="pace-row"><span class="pace-name">'+r.z+'</span><span class="pace-val">'+r.p+'/km</span></div><div class="pace-sub"><span>'+r.d+'</span><span class="hr">'+r.hr+'</span></div></div>';
-  }
-  h+='<div style="margin-top:8px;padding:8px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.15);border-radius:8px;font-size:11px;color:rgba(147,197,253,0.9)">Easy pace note: 7:00/km (VDOT tables) was too slow. VO2max 50 supports ~6:00\u20136:15/km. First run: start at 6:15, check HR at 10min.</div>';
+  h+='<div class="card"><div class="ct">Daniels Training Paces (VDOT '+B.vdot+')</div>';
+  h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">Performance-based categories from Daniels\' Running Formula. In cold/wind/snow: HR overrides pace.</p>';
+  var pr=[{z:"Easy",p:B.paces.E,hr:"&lt;148 bpm",d:"Conversational. You should be able to talk in full sentences."},{z:"Threshold",p:B.paces.T,hr:"165\u2013172",d:"Comfortably hard. Could sustain ~60min in a race."},{z:"Interval",p:B.paces.I,hr:"174\u2013184",d:"3\u20135min hard reps. Not prescribed yet."},{z:"Repetition",p:B.paces.R,hr:"pace only",d:"200\u2013400m speed work. Not prescribed yet."}];
+  for(var i=0;i<pr.length;i++){var r=pr[i];h+='<div class="pc"><div class="pcr"><span style="font-size:13px;font-weight:600;color:var(--text)">'+r.z+'</span><span class="m" style="font-size:13px;font-weight:700;color:var(--text)">'+r.p+'/km</span></div><div style="display:flex;justify-content:space-between;margin-top:2px"><span style="font-size:10px;color:var(--text3)">'+r.d+'</span><span class="m" style="font-size:10px;color:var(--blue)">'+r.hr+'</span></div></div>';}
+  h+='<div class="hi">Easy pace note: The VDOT tables say ~7:00/km, but your VO2max of 50 supports faster easy running. HR is the governor: run at whatever pace keeps you under 148 bpm. First easy run, start at ~6:15/km, check HR after 10 minutes, and adjust. In Troms\u00f8 winter conditions (cold, ice), it might be 6:15\u20136:30.</div>';
   h+='</div>';
 
-  // Diagnosis
-  h+='<div class="card"><div class="card-title">Training Diagnosis</div>';
-  var diag=[
-    {c:"var(--red)",t:"All 7 runs at threshold (HR 156\u2013166). Zero easy running.",d:"Aerobic engine is ready but running base isn't building."},
-    {c:"var(--blue)",t:"Snowshoeing: excellent Z1\u2013Z2 volume",d:"Cross-trains cardio. Doesn't fully transfer to running economy."},
-    {c:"var(--purple)",t:"Strength: 5\u00d7/week + 2\u00d7 core",d:"Upper body = zero interference. Only legs need scheduling."},
-    {c:"var(--green)",t:"Daily yoga + lunch walks",d:"Recovery, mobility, low-level aerobic stimulus."},
-  ];
-  for(var i=0;i<diag.length;i++){
-    var d=diag[i];
-    h+='<div style="display:flex;gap:8px;margin-bottom:8px"><span style="color:'+d.c+';font-size:16px;line-height:1">\u25cf</span><div><div style="font-size:12px;font-weight:600;color:'+d.c+'">'+d.t+'</div><div style="font-size:11px;color:var(--text3)">'+d.d+'</div></div></div>';
-  }
+  h+='<div class="card"><div class="ct">Training Diagnosis</div>';
+  var dg=[{c:"var(--red)",t:"All 7 runs at threshold (HR 156\u2013166). Zero easy running.",d:"Aerobic engine is strong but running-specific base isn't building."},{c:"var(--blue)",t:"Snowshoeing: excellent Z1\u2013Z2 aerobic volume",d:"Builds cardiovascular fitness. Doesn't fully transfer to running economy."},{c:"var(--purple)",t:"Strength: 5\u00d7/week + 2\u00d7 core. Very consistent.",d:"Upper body = zero interference with running. Only legs need scheduling."},{c:"var(--green)",t:"Daily yoga + planned lunch walks",d:"Recovery, mobility, low-level aerobic stimulus. Zero conflicts."}];
+  for(var i=0;i<dg.length;i++){var d=dg[i];h+='<div style="display:flex;gap:8px;margin-bottom:8px"><span style="color:'+d.c+';font-size:16px;line-height:1">\u25cf</span><div><div style="font-size:12px;font-weight:600;color:'+d.c+'">'+d.t+'</div><div style="font-size:11px;color:var(--text3)">'+d.d+'</div></div></div>';}
   h+='</div>';
   return h;
 }
 
-// ═══════════ METHODS TAB ═══════════
+// ═══════════════════════════════════════
+// METHODS
+// ═══════════════════════════════════════
 function renderMethods(){
   var secs=[
-    {t:"Sources",c:"Seiler polarized model (2010)\nDaniels Running Formula (4th ed.)\nFriel HR zones (Training Bible)\nConcurrent training: Hickson 1980, Wilson et al. 2012\n\nNo single system. Components used where strongest."},
-    {t:"Easy Pace Correction",c:"V1 prescribed 7:00/km from VDOT tables. Wrong.\n\nVO2max 50 supports ~6:00-6:15/km at easy HR. HR governs pace: target <148 bpm.\n\nDuration: 45min starting (not 30). Your cardio handles it. Connective tissue is the limiter."},
-    {t:"Zones: Running Only",c:"LTHR 174 applies to running only. Cycling is 5-10 bpm lower. Snowshoeing has no established protocol.\n\nGarmin auto-detect has ~11 bpm error. A 30-min field test validates."},
-    {t:"Lunch Walks",c:"30min at Z1 (<120 bpm): increases energy expenditure without fatigue, aids recovery, gentle aerobic stimulus. No scheduling constraints. Skip if busy."},
-    {t:"Sunday Recovery",c:"Complete rest not required (resting HR 44). Light outdoor 45-90min Z1 (HR <140) is recovery-promoting: blood flow, outdoor exposure, mental refreshment. Not a workout."},
-    {t:"Concurrent Training",c:"Upper body: zero interference with running.\nLegs: 48hrs from hard running.\nFri legs \u2192 Sat easy endurance \u2192 Sun light \u2192 Mon easy run = 72hrs.\n\nAt your volume, AMPK-mTOR interference is negligible."},
-    {t:"Load Tracking",c:"Running: weekly km + easy/threshold time split\nStrength: session count + consistency\nEndurance: duration + HR zone\nWalks/yoga: not tracked\n\nFatigue signal: Garmin Readiness + sleep + motivation."},
+    {t:"Sources &amp; Framework",c:"This plan draws from multiple evidence-based systems:\n\n\u2022 Seiler polarized model \u2014 intensity distribution in endurance athletes (Seiler 2010; St\u00f6ggl &amp; Sperlich 2014). 70\u201380% of endurance training time below first lactate threshold, measured by time.\n\n\u2022 Daniels Running Formula (4th ed.) \u2014 VDOT and performance-based training pace categories. Paces are derived from race performance, not simple %VO2max.\n\n\u2022 Friel HR zones \u2014 7-zone system anchored to running LTHR (Training Bible). Zones are running-specific; other sports have different thresholds.\n\n\u2022 Concurrent training \u2014 Hickson 1980; Wilson et al. 2012 meta-analysis; Schumann et al. Upper body strength has near-zero interference with running. Lower body: 48+ hours from hard running."},
+    {t:"How Easy Pace Was Calculated",c:"VDOT tables (Daniels) prescribe ~7:00/km for VDOT 35. This was corrected upward.\n\nReason: Your VO2max of 50 reflects total cardiovascular fitness, while VDOT 35 reflects running-specific performance. The 10+ point gap means your aerobic system supports faster easy running than the tables suggest.\n\nYour actual data confirms: your slowest run (Mar 1, 5:19/km) had avg HR 156. To reach easy HR (&lt;148), you need to slow ~20\u201325 seconds, landing at ~5:40\u20136:00/km on flat ground, or ~6:00\u20136:15/km in cold/snow conditions.\n\nRule: HR governs pace. Run at whatever keeps you under 148. The number on the watch doesn't matter if your heart rate is right."},
+    {t:"How Training Load Is Tracked",c:"Previous versions used unified hrTSS across all sports. This was incorrect.\n\nCorrected approach:\n\u2022 Running: weekly distance (km) + time distribution (easy vs threshold)\n\u2022 Strength: session count and consistency (not HR-based)\n\u2022 Long endurance: duration + average HR zone\n\u2022 Walks/yoga: not tracked as training load\n\nFatigue decisions use Garmin Training Readiness + sleep quality + motivation as primary signals, not calendar-based recovery cycles."},
+    {t:"Concurrent Training Scheduling",c:"From Hickson (1980) and Wilson et al. (2012):\n\n\u2022 Arms, chest, core \u2192 zero interference with running. No scheduling constraint.\n\u2022 Legs (deadlift, squat) \u2192 48hrs from hard running.\n\nYour schedule: Fri legs \u2192 Sat easy endurance \u2192 Sun light/easy run \u2192 Mon easy run = 72hrs between legs and next significant running load.\n\nAt your running volume (~3\u00d7/week, 13\u201324km), the AMPK-mTOR interference pathway is not a concern. Your strength gains won't be impaired."},
+    {t:"Weekly Update Process",c:"Each week you come back and say \"update\". Then:\n\n1. I pull your latest Garmin data (all activities, HR, zones)\n2. I compare what you actually did vs what was prescribed\n3. I check: Were easy runs actually easy? (&lt;148 HR) Was threshold in range? Total volume on track?\n4. I regenerate the app with next week's prescription\n5. I push to GitHub \u2014 your site updates automatically\n\nIf you missed sessions, added extra runs, or felt fatigued, the prescription adjusts. The plan is a guide, not a contract."},
   ];
-  var h='';
-  for(var i=0;i<secs.length;i++){
-    h+='<div class="card"><div class="card-title">'+secs[i].t+'</div><div class="method-text">'+secs[i].c+'</div></div>';
-  }
+  var h='';for(var i=0;i<secs.length;i++){h+='<div class="card"><div class="ct">'+secs[i].t+'</div><div style="font-size:12px;color:var(--text2);line-height:1.7;white-space:pre-wrap">'+secs[i].c+'</div></div>';}
   return h;
 }
 
-// ═══════════ RENDER ═══════════
+// ═══════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════
 function render(){
-  var app=document.getElementById("app");
-  var h='<div class="header"><h1><span>ENDURANCE</span><span> COACH</span></h1><span class="badge">v3</span></div>';
-  h+='<div class="subtitle mono">Troms\u00f8 \u00b7 LTHR '+B.lthr+' \u00b7 VDOT ~'+B.vdot+' \u00b7 VO2max '+B.vo2max+' \u00b7 Updated 2026-03-15</div>';
+  var a=document.getElementById("app");
+  var h='<div class="header"><h1><span class="a">ENDURANCE</span><span class="b"> COACH</span></h1><span class="badge">v3</span></div>';
+  h+='<div class="sub m">Troms\u00f8 \u00b7 LTHR '+B.lthr+' \u00b7 VDOT ~'+B.vdot+' \u00b7 VO2max '+B.vo2max+' \u00b7 Updated 2026-03-15</div>';
   h+='<div class="tabs" id="tabs">';
-  for(var i=0;i<TABS.length;i++){
-    h+='<button class="tab'+(activeTab===i?' active':'')+'" data-i="'+i+'">'+TABS[i]+'</button>';
-  }
-  h+='</div>';
-  h+='<div id="content">';
+  for(var i=0;i<TABS.length;i++)h+='<button class="tab'+(activeTab===i?' on':'')+'" data-i="'+i+'">'+TABS[i]+'</button>';
+  h+='</div><div id="content">';
   if(activeTab===0)h+=renderThisWeek();
   else if(activeTab===1)h+=renderProgress();
   else if(activeTab===2)h+=renderPlan();
   else if(activeTab===3)h+=renderProfile();
   else if(activeTab===4)h+=renderMethods();
-  h+='</div>';
-  h+='<div style="text-align:center;font-size:10px;color:var(--text3);margin-top:24px">Seiler polarized + Daniels VDOT + Friel zones + concurrent training</div>';
-  app.innerHTML=h;
-
-  // Tab clicks
+  h+='</div><footer>Seiler polarized + Daniels VDOT + Friel zones + concurrent training research</footer>';
+  a.innerHTML=h;
   var btns=document.querySelectorAll('.tab');
-  for(var i=0;i<btns.length;i++){
-    btns[i].addEventListener('click',function(){
-      activeTab=parseInt(this.getAttribute('data-i'));
-      render();
-    });
-  }
-
-  // Charts
+  for(var i=0;i<btns.length;i++){btns[i].addEventListener('click',function(){activeTab=parseInt(this.getAttribute('data-i'));render();window.scrollTo(0,0);});}
   if(activeTab===1)initCharts();
 }
 
 function initCharts(){
   var ctx=document.getElementById('volChart');
   if(!ctx)return;
-  new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:WK.map(function(w){return w.w}),
-      datasets:[
-        {label:'Run km',data:WK.map(function(w){return w.rKm}),backgroundColor:'rgba(239,68,68,0.7)',borderRadius:4},
-        {label:'Snowshoe km',data:WK.map(function(w){return w.sKm}),backgroundColor:'rgba(59,130,246,0.5)',borderRadius:4}
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#94a3b8',font:{size:10,family:'DM Sans'}}}},
-      scales:{
-        x:{ticks:{color:'#64748b',font:{size:9}},grid:{display:false}},
-        y:{ticks:{color:'#64748b',font:{size:9}},grid:{color:'rgba(51,65,85,0.3)'}}
-      }
-    }
-  });
+  new Chart(ctx,{type:'bar',data:{labels:WK.map(function(w){return w.w}),datasets:[{label:'Run km',data:WK.map(function(w){return w.rKm}),backgroundColor:'rgba(239,68,68,0.8)',borderRadius:4,barPercentage:0.7},{label:'Snowshoe km',data:WK.map(function(w){return w.sKm}),backgroundColor:'rgba(59,130,246,0.45)',borderRadius:4,barPercentage:0.7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11,family:'DM Sans'},padding:16}},tooltip:{backgroundColor:'#1e293b',titleColor:'#f1f5f9',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1,cornerRadius:8,padding:10}},scales:{x:{ticks:{color:'#64748b',font:{size:10,family:'DM Sans'}},grid:{display:false}},y:{ticks:{color:'#64748b',font:{size:10},callback:function(v){return v+'km'}},grid:{color:'rgba(51,65,85,0.3)'}}}}});
 }
-
 render();
 </script>
 </body>
