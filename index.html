@@ -78,14 +78,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .hi{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.15);border-radius:8px;padding:10px;font-size:11px;color:rgba(147,197,253,0.9);margin-top:8px}
 .phase-desc{font-size:12px;color:var(--text2);line-height:1.6;padding:10px;background:rgba(15,23,42,0.4);border-radius:8px;margin-bottom:12px}
 footer{text-align:center;font-size:10px;color:var(--text3);margin-top:24px;padding-bottom:20px}
-.chk{width:20px;height:20px;border-radius:50%;border:2px solid var(--bg3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s;margin-top:1px}
+.chk{width:26px;height:26px;border-radius:50%;border:2px solid var(--bg3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s;margin-top:1px;-webkit-tap-highlight-color:transparent}
 .chk:hover{border-color:var(--text3)}
 .chk.done{border-color:var(--green);background:var(--green)}
-.chk.done::after{content:'\2713';color:#fff;font-size:11px;font-weight:700}
+.chk.done::after{content:'\2713';color:#fff;font-size:12px;font-weight:700}
 .refresh-btn{background:none;border:1px solid var(--bg3);border-radius:6px;color:var(--text3);font-size:11px;padding:4px 10px;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .2s;font-family:'DM Sans',sans-serif}
 .refresh-btn:hover{border-color:var(--text2);color:var(--text2)}
 .refresh-btn svg{width:12px;height:12px}
 .header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.day.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 0 20px rgba(59,130,246,0.1)}
+.day-date{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-left:6px;font-weight:400}
+.day-count{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;background:var(--bg3);padding:1px 6px;border-radius:10px}
+.day-count.alldone{background:rgba(34,197,94,0.2);color:var(--green)}
+.week-dots{display:flex;gap:6px;align-items:center;justify-content:center;margin-bottom:16px;padding:10px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)}
+.week-dot{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+.week-dot-circle{width:22px;height:22px;border-radius:50%;border:2px solid var(--bg3);display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .3s}
+.week-dot-circle.partial{border-color:var(--accent);background:rgba(59,130,246,0.15)}
+.week-dot-circle.complete{border-color:var(--green);background:var(--green);color:#fff;font-weight:700}
+.week-dot-circle.is-today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+.week-dot-label{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace}
 </style>
 </head>
 <body>
@@ -116,6 +127,25 @@ var TABS=["This Week","Progress","Plan","Profile","Methods"];
 var activeTab=0;
 var currentWeek=1;
 var currentPhase=1;
+var weekStart='2026-03-16'; // Monday of this training week
+
+// Day configuration with dates and session IDs
+var DAYS=[
+  {key:'mon',name:'Monday',date:'Mar 16',color:'var(--blue)',note:'Arms + running = zero interference',
+   ids:['mon-yoga','mon-arms','mon-walk','mon-run']},
+  {key:'tue',name:'Tuesday',date:'Mar 17',color:'var(--purple)',note:'',
+   ids:['tue-yoga','tue-core','tue-walk','tue-chest']},
+  {key:'wed',name:'Wednesday',date:'Mar 18',color:'var(--red)',note:'Key quality session',
+   ids:['wed-yoga','wed-run']},
+  {key:'thu',name:'Thursday',date:'Mar 19',color:'var(--purple)',note:'No running \u2014 recovery from Wed threshold',
+   ids:['thu-yoga','thu-arms','thu-walk','thu-core']},
+  {key:'fri',name:'Friday',date:'Mar 20',color:'var(--yellow)',note:'No running. 48hrs before next hard effort.',
+   ids:['fri-yoga','fri-legs','fri-lchest']},
+  {key:'sat',name:'Saturday',date:'Mar 21',color:'var(--blue)',note:'Aerobic base \u2014 Z1\u2013Z2 only',
+   ids:['sat-yoga','sat-endurance']},
+  {key:'sun',name:'Sunday',date:'Mar 22',color:'var(--green)',note:'Active recovery, not a workout',
+   ids:['sun-yoga','sun-outdoor']}
+];
 
 // Checkmark persistence
 var checkKey='checks-w'+currentWeek;
@@ -124,11 +154,51 @@ function toggleCheck(id){var c=getChecks();if(c[id])delete c[id];else c[id]=1;lo
 function isChecked(id){return !!getChecks()[id];}
 function chk(id){return '<div class="chk'+(isChecked(id)?' done':'')+'" onclick="toggleCheck(\''+id+'\')"></div>';}
 
+function getDayCheckedCount(dayIdx){
+  var d=DAYS[dayIdx];var c=getChecks();var n=0;
+  for(var i=0;i<d.ids.length;i++){if(c[d.ids[i]])n++;}
+  return n;
+}
+
+function getTodayIdx(){
+  var dow=new Date().getDay();// 0=Sun,1=Mon...
+  if(dow===0)return 6;return dow-1;// convert to 0=Mon...6=Sun
+}
+
+function weekDots(){
+  var checks=getChecks();var todayIdx=getTodayIdx();
+  var h='<div class="week-dots">';
+  var shortNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  for(var i=0;i<7;i++){
+    var d=DAYS[i];var done=getDayCheckedCount(i);var total=d.ids.length;
+    var cls='week-dot-circle';
+    if(done>=total&&total>0)cls+=' complete';
+    else if(done>0)cls+=' partial';
+    if(i===todayIdx)cls+=' is-today';
+    h+='<div class="week-dot"><div class="'+cls+'">'+(done>=total&&total>0?'\u2713':(done>0?done:''))+'</div><span class="week-dot-label">'+shortNames[i]+'</span></div>';
+  }
+  return h+'</div>';
+}
+
 // Session renderer with checkmark
 function sess(id,tag,label,desc,params){
   var h='<div class="sess">'+chk(id)+'<span class="st '+tag+'">'+label+'</span><div class="sb"><span class="sd">'+desc+'</span>';
   if(params){h+='<div class="sp">';for(var i=0;i<params.length;i++)h+='<span>'+params[i]+'</span>';h+='</div>';}
   return h+'</div></div>';
+}
+
+function dayOpen(idx){
+  var d=DAYS[idx];var todayIdx=getTodayIdx();
+  var isToday=idx===todayIdx;
+  var done=getDayCheckedCount(idx);var total=d.ids.length;
+  var countCls='day-count'+(done>=total&&total>0?' alldone':'');
+  var h='<div class="day'+(isToday?' today':'')+'">';
+  h+='<div class="dh"><div style="display:flex;align-items:baseline"><span class="dn" style="color:'+d.color+'">'+d.name+'</span><span class="day-date">'+d.date+'</span></div>';
+  h+='<div style="display:flex;align-items:center;gap:6px">';
+  if(done>0)h+='<span class="'+countCls+'">'+done+'/'+total+'</span>';
+  if(d.note)h+='<span class="dnote">'+d.note+'</span>';
+  h+='</div></div>';
+  return h;
 }
 
 function zb(z){if(!z)return'<span style="color:var(--text3);font-size:10px">\u2014</span>';var h='<div class="zb">';for(var i=0;i<z.length;i++){if(z[i]>0)h+='<div style="width:'+z[i]+'%;background:'+ZC[i]+'"></div>';}return h+'</div>';}
@@ -138,55 +208,49 @@ function zl(){var n=["Z1","Z2","Z3","Z4","Z5"];var h='<div class="zl">';for(var 
 // THIS WEEK — All 7 days, full detail
 // ═══════════════════════════════════════
 function renderThisWeek(){
-  var h='<div class="card"><div class="ct">Week '+currentWeek+' \u2014 Phase '+currentPhase+'</div>';
+  var h=weekDots();
+  h+='<div class="card"><div class="ct">Week '+currentWeek+' \u2014 Phase '+currentPhase+'</div>';
   h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">2 runs \u00b7 ~80min</span><span style="color:var(--green)" class="m">56% easy</span></div>';
   h+='<p class="ctx">First week of structured running. One easy run added on Monday. Your existing threshold run stays on Wednesday. Everything else unchanged from your current routine.</p>';
 
-  // Monday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Monday</span><span class="dnote">Arms + running = zero interference</span></div>';
+  h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
   h+=sess('mon-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+=sess('mon-walk','tw','Lunch Walk','Easy pace around town',['30 min','Z1','&lt;120 bpm']);
   h+=sess('mon-run','tr','Easy Run','Flat route, conversational pace',['45 min','~7 km','6:00\u20136:15/km','HR &lt;148 bpm']);
   h+='</div>';
 
-  // Tuesday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Tuesday</span></div>';
+  h+=dayOpen(1);
   h+=sess('tue-yoga','ty','Yoga','Morning stretch');
   h+=sess('tue-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
   h+=sess('tue-walk','tw','Lunch Walk','Recovery walk',['30 min']);
   h+=sess('tue-chest','ts','Upper Chest','Bench press, flyes',['40 min']);
   h+='</div>';
 
-  // Wednesday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--red)">Wednesday</span><span class="dnote">Key quality session</span></div>';
+  h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-run','tr','Threshold Run','1.5km warmup \u2192 20min @ threshold \u2192 1.5km cooldown',['~6 km','5:10\u20135:20/km','HR 165\u2013172','~35 min']);
   h+='</div>';
 
-  // Thursday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Thursday</span><span class="dnote">No running \u2014 recovery from Wed threshold</span></div>';
+  h+=dayOpen(3);
   h+=sess('thu-yoga','ty','Yoga','Morning stretch');
   h+=sess('thu-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+=sess('thu-walk','tw','Lunch Walk','Aids recovery',['30 min']);
   h+=sess('thu-core','tc','Core','Sit-ups, planks',['30 min']);
   h+='</div>';
 
-  // Friday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Friday</span><span class="dnote">No running. 48hrs before next hard effort.</span></div>';
+  h+=dayOpen(4);
   h+=sess('fri-yoga','ty','Yoga','Morning stretch');
   h+=sess('fri-legs','ts','Legs','Deadlift, squats \u2014 heaviest session',['40\u201350 min']);
   h+=sess('fri-lchest','ts','Lower Chest','Incline/decline work',['30 min']);
   h+='</div>';
 
-  // Saturday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Saturday</span><span class="dnote">Aerobic base \u2014 Z1\u2013Z2 only</span></div>';
+  h+=dayOpen(5);
   h+=sess('sat-yoga','ty','Yoga','Morning stretch');
   h+=sess('sat-endurance','te','Long Endurance','Snowshoe, cycle, hike, or ski \u2014 your choice',['2\u20135 hrs','Z1\u2013Z2','HR &lt;155','easy if legs sore from Fri']);
   h+='</div>';
 
-  // Sunday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Sunday</span><span class="dnote">Active recovery, not a workout</span></div>';
+  h+=dayOpen(6);
   h+=sess('sun-yoga','ty','Yoga','Morning stretch');
   h+=sess('sun-outdoor','te','Light Outdoor','Easy snowshoe, hike, or walk. Fresh air &amp; movement.',['45\u201390 min','Z1 only','HR &lt;140']);
   h+='</div>';
@@ -359,7 +423,7 @@ function renderMethods(){
 // ═══════════════════════════════════════
 function render(){
   var a=document.getElementById("app");
-  var checks=getChecks();var totalSessions=20;var doneCount=0;for(var k in checks)doneCount++;
+  var checks=getChecks();var totalSessions=0;for(var di=0;di<DAYS.length;di++)totalSessions+=DAYS[di].ids.length;var doneCount=0;for(var k in checks)if(checks[k])doneCount++;
   var h='<div class="header-row"><div class="header"><h1><span class="a">ENDURANCE</span><span class="b"> COACH</span></h1><span class="badge">v3</span></div>';
   h+='<button class="refresh-btn" onclick="location.reload(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>Refresh</button></div>';
   h+='<div class="sub m">Troms\u00f8 \u00b7 LTHR '+B.lthr+' \u00b7 VDOT ~'+B.vdot+' \u00b7 VO2max '+B.vo2max+' \u00b7 Updated 2026-03-15'+(doneCount>0?' \u00b7 <span style="color:var(--green)">'+doneCount+'/'+totalSessions+' done</span>':'')+'</div>';
