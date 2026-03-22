@@ -108,13 +108,15 @@ footer{text-align:center;font-size:10px;color:var(--text3);margin-top:24px;paddi
 <div class="container" id="app"></div>
 <script>
 // ═══════════════════════════════════════
-// DATA — Updated 2026-03-22 with LTHR 169
+// DATA — Updated 2026-03-22
+// LTHR 174 (Feb 24 auto-detect, working value)
+// Garmin re-detected 169 on Mar 16 — unvalidated, needs field test
 // ═══════════════════════════════════════
-var B={lthr:169,maxHr:184,restHr:42,vo2max:50.3,vdot:35,best5k:"26:26",ltPace:"5:17",
+var B={lthr:174,lthrGarminLatest:169,maxHr:184,restHr:42,vo2max:50.3,vdot:35,best5k:"26:26",ltPace:"5:17",
 garminStatus:"Productive",garminFeedback:"Aerobic High Shortage",
 hrvStatus:"Balanced",hrvAvg:67,
 racePred:{k5:"23:31",k10:"50:50",half:"1:55:05"},
-zones:[{n:"Z1 Recovery",lo:0,hi:144,c:"#94a3b8"},{n:"Z2 Aerobic",lo:144,hi:150,c:"#60a5fa"},{n:"Z3 Tempo",lo:152,hi:159,c:"#34d399"},{n:"Z4 Sub-Threshold",lo:161,hi:167,c:"#fbbf24"},{n:"Z5a Supra",lo:169,hi:172,c:"#f97316"},{n:"Z5b VO2max",lo:174,hi:179,c:"#ef4444"},{n:"Z5c Anaerobic",lo:179,hi:220,c:"#dc2626"}],
+zones:[{n:"Z1 Recovery",lo:0,hi:148,c:"#94a3b8"},{n:"Z2 Aerobic",lo:148,hi:155,c:"#60a5fa"},{n:"Z3 Tempo",lo:157,hi:164,c:"#34d399"},{n:"Z4 Sub-Threshold",lo:165,hi:172,c:"#fbbf24"},{n:"Z5a Supra",lo:174,hi:177,c:"#f97316"},{n:"Z5b VO2max",lo:179,hi:184,c:"#ef4444"},{n:"Z5c Anaerobic",lo:184,hi:220,c:"#dc2626"}],
 paces:{E:"6:00\u20136:15",T:"5:10\u20135:20",I:"4:45\u20134:55",R:"~4:20"}};
 
 // All runs including this week's new ones
@@ -204,13 +206,13 @@ function renderThisWeek(){
   var h=weekDots();
   h+='<div class="card"><div class="ct">Week '+currentWeek+' \u2014 Phase '+currentPhase+'</div>';
   h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">2 runs \u00b7 ~87min</span><span style="color:var(--green)" class="m">57% easy</span></div>';
-  h+='<p class="ctx">Week 2 continues Phase 1. Easy run extended 5min (45\u219250min per Daniels 10% rule). Threshold block unchanged. LTHR updated to 169 \u2014 all HR targets adjusted. Easy ceiling now &lt;144 bpm (was &lt;148).</p>';
+  h+='<p class="ctx">Week 2 continues Phase 1. Easy run extended 5min (45\u219250min per Daniels 10% rule). Threshold block unchanged. Garmin auto-detected LTHR 169 on Mar 16 but this is unvalidated \u2014 zones kept at LTHR 174 until field test. Easy ceiling remains &lt;148 bpm.</p>';
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
   h+=sess('mon-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+=sess('mon-walk','tw','Lunch Walk','Easy pace around town',['30 min','Z1','&lt;120 bpm']);
-  h+=sess('mon-run','tr','Easy Run','Flat route, conversational pace. Extended 5min from last week.',['50 min','~8 km','6:00\u20136:15/km','HR &lt;144 bpm']);
+  h+=sess('mon-run','tr','Easy Run','Flat route, conversational pace. Extended 5min from last week.',['50 min','~8 km','6:00\u20136:15/km','HR &lt;148 bpm']);
   h+='</div>';
 
   h+=dayOpen(1);
@@ -222,7 +224,7 @@ function renderThisWeek(){
 
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
-  h+=sess('wed-run','tr','Threshold Run','1.5km warmup \u2192 20min @ threshold \u2192 1.5km cooldown',['~6.5 km','5:10\u20135:20/km','HR 161\u2013167','~37 min']);
+  h+=sess('wed-run','tr','Threshold Run','1.5km warmup \u2192 20min @ threshold \u2192 1.5km cooldown',['~6.5 km','5:10\u20135:20/km','HR 165\u2013172','~37 min']);
   h+='</div>';
 
   h+=dayOpen(3);
@@ -251,7 +253,7 @@ function renderThisWeek(){
 
   h+='<div class="card w"><div class="ct">Override Rules</div><div style="font-size:12px;color:var(--text2)">';
   h+='<p style="margin-bottom:4px">\u2022 Garmin Readiness &lt;30 for 2+ days \u2192 skip threshold, do easy or rest</p>';
-  h+='<p style="margin-bottom:4px">\u2022 Easy run HR consistently above 144 \u2192 slow down, don\'t chase the pace</p>';
+  h+='<p style="margin-bottom:4px">\u2022 Easy run HR consistently above 148 \u2192 slow down, don\'t chase the pace</p>';
   h+='<p style="margin-bottom:4px">\u2022 Legs very sore from Friday \u2192 Saturday Z1 only or swap to upper body</p>';
   h+='<p style="margin-bottom:4px">\u2022 Missed a full week \u2192 restart previous phase, not current</p>';
   h+='<p>\u2022 Cold below \u221215\u00b0C or icy \u2192 HR only, ignore all pace targets</p>';
@@ -264,7 +266,7 @@ function renderThisWeek(){
   h+='<div><div class="sl">Resting HR</div><div class="sv">42</div><div class="ss">Down from 44</div></div>';
   h+='<div><div class="sl">HRV</div><div class="sv">67</div><div class="ss">Balanced</div></div>';
   h+='<div><div class="sl">Readiness</div><div class="sv">74</div><div class="ss">Morning score</div></div>';
-  h+='<div><div class="sl">LTHR</div><div class="sv" style="color:var(--yellow)">169</div><div class="ss">Updated from 174</div></div>';
+  h+='<div><div class="sl">LTHR</div><div class="sv">174</div><div class="ss">Working value \u00b7 169 unvalidated</div></div>';
   h+='<div><div class="sl">Race Pred 5K</div><div class="sv">23:31</div><div class="ss">Garmin estimate</div></div>';
   h+='</div></div>';
   return h;
@@ -273,7 +275,7 @@ function renderThisWeek(){
 // ═══════════ LAST WEEK REVIEW ═══════════
 function renderLastWeek(){
   var h='<div class="card g"><div class="ct">Week 1 Review (Mar 16\u201322)</div>';
-  h+='<p class="ctx" style="font-size:13px;color:var(--green)"><strong>Verdict: Good first week.</strong> Both runs completed. Easy run was genuinely easy. Training status moved from Maintaining to Productive. LTHR recalibrated to 169. You adapted the schedule to fit your life without compromising the key sessions.</p>';
+  h+='<p class="ctx" style="font-size:13px;color:var(--green)"><strong>Verdict: Good first week.</strong> Both runs completed. Easy run was genuinely easy (HR 137, well within Z1). Training status moved from Maintaining to Productive (driven by overall training load including the big Sunday cycling day). Garmin auto-detected LTHR 169 but this is unvalidated. You adapted the schedule to fit your life without compromising the key sessions.</p>';
   h+='</div>';
 
   // Day by day actual vs planned
@@ -283,7 +285,7 @@ function renderLastWeek(){
   h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Monday Mar 16</span></div>';
   h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 25min \u00b7 Arms (curls) 40min \u00b7 Lunch walk 28min 2.0km avg HR 91</span></div>';
   h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text rv-val rv-good">Easy Run 47min \u00b7 7.8km \u00b7 6:03/km \u00b7 avg HR 137 \u00b7 max HR 156</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: 45min, ~7km, 6:00\u20136:15/km, HR &lt;148. Result: nailed it. HR 137 is well within new Z1 (&lt;144). Garmin: "Improving aerobic base." Training load 85.</div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: 45min, ~7km, 6:00\u20136:15/km, HR &lt;148. Result: nailed it. HR 137 is well within Z1 (&lt;148). Garmin: "Improving aerobic base." Training load 85.</div>';
   h+='</div>';
 
   // Tuesday
@@ -342,7 +344,7 @@ function renderLastWeek(){
   // Physiological changes
   h+='<div class="card"><div class="ct">Physiological Changes This Week</div>';
   h+='<div class="rv"><span class="rv-icon">\u2b06\ufe0f</span><span class="rv-text"><strong>Training Status:</strong> Maintaining \u2192 <span class="rv-good">Productive</span>. Your body is responding to the new stimulus.</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2b07\ufe0f</span><span class="rv-text"><strong>LTHR:</strong> 174 \u2192 <span class="rv-ok">169 bpm</span>. Garmin re-detected on Mar 16. All zones recalculated.</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u26a0\ufe0f</span><span class="rv-text"><strong>LTHR:</strong> Garmin auto-detected <span class="rv-ok">169 bpm</span> on Mar 16 (was 174). Auto-detect fluctuates and is unreliable \u2014 zones kept at 174 until 30-min field test validates a change.</span></div>';
   h+='<div class="rv"><span class="rv-icon">\u2b07\ufe0f</span><span class="rv-text"><strong>Resting HR:</strong> 44 \u2192 <span class="rv-good">42 bpm</span>. Good recovery indicator.</span></div>';
   h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>VO2max:</strong> 50 \u2192 50.3. Stable (expected \u2014 VO2max changes slowly).</span></div>';
   h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>HRV:</strong> Weekly avg 67, status Balanced (baseline 62\u201375). No stress signal.</span></div>';
@@ -392,11 +394,11 @@ function renderProgress(){
 // ═══════════ PLAN ═══════════
 function renderPlan(){
   var h='<div class="card"><div class="ct">Where You Are Now \u2014 End of Week 1</div>';
-  h+='<p class="ctx">First week of structured running complete. Training status moved from Maintaining to Productive. LTHR recalibrated to 169 (from 174). 5K improved to 26:26. Easy run at 6:03/km with HR 137 confirmed the corrected easy pace target was accurate. Still "Aerobic High Shortage" \u2014 expected; takes 4\u20138 weeks of consistent easy volume to resolve (Seiler 2010).</p>';
+  h+='<p class="ctx">First week of structured running complete. Training status moved from Maintaining to Productive (reflects overall training load change across all activities, not a single session). 5K improved to 26:26. Easy run at 6:03/km with HR 137 confirmed the easy pace target was accurate. Garmin auto-detected LTHR 169 on Mar 16 but this is unvalidated \u2014 zones kept at LTHR 174 until field test. Still "Aerobic High Shortage" \u2014 expected; takes 4\u20138 weeks of consistent easy volume to resolve (Seiler 2010). Note: Garmin VO2max and training status may fluctuate during base building \u2014 this is a known algorithm artifact, not real fitness loss.</p>';
   h+='</div>';
 
   h+='<div class="card" style="border-left:3px solid var(--green)"><div class="ct" style="color:var(--green)">\u2713 Phase 1: Weeks 1\u20132 \u2014 Add First Easy Run (CURRENT)</div>';
-  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> One easy run on Monday (Week 1: 45min, Week 2: 50min). Threshold run on Wednesday stays the same. Three lunch walks Mon/Tue/Thu. Everything else unchanged.<br><br><strong style="color:var(--text)">Why:</strong> Connective tissue adaptation to running impact at low intensity (Daniels). Volume increase capped at ~10% per week.<br><br><strong style="color:var(--text)">Week 2 adjustments:</strong> Easy run extended to 50min (+11%). Easy HR ceiling lowered to &lt;144 bpm (LTHR recalibrated from 174\u2192169, Friel Z1 = 85% of LTHR). Threshold HR target now 161\u2013167 (was 165\u2013172).</div>';
+  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> One easy run on Monday (Week 1: 45min, Week 2: 50min). Threshold run on Wednesday stays the same. Three lunch walks Mon/Tue/Thu. Everything else unchanged.<br><br><strong style="color:var(--text)">Why:</strong> Connective tissue adaptation to running impact at low intensity (Daniels). Volume increase capped at ~10% per week.<br><br><strong style="color:var(--text)">Week 2 adjustments:</strong> Easy run extended to 50min (+11%). Zones unchanged \u2014 Garmin auto-detected LTHR 169 but this is a single reading and auto-detect fluctuates. Keeping LTHR 174 zones until validated by 30-min field test (planned end of Phase 3).</div>';
   h+='<div class="prh"><span class="prl">~14\u201316 km/wk</span><span class="prv">2\u00d7 runs \u00b7 57% easy</span></div><div class="prb"><div class="prf" style="width:43%"></div></div>';
   h+='</div>';
 
@@ -422,7 +424,7 @@ function renderPlan(){
   var ms=[
     {t:"First easy run completed \u2713",s:"Week 1. 47min @ HR 137. Easy pace confirmed at ~6:03/km.",a:true,done:true},
     {t:"Lunch walks started \u2713",s:"Week 1. Logged on Mon + Tue. Zero fatigue cost.",a:true,done:true},
-    {t:"Complete Phase 1 (2 weeks easy run consistency)",s:"End of this week (Week 2). Confirm easy HR stays &lt;144.",a:true},
+    {t:"Complete Phase 1 (2 weeks easy run consistency)",s:"End of this week (Week 2). Confirm easy HR stays &lt;148.",a:true},
     {t:"Add second easy run (Sunday)",s:"Week 3. After 2 weeks of connective tissue adaptation.",a:false},
     {t:"Consistent 15+ km/week running",s:"By week 4. The minimum effective dose for running improvement.",a:false},
     {t:"Retest 5K + LT field test",s:"After week 8. Validate VDOT and LTHR changes.",a:false},
@@ -437,23 +439,23 @@ function renderPlan(){
 // ═══════════ PROFILE ═══════════
 function renderProfile(){
   var h='<div class="card"><div class="ct">Running Baseline (Updated Mar 22)</div><div class="stats">';
-  var stats=[{l:"Running LTHR",v:B.lthr+" bpm",s:"Garmin Mar 16 \u00b7 running only"},{l:"Max HR",v:B.maxHr+" bpm",s:"Observed Mar 18"},{l:"Resting HR",v:B.restHr+" bpm",s:"Mar 22"},{l:"VO2max",v:""+B.vo2max,s:"Garmin \u00b75% error"},{l:"VDOT",v:"~"+B.vdot,s:"From 5K: 26:26"},{l:"Best 5K",v:B.best5k,s:"Mar 18 (PR)"},{l:"LT Pace",v:B.ltPace+"/km",s:"Mar 18 fastest 5K"},{l:"Easy Pace",v:"~6:00\u20136:15",s:"HR &lt;144 bpm"}];
+  var stats=[{l:"Running LTHR",v:B.lthr+" bpm",s:"Garmin Feb 24 \u00b7 working value"},{l:"Max HR",v:B.maxHr+" bpm",s:"Observed Mar 18"},{l:"Resting HR",v:B.restHr+" bpm",s:"Mar 22"},{l:"VO2max",v:""+B.vo2max,s:"Garmin estimate \u00b75%"},{l:"VDOT",v:"~"+B.vdot,s:"From 5K: 26:26"},{l:"Best 5K",v:B.best5k,s:"Mar 18 (PR)"},{l:"LT Pace",v:B.ltPace+"/km",s:"Mar 18 fastest 5K"},{l:"Easy Pace",v:"~6:00\u20136:15",s:"HR &lt;148 bpm"}];
   for(var i=0;i<stats.length;i++){var s=stats[i];h+='<div><div class="sl">'+s.l+'</div><div class="sv">'+s.v+'</div>';if(s.s)h+='<div class="ss">'+s.s+'</div>';h+='</div>';}
   h+='</div></div>';
 
-  h+='<div class="card w"><div class="ct">VO2max 50 vs VDOT 35 \u2014 The Gap</div>';
-  h+='<p style="font-size:12px;color:rgba(234,179,8,0.85)">Your cardiovascular engine supports VDOT ~45\u201348. Your actual 5K (26:26) gives VDOT ~35.5. This gap = running economy is the limiter. Easy running volume closes it. Week 1 result: Garmin moved from "Maintaining" to "Productive" after just one easy run was added.</p></div>';
+  h+='<div class="card"><div class="ct">Understanding VO2max vs VDOT</div>';
+  h+='<p style="font-size:12px;color:var(--text2)">Garmin estimates VO2max at 50.3 (from all activities including cycling and snowshoeing). Your 5K time of 26:26 gives a VDOT of ~35. These are different metrics \u2014 VDOT is a performance index that assumes elite-level running economy (Daniels), while Garmin VO2max is estimated from HR-to-pace ratios across activities. A difference between them is normal and does not necessarily indicate a "gap" to close. What we do know: you have strong cardiovascular fitness from multi-sport training, and more running volume should improve running-specific economy and performance.</p></div>';
 
-  h+='<div class="card"><div class="ct">Friel HR Zones (LTHR '+B.lthr+' \u2014 updated from 174)</div>';
-  h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">Running only. Cycling LTHR typically 5\u201310 bpm lower. LTHR changed Mar 16 via Garmin auto-detect. Validate with 30-min field test after Phase 3.</p>';
+  h+='<div class="card"><div class="ct">Friel HR Zones (Working LTHR '+B.lthr+')</div>';
+  h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">Running only. Cycling LTHR typically 5\u201310 bpm lower. Garmin auto-detected 169 on Mar 16 but auto-detect fluctuates \u2014 keeping 174 until 30-min field test (end of Phase 3).</p>';
   for(var i=0;i<B.zones.length;i++){var z=B.zones[i];h+='<div style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:4px"><span class="zd" style="background:'+z.c+'"></span><span style="color:var(--text2);flex:1">'+z.n+'</span><span class="m" style="color:var(--text)">'+(z.lo>0?z.lo:'&lt;')+(z.lo>0?'\u2013':'')+z.hi+'</span></div>';}
   h+='</div>';
 
   h+='<div class="card"><div class="ct">Daniels Training Paces (VDOT '+B.vdot+')</div>';
   h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">Performance-based categories (Daniels 4th ed.). In cold/wind/snow: HR overrides pace.</p>';
-  var pr=[{z:"Easy",p:B.paces.E,hr:"&lt;144 bpm",d:"Conversational. Talk in full sentences. Week 1 actual: 6:03/km @ HR 137."},{z:"Threshold",p:B.paces.T,hr:"161\u2013167",d:"Comfortably hard. ~60min race effort. Week 1 actual: 5:24/km avg."},{z:"Interval",p:B.paces.I,hr:"169\u2013179",d:"3\u20135min hard reps. Not prescribed yet."},{z:"Repetition",p:B.paces.R,hr:"pace only",d:"200\u2013400m speed work. Not prescribed yet."}];
+  var pr=[{z:"Easy",p:B.paces.E,hr:"&lt;148 bpm",d:"Conversational. Talk in full sentences. Week 1 actual: 6:03/km @ HR 137."},{z:"Threshold",p:B.paces.T,hr:"165\u2013172",d:"Comfortably hard. ~60min race effort. Week 1 actual: 5:24/km avg."},{z:"Interval",p:B.paces.I,hr:"174\u2013184",d:"3\u20135min hard reps. Not prescribed yet."},{z:"Repetition",p:B.paces.R,hr:"pace only",d:"200\u2013400m speed work. Not prescribed yet."}];
   for(var i=0;i<pr.length;i++){var r=pr[i];h+='<div class="pc"><div class="pcr"><span style="font-size:13px;font-weight:600;color:var(--text)">'+r.z+'</span><span class="m" style="font-size:13px;font-weight:700;color:var(--text)">'+r.p+'/km</span></div><div style="display:flex;justify-content:space-between;margin-top:2px"><span style="font-size:10px;color:var(--text3)">'+r.d+'</span><span class="m" style="font-size:10px;color:var(--blue)">'+r.hr+'</span></div></div>';}
-  h+='<div class="hi">Easy pace note: VDOT tables say ~7:00/km. Corrected to ~6:00\u20136:15/km based on VO2max gap. Week 1 confirmed: 6:03/km produced HR 137, well within Z1 (&lt;144). Rule: HR governs pace.</div>';
+  h+='<div class="hi">Easy pace note: VDOT tables say ~7:00/km. Actual data shows 6:03/km produced HR 137 (well within Z1 &lt;148). HR governs pace \u2014 run at whatever keeps HR below 148. In Troms\u00f8 winter conditions, this may be 6:15\u20136:30/km.</div>';
   h+='</div>';
   return h;
 }
@@ -461,11 +463,12 @@ function renderProfile(){
 // ═══════════ METHODS ═══════════
 function renderMethods(){
   var secs=[
-    {t:"Sources &amp; Framework",c:"This plan draws from multiple evidence-based systems:\n\n\u2022 Seiler polarized model \u2014 intensity distribution in endurance athletes (Seiler 2010; St\u00f6ggl &amp; Sperlich 2014). 70\u201380% of endurance training time below first lactate threshold, measured by time.\n\n\u2022 Daniels Running Formula (4th ed.) \u2014 VDOT and performance-based training pace categories. Paces derived from race performance, not simple %VO2max. Volume increase capped at ~10% per week.\n\n\u2022 Friel HR zones \u2014 7-zone system anchored to running LTHR (Training Bible). Zones are running-specific; other sports have different thresholds. Currently using LTHR 169 (Garmin auto-detect Mar 16, updated from 174).\n\n\u2022 Concurrent training \u2014 Hickson 1980; Wilson et al. 2012 meta-analysis; Schumann et al. 2014. Upper body strength has near-zero interference with running. Lower body: 48+ hours from hard running."},
-    {t:"How Easy Pace Was Calculated",c:"VDOT tables (Daniels) prescribe ~7:00/km for VDOT 35. This was corrected upward.\n\nReason: VO2max 50 reflects total cardiovascular fitness, VDOT 35 reflects running-specific performance. The 10+ point gap means the aerobic system supports faster easy running than tables suggest.\n\nWeek 1 confirmed: Easy run at 6:03/km produced avg HR 137. With updated LTHR 169, Z1 ceiling = 144 bpm (85% of 169). HR 137 is solidly Z1.\n\nRule: HR governs pace. Run at whatever keeps HR below 144. In Troms\u00f8 winter conditions, this may be 6:15\u20136:30/km."},
-    {t:"How Training Load Is Tracked",c:"Previous versions used unified hrTSS across all sports. This was incorrect.\n\nCorrected approach:\n\u2022 Running: weekly distance (km) + time distribution (easy vs threshold)\n\u2022 Strength: session count and consistency (not HR-based)\n\u2022 Long endurance: duration + average HR zone\n\u2022 Walks/yoga: not tracked as training load\n\nFatigue decisions use Garmin Training Readiness + sleep quality + HRV status as primary signals, not calendar-based recovery cycles."},
+    {t:"Sources &amp; Framework",c:"This plan draws from multiple evidence-based systems:\n\n\u2022 Seiler polarized model \u2014 intensity distribution in endurance athletes (Seiler 2010; St\u00f6ggl &amp; Sperlich 2014). 70\u201380% of endurance training time below first lactate threshold, measured by time.\n\n\u2022 Daniels Running Formula (4th ed.) \u2014 VDOT and performance-based training pace categories. Paces derived from race performance, not simple %VO2max. Volume increase capped at ~10% per week.\n\n\u2022 Friel HR zones \u2014 7-zone system anchored to running LTHR (Training Bible). Zones are running-specific; other sports have different thresholds. Working LTHR: 174 (Garmin Feb 24). Garmin re-detected 169 on Mar 16 but auto-detect fluctuates \u2014 keeping 174 until 30-min field test.\n\n\u2022 Concurrent training \u2014 Hickson 1980; Wilson et al. 2012 meta-analysis; Schumann et al. 2014. Upper body strength has near-zero interference with running. Lower body: 48+ hours from hard running."},
+    {t:"How Easy Pace Was Calculated",c:"VDOT tables (Daniels) prescribe ~7:00/km for VDOT 35. Actual data showed this was too slow for the target HR.\n\nWeek 1 confirmed: Easy run at 6:03/km produced avg HR 137. Z1 ceiling is 148 bpm (85% of LTHR 174). HR 137 is solidly Z1. So ~6:00\u20136:15/km is the correct easy pace for current fitness.\n\nNote: VDOT (35) and Garmin VO2max (50.3) are different metrics. VDOT is a performance index assuming elite running economy (Daniels). Garmin VO2max is estimated from HR/pace across all activities. A difference between them is normal and does not mean one is wrong.\n\nRule: HR governs pace. Run at whatever keeps HR below 148. In Troms\u00f8 winter conditions (cold, ice, snow), this may be 6:15\u20136:30/km."},
+    {t:"Garmin Metric Reliability",c:"Not all Garmin metrics are equally reliable. During a base-building phase (more easy running, less hard running), some stats will drop even though actual fitness is improving.\n\nReliable signals (measured during sleep, not affected by workout type):\n\u2022 HRV trend \u2014 stable or improving = good recovery\n\u2022 Resting HR trend \u2014 stable or decreasing = good adaptation\n\u2022 HR at a given easy pace over time \u2014 if you run 6:00/km and HR drops from 137 to 132 over weeks, that is real cardiac adaptation\n\u2022 5K time when actually tested \u2014 the only ground truth for running performance\n\nUnreliable during base building (will fluctuate or drop):\n\u2022 Garmin VO2max estimate \u2014 algorithm penalizes slow running. Easy runs produce lower pace-to-HR ratio, which Garmin reads as reduced fitness. This is an algorithm artifact, not real fitness loss.\n\u2022 LTHR auto-detect \u2014 fluctuates based on run type, HR sensor quality, and which algorithm version Garmin uses. A single auto-detect reading should not trigger zone changes. Only a 30-min field test validates LTHR.\n\u2022 Training Status \u2014 reacts to VO2max trend. If VO2max drops (from easy running), status may flip to Maintaining or Unproductive even during correct training.\n\u2022 Race Predictions \u2014 derived from VO2max, so they move with it.\n\nExpect: Garmin stats may get worse before they get better during this 8-week block. This is normal and documented in Garmin user communities. The training prescriptions (paces, durations, progression) do not depend on these stats \u2014 they come from Daniels/Seiler methodology based on your actual 5K time."},
+    {t:"How Training Load Is Tracked",c:"Previous versions used unified hrTSS across all sports. This was incorrect.\n\nCorrected approach:\n\u2022 Running: weekly distance (km) + time distribution (easy vs threshold)\n\u2022 Strength: session count and consistency (not HR-based)\n\u2022 Long endurance: duration + average HR zone\n\u2022 Walks/yoga: not tracked as training load\n\nFatigue decisions use Garmin Training Readiness + sleep quality + HRV status as primary signals, not calendar-based recovery cycles.\n\nNote: Training Readiness and HRV are the most reliable Garmin fatigue signals because they are measured during sleep, not during exercise."},
     {t:"Concurrent Training Scheduling",c:"From Hickson (1980), Wilson et al. (2012), Schumann et al. (2014):\n\n\u2022 Arms, chest, core \u2192 zero interference with running. No scheduling constraint.\n\u2022 Legs (deadlift, squat) \u2192 48hrs from hard running.\n\nSchedule: Fri legs \u2192 Sat easy endurance \u2192 Sun light/easy run \u2192 Mon easy run = 72hrs between legs and next significant running load.\n\nAt current running volume (~2\u20133\u00d7/week, 13\u201324km), the AMPK-mTOR interference pathway is not a concern."},
-    {t:"Weekly Update Process",c:"Each week: say \"update\". Then:\n\n1. Pull all Garmin data (activities, LTHR, VO2max, training status, readiness, HRV, resting HR, race predictions) + Strava cross-reference\n2. Process: filter to current week, extract stats per activity, check for baseline changes (LTHR, VO2max), recalculate zones if needed\n3. Compare actual vs planned day-by-day, deep dive on running + endurance\n4. Generate next week plan: apply Daniels 10% volume rule, check phase transitions, apply override rules\n5. Update app: new week plan, Last Week review, Progress data, any baseline changes\n6. Push to GitHub \u2192 site updates automatically\n\nThe plan is a guide, not a contract. If sessions are missed, fatigue is high, or life intervenes, the prescription adjusts."},
+    {t:"Weekly Update Process",c:"Each week: say \"update\". Then:\n\n1. Pull all Garmin data (activities, LTHR, VO2max, training status, readiness, HRV, resting HR, race predictions) + Strava cross-reference\n2. Process: filter to current week, extract stats per activity, correct Garmin misclassifications (e.g. mobility auto-tagged as deadlift)\n3. Compare actual vs planned day-by-day, deep dive on running + endurance\n4. Report Garmin stats but flag which are reliable vs which fluctuate during base building\n5. Generate next week plan: apply Daniels 10% volume rule, check phase transitions, apply override rules\n6. Update app and push to GitHub\n\nZone changes only happen after a field test, not from Garmin auto-detect. The plan is a guide, not a contract."},
   ];
   var h='';for(var i=0;i<secs.length;i++){h+='<div class="card"><div class="ct">'+secs[i].t+'</div><div style="font-size:12px;color:var(--text2);line-height:1.7;white-space:pre-wrap">'+secs[i].c+'</div></div>';}
   return h;
