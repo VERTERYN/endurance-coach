@@ -108,14 +108,14 @@ footer{text-align:center;font-size:10px;color:var(--text3);margin-top:24px;paddi
 <div class="container" id="app"></div>
 <script>
 // ═══════════════════════════════════════
-// DATA — Updated 2026-03-22
+// DATA — Updated 2026-03-29
 // LTHR 174 (Feb 24 auto-detect, working value)
 // Garmin re-detected 169 on Mar 16 — unvalidated, needs field test
 // ═══════════════════════════════════════
-var B={lthr:174,lthrGarminLatest:169,maxHr:184,restHr:42,vo2max:50.3,vdot:36,best5k:"26:26",ltPace:"5:17",
+var B={lthr:174,lthrGarminLatest:169,maxHr:184,restHr:42,vo2max:50.9,vdot:36,best5k:"26:26",ltPace:"5:17",
 garminStatus:"Productive",garminFeedback:"Aerobic High Shortage",
 hrvStatus:"Balanced",hrvAvg:67,
-racePred:{k5:"23:31",k10:"50:50",half:"1:55:05"},
+racePred:{k5:"23:28",k10:"49:55",half:"1:53:07"},
 zones:[{n:"Z1 Recovery",lo:0,hi:148,c:"#94a3b8"},{n:"Z2 Aerobic",lo:148,hi:155,c:"#60a5fa"},{n:"Z3 Tempo",lo:157,hi:164,c:"#34d399"},{n:"Z4 Sub-Threshold",lo:165,hi:172,c:"#fbbf24"},{n:"Z5a Supra",lo:174,hi:177,c:"#f97316"},{n:"Z5b VO2max",lo:179,hi:184,c:"#ef4444"},{n:"Z5c Anaerobic",lo:184,hi:220,c:"#dc2626"}],
 paces:{E:"6:00\u20136:15",T:"5:10\u20135:20",I:"4:45\u20134:55",R:"~4:20"}};
 
@@ -129,37 +129,40 @@ var RUNS=[
 {d:"Feb 24",km:7.39,min:38.4,hr:165,p:"5:11",z:[1,2,5,73,19],lb:"LT"},
 {d:"Mar 1",km:5.01,min:26.6,hr:156,p:"5:19",z:[1,2,17,79,0],lb:"Tempo"},
 {d:"Mar 16",km:7.84,min:47.5,hr:137,p:"6:03",z:[4,18,77,1,0],lb:"Easy",easy:true},
-{d:"Mar 18",km:6.96,min:37.6,hr:159,p:"5:24",z:[1,5,8,77,9],lb:"Threshold"}];
+{d:"Mar 18",km:6.96,min:37.6,hr:159,p:"5:24",z:[1,5,8,77,9],lb:"Threshold"},
+{d:"Mar 23",km:8.96,min:52,hr:144,p:"5:50",z:[1,3,89,8,0],lb:"Easy (trail)",easy:true},
+{d:"Mar 25",km:6.63,min:33,hr:158,p:"4:54",z:[1,3,27,64,5],lb:"Threshold"}];
 
 var WK=[
 {w:"Jan 19",rKm:5.5,sKm:18.5,str:5,rN:1},{w:"Jan 26",rKm:5.5,sKm:9.8,str:6,rN:1},
 {w:"Feb 2",rKm:7.3,sKm:23.7,str:9,rN:1},{w:"Feb 9",rKm:5.6,sKm:0,str:8,rN:1},
 {w:"Feb 16",rKm:7.5,sKm:15.8,str:5,rN:1},{w:"Feb 23",rKm:12.4,sKm:25.4,str:4,rN:2},
 {w:"Mar 2",rKm:5,sKm:35.2,str:1,rN:1},{w:"Mar 9",rKm:0,sKm:84.7,str:0,rN:0},
-{w:"Mar 16",rKm:14.8,sKm:0,cKm:70.4,str:5,rN:2}];
+{w:"Mar 16",rKm:14.8,sKm:0,cKm:70.4,str:5,rN:2},
+{w:"Mar 23",rKm:15.6,sKm:0,cKm:74.4,str:7,rN:2}];
 
 var ZC=["#94a3b8","#60a5fa","#10b981","#f59e0b","#f97316","#ef4444","#dc2626"];
 var TABS=["This Week","Last Week","Progress","Plan","Profile","Methods"];
 var activeTab=0;
-var currentWeek=2;
-var currentPhase=1;
+var currentWeek=3;
+var currentPhase=2;
 
-// Week 2 dates
+// Week 3 dates (Phase 2 — 3 runs/week)
 var DAYS=[
-  {key:'mon',name:'Monday',date:'Mar 23',color:'var(--blue)',note:'Easy run day',
+  {key:'mon',name:'Monday',date:'Mar 30',color:'var(--blue)',note:'Easy run — extended to 55min',
    ids:['mon-yoga','mon-walk','mon-run']},
-  {key:'tue',name:'Tuesday',date:'Mar 24',color:'var(--purple)',note:'',
+  {key:'tue',name:'Tuesday',date:'Mar 31',color:'var(--purple)',note:'',
    ids:['tue-yoga','tue-core','tue-walk','tue-chest']},
-  {key:'wed',name:'Wednesday',date:'Mar 25',color:'var(--red)',note:'Arms + threshold = zero interference',
+  {key:'wed',name:'Wednesday',date:'Apr 1',color:'var(--red)',note:'Arms + threshold = zero interference',
    ids:['wed-yoga','wed-arms','wed-run']},
-  {key:'thu',name:'Thursday',date:'Mar 26',color:'var(--purple)',note:'No running \u2014 recovery from Wed threshold',
+  {key:'thu',name:'Thursday',date:'Apr 2',color:'var(--purple)',note:'No running \u2014 recovery from Wed threshold',
    ids:['thu-yoga','thu-arms','thu-walk','thu-core']},
-  {key:'fri',name:'Friday',date:'Mar 27',color:'var(--yellow)',note:'No running. 48hrs before next hard effort.',
+  {key:'fri',name:'Friday',date:'Apr 3',color:'var(--yellow)',note:'No running. 48hrs before next hard effort.',
    ids:['fri-yoga','fri-legs','fri-lchest']},
-  {key:'sat',name:'Saturday',date:'Mar 28',color:'var(--blue)',note:'Aerobic base \u2014 Z1\u2013Z2 only',
+  {key:'sat',name:'Saturday',date:'Apr 4',color:'var(--blue)',note:'Aerobic base \u2014 Z1\u2013Z2 only',
    ids:['sat-yoga','sat-endurance']},
-  {key:'sun',name:'Sunday',date:'Mar 29',color:'var(--green)',note:'Active recovery, not a workout',
-   ids:['sun-yoga','sun-outdoor']}
+  {key:'sun',name:'Sunday',date:'Apr 5',color:'var(--green)',note:'NEW: Second easy run (Phase 2)',
+   ids:['sun-yoga','sun-run']}
 ];
 
 // Checkmark persistence
@@ -201,17 +204,17 @@ function dayOpen(idx){
 function zb(z){if(!z)return'';var h='<div class="zb">';for(var i=0;i<z.length;i++){if(z[i]>0)h+='<div style="width:'+z[i]+'%;background:'+ZC[i]+'"></div>';}return h+'</div>';}
 function zl(){var n=["Z1","Z2","Z3","Z4","Z5"];var h='<div class="zl">';for(var i=0;i<5;i++)h+='<span><span class="zd" style="background:'+ZC[i]+'"></span>'+n[i]+'</span>';return h+'</div>';}
 
-// ═══════════ THIS WEEK (Week 2) ═══════════
+// ═══════════ THIS WEEK (Week 3 — Phase 2) ═══════════
 function renderThisWeek(){
   var h=weekDots();
   h+='<div class="card"><div class="ct">Week '+currentWeek+' \u2014 Phase '+currentPhase+'</div>';
-  h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">2 runs \u00b7 ~87min</span><span style="color:var(--green)" class="m">57% easy</span></div>';
-  h+='<p class="ctx">Week 2 continues Phase 1. Easy run extended 5min (45\u219250min per 10% volume guideline). Threshold block unchanged. Garmin auto-detected LTHR 169 on Mar 16 but this is unvalidated \u2014 zones kept at LTHR 174 until field test. Easy ceiling remains &lt;148 bpm.</p>';
+  h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">3 runs \u00b7 ~132min</span><span style="color:var(--green)" class="m">83% easy</span></div>';
+  h+='<p class="ctx">Phase 2 begins! Third run added on Sunday. Monday easy extended to 55min. Threshold block extended to 22min. Volume jumps from ~15.6km to ~22km \u2014 bigger than 10% but recovery signals are all green (readiness 81, HRV balanced, resting HR 42). Added volume is all easy running (low risk). If legs feel heavy from Saturday + Sunday, cut Sunday to 35min.</p>';
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
   h+=sess('mon-walk','tw','Lunch Walk','Easy pace around town',['30 min','Z1','&lt;120 bpm']);
-  h+=sess('mon-run','tr','Easy Run','Flat route, conversational pace. Extended 5min from last week.',['50 min','~8 km','6:00\u20136:15/km','HR &lt;148 bpm']);
+  h+=sess('mon-run','tr','Easy Run','Flat route, conversational pace. Extended to 55min for Phase 2.',['55 min','~9 km','6:00\u20136:15/km','HR &lt;148 bpm']);
   h+='</div>';
 
   h+=dayOpen(1);
@@ -224,7 +227,7 @@ function renderThisWeek(){
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
-  h+=sess('wed-run','tr','Threshold Run','1.5km warmup \u2192 20min @ threshold \u2192 1.5km cooldown',['~6.5 km','5:10\u20135:20/km','HR 165\u2013172','~37 min']);
+  h+=sess('wed-run','tr','Threshold Run','1.5km warmup \u2192 22min @ threshold \u2192 1.5km cooldown',['~7 km','5:10\u20135:20/km','HR 165\u2013172','~39 min']);
   h+='</div>';
 
   h+=dayOpen(3);
@@ -247,116 +250,106 @@ function renderThisWeek(){
 
   h+=dayOpen(6);
   h+=sess('sun-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sun-outdoor','te','Light Outdoor','Easy snowshoe, hike, or walk. Fresh air &amp; movement.',['45\u201390 min','Z1 only','HR &lt;140']);
+  h+=sess('sun-run','tr','Easy Run','NEW for Phase 2. Conversational pace. Cut to 35min if legs heavy from Saturday.',['40 min','~6.5 km','6:00\u20136:15/km','HR &lt;148 bpm']);
   h+='</div>';
   h+='</div>';
 
   h+='<div class="card w"><div class="ct">Override Rules</div><div style="font-size:12px;color:var(--text2)">';
   h+='<p style="margin-bottom:4px">\u2022 Garmin Readiness &lt;30 for 2+ days \u2192 skip threshold, do easy or rest</p>';
   h+='<p style="margin-bottom:4px">\u2022 Easy run HR consistently above 148 \u2192 slow down, don\'t chase the pace</p>';
-  h+='<p style="margin-bottom:4px">\u2022 Legs very sore from Friday \u2192 Saturday Z1 only or swap to upper body</p>';
+  h+='<p style="margin-bottom:4px">\u2022 Legs heavy from Sat endurance + Sun run \u2192 cut Sunday to 35min or walk instead</p>';
   h+='<p style="margin-bottom:4px">\u2022 Missed a full week \u2192 restart previous phase, not current</p>';
   h+='<p>\u2022 Cold below \u221215\u00b0C or icy \u2192 HR only, ignore all pace targets</p>';
   h+='</div></div>';
 
-  h+='<div class="card"><div class="ct">Current Garmin Status (Mar 22)</div><div class="stats">';
+  h+='<div class="card"><div class="ct">Current Garmin Status (Mar 29)</div><div class="stats">';
   h+='<div><div class="sl">Training Status</div><div class="sv" style="font-size:14px;color:var(--green)">Productive</div></div>';
   h+='<div><div class="sl">Garmin Feedback</div><div class="sv" style="font-size:14px;color:var(--orange)">Aerobic High Shortage</div></div>';
-  h+='<div><div class="sl">VO2max</div><div class="sv">50.3</div></div>';
-  h+='<div><div class="sl">Resting HR</div><div class="sv">42</div><div class="ss">Down from 44</div></div>';
-  h+='<div><div class="sl">HRV</div><div class="sv">67</div><div class="ss">Balanced</div></div>';
-  h+='<div><div class="sl">Readiness</div><div class="sv">74</div><div class="ss">Morning score</div></div>';
+  h+='<div><div class="sl">VO2max</div><div class="sv">50.9</div><div class="ss">Up from 50.3 \u00b7 unreliable during base building</div></div>';
+  h+='<div><div class="sl">Resting HR</div><div class="sv">42</div><div class="ss">Stable</div></div>';
+  h+='<div><div class="sl">HRV</div><div class="sv">67</div><div class="ss">Balanced \u00b7 last night 72</div></div>';
+  h+='<div><div class="sl">Readiness</div><div class="sv">81</div><div class="ss">Morning score \u00b7 HIGH</div></div>';
   h+='<div><div class="sl">LTHR</div><div class="sv">174</div><div class="ss">Working value \u00b7 169 unvalidated</div></div>';
-  h+='<div><div class="sl">Race Pred 5K</div><div class="sv">23:31</div><div class="ss">Garmin estimate</div></div>';
+  h+='<div><div class="sl">Race Pred 5K</div><div class="sv">23:28</div><div class="ss">Garmin estimate</div></div>';
   h+='</div></div>';
   return h;
 }
 
-// ═══════════ LAST WEEK REVIEW ═══════════
+// ═══════════ LAST WEEK REVIEW (Week 2) ═══════════
 function renderLastWeek(){
-  var h='<div class="card g"><div class="ct">Week 1 Review (Mar 16\u201322)</div>';
-  h+='<p class="ctx" style="font-size:13px;color:var(--green)"><strong>Verdict: Good first week.</strong> Both runs completed. Easy run was genuinely easy (HR 137, well within Z1). Training status moved from Maintaining to Productive (driven by overall training load including the big Sunday cycling day). Garmin auto-detected LTHR 169 but this is unvalidated. You adapted the schedule to fit your life without compromising the key sessions.</p>';
+  var h='<div class="card g"><div class="ct">Week 2 Review (Mar 23\u201329)</div>';
+  h+='<p class="ctx" style="font-size:13px;color:var(--green)"><strong>Verdict: Phase 1 complete. Strong week.</strong> Both runs completed with good execution. Easy run on trail (avg HR 144, under Z1 ceiling). Threshold run nailed Z4 block (21min). Easy/threshold split improved from 56% to 73%. All recovery signals green: readiness 81, HRV balanced, resting HR stable at 42. Ready for Phase 2.</p>';
   h+='</div>';
 
-  // Day by day actual vs planned
   h+='<div class="card"><div class="ct">Day-by-Day: Actual vs Planned</div>';
 
-  // Monday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Monday Mar 16</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 25min \u00b7 Arms (curls) 40min \u00b7 Lunch walk 28min 2.0km avg HR 91</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text rv-val rv-good">Easy Run 47min \u00b7 7.8km \u00b7 6:03/km \u00b7 avg HR 137 \u00b7 max HR 156</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: 45min, ~7km, 6:00\u20136:15/km, HR &lt;148. Result: nailed it. HR 137 is well within Z1 (&lt;148). Garmin: "Improving aerobic base." Training load 85.</div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Monday Mar 23</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 20min \u00b7 Recovery walk 41min 2.45km avg HR 87</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text rv-val rv-good">Easy Run (trail) 52min \u00b7 8.96km \u00b7 5:50/km \u00b7 avg HR 144 \u00b7 max HR 164</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: 50min, ~8km, 6:00\u20136:15/km, HR &lt;148. Result: slightly faster at 5:50/km on trail. Avg HR 144 is under Z1 ceiling (148) but max 164 (Z3) from hills. Trail terrain causes more HR variation \u2014 acceptable. Training load 112.</div>';
   h+='</div>';
 
-  // Tuesday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Tuesday Mar 17</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 25min \u00b7 Recovery walk 29min 2.0km \u00b7 Core (sit-ups) 22min \u00b7 Upper chest (flyes) 42min</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Yoga + Core + Lunch Walk + Upper Chest. Completed with minor reordering. Walk logged as "recovery walk" (hike type, 98m elev gain, avg HR 95).</div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Tuesday Mar 24</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 19min \u00b7 Lunch ride 20min 3.5km (cycling recovery) \u00b7 Core 20min \u00b7 Upper chest &amp; shoulders 48min</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Yoga + Core + Walk + Upper Chest. Walk swapped for a short recovery bike ride. All strength completed.</div>';
   h+='</div>';
 
-  // Wednesday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--red)">Wednesday Mar 18</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 21min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text rv-val rv-good">Threshold Run 37.6min \u00b7 7.0km \u00b7 avg HR 159 \u00b7 max HR 184 \u00b7 5K split 26:26 (PR!)</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: ~6km with WU/CD, 5:10\u20135:20/km, HR 165\u2013172. Result: 7.0km total, named "threshold run slow start and end" so WU/CD followed. Overall avg HR 159 (includes warmup). 77% of time in Z4 per Garmin. Training load 166 (high \u2014 appropriate for key session). Fastest 5K: 26:26 \u2014 12s improvement from 26:38.</div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--red)">Wednesday Mar 25</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 19min \u00b7 Arms 48min</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text rv-val rv-good">Threshold Run 33min \u00b7 6.63km \u00b7 4:54/km \u00b7 avg HR 158 \u00b7 max HR 176 \u00b7 21min in Z4</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: ~6.5km with WU/CD, 20min @ T, HR 165\u2013172. Result: Z4 block of 21min \u2014 perfect. Pace 4:54/km is faster than prescribed 5:10\u20135:20 but HR hit the right zone. Named "threshold run with slow start and end" \u2014 WU/CD structure followed. Training load 148.</div>';
   h+='</div>';
 
-  // Thursday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Thursday Mar 19</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 19min \u00b7 Core (sit-ups) 20min \u00b7 Strength (arms) 40min</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Yoga + Arms + Lunch Walk + Core. Walk missed. Strength and core completed.</div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--purple)">Thursday Mar 26</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Hiking 31min 2.31km avg HR 91 (lunch walk equivalent)</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Yoga + Arms + Walk + Core. Only lunch hike logged. Arms and core shifted to Friday.</div>';
   h+='</div>';
 
-  // Friday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Friday Mar 20</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 21min \u00b7 Legs 30min (avg HR 111, max 145) \u00b7 Lower chest 38min</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Yoga + Legs + Lower Chest. Completed as planned.</div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Friday Mar 27</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 22min \u00b7 Core 20min \u00b7 Arms 44min \u00b7 Legs 32min (avg HR 94)</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Yoga + Legs + Lower Chest. Extra sessions added (core + arms from Thu). Legs done on Friday \u2014 good spacing to next run (65+ hrs to Monday).</div>';
   h+='</div>';
 
-  // Saturday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Saturday Mar 21</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u26a0\ufe0f</span><span class="rv-text">Yoga 20min only. No endurance session.</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Long endurance 2\u20135hrs. Shifted to Sunday \u2014 life adjustment, not a concern.</div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--blue)">Saturday Mar 28</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text rv-val rv-good">Cycling 3h53m \u00b7 70.9km \u00b7 avg HR 118 \u00b7 max HR 171</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Long endurance 2\u20135hrs. Result: excellent long ride. Avg HR 118 is well in easy territory for cycling (different LTHR than running). Training load 117. Aerobic TE 3.2.</div>';
   h+='</div>';
 
-  // Sunday
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Sunday Mar 22</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text rv-val rv-good">Cycling 2h45min 43.5km avg HR 119 + Cycling 1h25min 26.9km avg HR 129</span></div>';
-  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Light outdoor 45\u201390min. Actual: massive cycling day (70.4km total, 4h10min). Session 1 was 74% Z1\u2013Z2 (good aerobic base). Session 2 had more Z3 time. Far exceeded the planned light recovery day, but this was also covering Saturday\'s missed endurance slot. Total training load 172.</div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Sunday Mar 29</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text">Yoga 19min \u00b7 Lower chest 36min</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);padding-left:24px">Plan: Light outdoor. Lower chest done instead \u2014 recovery day adjusted.</div>';
   h+='</div>';
   h+='</div>';
 
-  // Running deep dive
   h+='<div class="card"><div class="ct">Running Analysis</div>';
-  h+='<table class="tbl"><thead><tr><th>Metric</th><th class="r">Easy Run (Mar 16)</th><th class="r">Threshold (Mar 18)</th></tr></thead><tbody>';
-  h+='<tr><td>Distance</td><td class="r m">7.84 km</td><td class="r m">6.96 km</td></tr>';
-  h+='<tr><td>Duration</td><td class="r m">47:30</td><td class="r m">37:36</td></tr>';
-  h+='<tr><td>Avg Pace</td><td class="r m">6:03/km</td><td class="r m">5:24/km</td></tr>';
-  h+='<tr><td>Avg HR</td><td class="r m rv-good">137 bpm</td><td class="r m">159 bpm</td></tr>';
-  h+='<tr><td>Max HR</td><td class="r m">156 bpm</td><td class="r m">184 bpm</td></tr>';
-  h+='<tr><td>Fastest 5K</td><td class="r m">\u2014</td><td class="r m rv-good">26:26 (PR!)</td></tr>';
-  h+='<tr><td>Training Effect</td><td class="r m">3.2 Base</td><td class="r m">3.7 Tempo</td></tr>';
-  h+='<tr><td>Training Load</td><td class="r m">85</td><td class="r m">166</td></tr>';
+  h+='<table class="tbl"><thead><tr><th>Metric</th><th class="r">Easy Run (Mar 23)</th><th class="r">Threshold (Mar 25)</th></tr></thead><tbody>';
+  h+='<tr><td>Distance</td><td class="r m">8.96 km</td><td class="r m">6.63 km</td></tr>';
+  h+='<tr><td>Duration</td><td class="r m">52:00</td><td class="r m">33:00</td></tr>';
+  h+='<tr><td>Avg Pace</td><td class="r m">5:50/km</td><td class="r m">4:54/km</td></tr>';
+  h+='<tr><td>Avg HR</td><td class="r m rv-good">144 bpm</td><td class="r m">158 bpm</td></tr>';
+  h+='<tr><td>Max HR</td><td class="r m rv-ok">164 bpm</td><td class="r m">176 bpm</td></tr>';
+  h+='<tr><td>Z4 Time</td><td class="r m">\u2014</td><td class="r m rv-good">20.9 min</td></tr>';
+  h+='<tr><td>Training Effect</td><td class="r m">3.4 Base</td><td class="r m">3.8 Tempo</td></tr>';
+  h+='<tr><td>Training Load</td><td class="r m">112</td><td class="r m">148</td></tr>';
   h+='</tbody></table>';
-  h+='<p class="ctx" style="margin-top:10px">Easy/threshold time split: 47.5min easy + 37.6min total threshold = 56% easy. Target was 56%. On track for Phase 1.</p>';
+  h+='<p class="ctx" style="margin-top:10px">Easy/threshold time split: ~62min easy + ~23min threshold = <strong style="color:var(--green)">73% easy</strong> (up from 56% in Week 1). Target 70%+ achieved.</p>';
+  h+='<div class="hi">Note: Easy run pace (5:50/km) was faster than prescribed (6:00\u20136:15) on trail. Avg HR stayed under 148 but trail hills caused Z3 spikes. On flat road, aim for 6:00\u20136:15/km to keep HR more consistently in Z1.</div>';
   h+='</div>';
 
-  // Physiological changes
   h+='<div class="card"><div class="ct">Physiological Changes This Week</div>';
-  h+='<div class="rv"><span class="rv-icon">\u2b06\ufe0f</span><span class="rv-text"><strong>Training Status:</strong> Maintaining \u2192 <span class="rv-good">Productive</span>. Your body is responding to the new stimulus.</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u26a0\ufe0f</span><span class="rv-text"><strong>LTHR:</strong> Garmin auto-detected <span class="rv-ok">169 bpm</span> on Mar 16 (was 174). Auto-detect fluctuates and is unreliable \u2014 zones kept at 174 until 30-min field test validates a change.</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2b07\ufe0f</span><span class="rv-text"><strong>Resting HR:</strong> 44 \u2192 <span class="rv-good">42 bpm</span>. Good recovery indicator.</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>VO2max:</strong> 50 \u2192 50.3. Stable (expected \u2014 VO2max changes slowly).</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>HRV:</strong> Weekly avg 67, status Balanced (baseline 62\u201375). No stress signal.</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u2b06\ufe0f</span><span class="rv-text"><strong>5K PR:</strong> 26:38 \u2192 <span class="rv-good">26:26</span> (\u221212s). VDOT ~36.</span></div>';
-  h+='<div class="rv"><span class="rv-icon">\u26a0\ufe0f</span><span class="rv-text"><strong>Feedback:</strong> Still "Aerobic High Shortage" \u2014 confirms more easy running needed. Expected to take 4\u20138 weeks to resolve (Seiler).</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>Training Status:</strong> <span class="rv-good">Productive</span> (steady). ACWR 1.2 = optimal range.</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2b06\ufe0f</span><span class="rv-text"><strong>VO2max:</strong> 50.3 \u2192 <span class="rv-good">50.9</span>. Went up but remember: unreliable during base building. Don\'t change paces.</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>Resting HR:</strong> <span class="rv-good">42 bpm</span> (stable). Good baseline.</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>HRV:</strong> Weekly avg 67, last night 72, status Balanced. No stress signal.</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2705</span><span class="rv-text"><strong>Training Readiness:</strong> <span class="rv-good">81 morning (HIGH)</span>. Well recovered. HRV factor: very good.</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u2192</span><span class="rv-text"><strong>LTHR:</strong> Still 169 auto-detect from Mar 16 \u2014 zones unchanged at 174 until field test.</span></div>';
+  h+='<div class="rv"><span class="rv-icon">\u26a0\ufe0f</span><span class="rv-text"><strong>Feedback:</strong> Still "Aerobic High Shortage." Expected \u2014 takes 4\u20138 weeks of consistent easy volume (Seiler).</span></div>';
   h+='</div>';
 
-  // Week totals
-  h+='<div class="card"><div class="ct">Week 1 Totals</div><div class="stats">';
-  h+='<div><div class="sl">Running</div><div class="sv">14.8<span style="font-size:12px;color:var(--text3)"> km</span></div><div class="ss">2 sessions \u00b7 85min</div></div>';
-  h+='<div><div class="sl">Cycling</div><div class="sv">70.4<span style="font-size:12px;color:var(--text3)"> km</span></div><div class="ss">2 sessions \u00b7 4h10min</div></div>';
-  h+='<div><div class="sl">Strength</div><div class="sv">5<span style="font-size:12px;color:var(--text3)"> sessions</span></div><div class="ss">Arms, chest, core, legs</div></div>';
+  h+='<div class="card"><div class="ct">Week 2 Totals</div><div class="stats">';
+  h+='<div><div class="sl">Running</div><div class="sv">15.6<span style="font-size:12px;color:var(--text3)"> km</span></div><div class="ss">2 sessions \u00b7 85min</div></div>';
+  h+='<div><div class="sl">Cycling</div><div class="sv">74.4<span style="font-size:12px;color:var(--text3)"> km</span></div><div class="ss">2 sessions \u00b7 4h13min</div></div>';
+  h+='<div><div class="sl">Strength</div><div class="sv">7<span style="font-size:12px;color:var(--text3)"> sessions</span></div><div class="ss">Arms\u00d72, chest\u00d72, core\u00d72, legs</div></div>';
   h+='<div><div class="sl">Yoga</div><div class="sv">7/7<span style="font-size:12px;color:var(--text3)"> days</span></div><div class="ss">Daily \u2713</div></div>';
   h+='</div></div>';
   return h;
@@ -365,19 +358,19 @@ function renderLastWeek(){
 // ═══════════ PROGRESS ═══════════
 function renderProgress(){
   var h='<div class="card"><div class="ct">Weekly Running Volume</div>';
-  h+='<p class="ctx">Red bars = running km. Blue = snowshoe/cycling km. Week of Mar 16 was the first with two structured runs (14.8km). The goal is steady red bar growth toward 20+ km by week 4.</p>';
+  h+='<p class="ctx">Red bars = running km. Blue = snowshoe/cycling km. Two consecutive weeks at ~15km running. Phase 2 targets ~20+km by adding a third run.</p>';
   h+='<div class="cw"><canvas id="volChart"></canvas></div></div>';
 
   h+='<div class="card"><div class="ct">Run Zone Distribution</div>';
-  h+='<p class="ctx">Each bar shows HR zone split for a run. Yellow/orange = hard (Z4+). Gray/blue = easy (Z1\u2013Z2). The Mar 16 run is the first with significant gray/blue \u2014 your first genuine easy run. The goal: most bars should look like Mar 16, with only one yellow bar per week.</p>';
+  h+='<p class="ctx">Each bar shows HR zone split for a run. Yellow/orange = hard (Z4+). Gray/blue = easy (Z1\u2013Z2). Mar 16 and Mar 23 are easy runs. The goal: most bars should be gray/blue, with only one yellow bar per week (threshold).</p>';
   for(var i=0;i<RUNS.length;i++){var r=RUNS[i];
     var col=r.easy?'var(--green)':'var(--text3)';
     h+='<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:'+col+';margin-bottom:3px" class="m"><span>'+r.d+' \u00b7 '+r.km+'km \u00b7 '+r.p+'/km</span><span>avg '+r.hr+'bpm \u00b7 '+r.lb+'</span></div>'+zb(r.z)+'</div>';}
   h+=zl()+'</div>';
 
   h+='<div class="card"><div class="ct">Easy vs Hard Running Time</div>';
-  h+='<p class="ctx">Seiler target: ~80% easy by session count (which equates to ~90% easy by time at higher volumes). At 2 runs/week, we target 70%+ easy by time as a practical starting point. Week 1 was 56% easy (47.5min easy / 85min total). Improving from 0% \u2014 on track. This shifts further as easy runs extend in Phase 2\u20133.</p>';
-  var easyPct=56;
+  h+='<p class="ctx">Seiler target: ~80% easy by session count (~90% easy by time at higher volumes). At 2\u20133 runs/week, target 70%+ easy by time. Week 2 hit 73% easy (62min easy / 85min total), up from 56% in Week 1. Phase 2 with 3 runs projects 83% easy.</p>';
+  var easyPct=73;
   h+='<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:3px"><span>Current: '+easyPct+'% easy</span><span>Target: 70% easy</span></div>';
   h+='<div class="zb" style="height:16px"><div style="width:'+easyPct+'%;background:#94a3b8"></div><div style="width:'+(100-easyPct)+'%;background:var(--yellow)"></div></div>';
   h+='<div style="display:flex;gap:12px;margin-top:6px;font-size:10px;color:var(--text3)"><span><span class="zd" style="background:#94a3b8;vertical-align:middle"></span> Easy</span><span><span class="zd" style="background:var(--yellow);vertical-align:middle"></span> Threshold</span></div>';
@@ -393,18 +386,18 @@ function renderProgress(){
 
 // ═══════════ PLAN ═══════════
 function renderPlan(){
-  var h='<div class="card"><div class="ct">Where You Are Now \u2014 End of Week 1</div>';
-  h+='<p class="ctx">First week of structured running complete. Training status moved from Maintaining to Productive (reflects overall training load change across all activities, not a single session). 5K improved to 26:26. Easy run at 6:03/km with HR 137 confirmed the easy pace target was accurate. Garmin auto-detected LTHR 169 on Mar 16 but this is unvalidated \u2014 zones kept at LTHR 174 until field test. Still "Aerobic High Shortage" \u2014 expected; takes 4\u20138 weeks of consistent easy volume to resolve (Seiler 2010). Note: Garmin VO2max and training status may fluctuate during base building \u2014 this is a known algorithm artifact, not real fitness loss.</p>';
+  var h='<div class="card"><div class="ct">Where You Are Now \u2014 End of Week 2, Entering Phase 2</div>';
+  h+='<p class="ctx">Phase 1 complete. Two consecutive weeks of 2-run structure handled well. Easy/threshold split improved to 73%. Training status: Productive (steady). VO2max up to 50.9 (unreliable during base building \u2014 don\'t change paces). All recovery signals green: readiness 81, HRV balanced, resting HR 42. Phase 2 adds a third easy run on Sunday, extends Monday easy to 55min, and extends threshold block to 22min. Still "Aerobic High Shortage" \u2014 expected; takes 4\u20138 weeks of consistent easy volume (Seiler 2010).</p>';
   h+='</div>';
 
-  h+='<div class="card" style="border-left:3px solid var(--green)"><div class="ct" style="color:var(--green)">\u2713 Phase 1: Weeks 1\u20132 \u2014 Add First Easy Run (CURRENT)</div>';
-  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> One easy run on Monday (Week 1: 45min, Week 2: 50min). Threshold run on Wednesday stays the same. Three lunch walks Mon/Tue/Thu. Everything else unchanged.<br><br><strong style="color:var(--text)">Why:</strong> Connective tissue adaptation to running impact at low intensity. Volume increase follows 10% guideline.<br><br><strong style="color:var(--text)">Week 2 adjustments:</strong> Easy run extended to 50min (+11%). Zones unchanged \u2014 Garmin auto-detected LTHR 169 but this is a single reading and auto-detect fluctuates. Keeping LTHR 174 zones until validated by 30-min field test (planned end of Phase 3).</div>';
-  h+='<div class="prh"><span class="prl">~14\u201316 km/wk</span><span class="prv">2\u00d7 runs \u00b7 57% easy</span></div><div class="prb"><div class="prf" style="width:43%"></div></div>';
+  h+='<div class="card" style="border-left:3px solid var(--green)"><div class="ct" style="color:var(--green)">\u2713 Phase 1: Weeks 1\u20132 \u2014 Add First Easy Run (COMPLETE)</div>';
+  h+='<div class="phase-desc"><strong style="color:var(--text)">Completed:</strong> Two weeks of 2-run structure. Easy run progressed 45\u219250\u219252min. Threshold blocks of 20\u201321min in Z4. Easy/threshold split improved 56%\u219273%. Easy run HR confirmed at 137\u2013144 bpm (under Z1 ceiling 148). 5K PR: 26:26. Training status: Productive.</div>';
+  h+='<div class="prh"><span class="prl">~15 km/wk achieved</span><span class="prv">2\u00d7 runs \u00b7 73% easy</span></div><div class="prb"><div class="prf" style="width:100%;background:var(--green)"></div></div>';
   h+='</div>';
 
-  h+='<div class="card" style="border-left:3px solid var(--emerald)"><div class="ct">Phase 2: Weeks 3\u20134 \u2014 Add Second Easy Run</div>';
-  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> Sunday becomes a second easy run (40min). Monday extends to 55min. Threshold block extends to 22min (~6.5km total).<br><br><strong style="color:var(--text)">Why:</strong> After 2 weeks connective tissue has initial adaptation. Third run builds neuromuscular frequency for running economy improvement (Daniels 4th ed.).<br><br><strong style="color:var(--text)">Watch for:</strong> Monday legs after Sunday run + Saturday endurance. If heavy, keep Sunday at 30min.</div>';
-  h+='<div class="prh"><span class="prl">~20 km/wk</span><span class="prv">3\u00d7 runs \u00b7 68% easy</span></div><div class="prb"><div class="prf" style="width:67%"></div></div>';
+  h+='<div class="card" style="border-left:3px solid var(--emerald)"><div class="ct" style="color:var(--emerald)">\u2192 Phase 2: Weeks 3\u20134 \u2014 Add Second Easy Run (CURRENT)</div>';
+  h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> Sunday becomes a second easy run (40min). Monday extends to 55min. Threshold block extends to 22min (~7km total).<br><br><strong style="color:var(--text)">Why:</strong> After 2 weeks connective tissue has initial adaptation. Third run builds neuromuscular frequency for running economy improvement (Daniels 4th ed.).<br><br><strong style="color:var(--text)">Week 3 notes:</strong> Volume jumps from ~15.6km to ~22km (bigger than 10% guideline but recovery signals are all green). Added volume is all easy running (low risk). If legs heavy from Sat+Sun combo, cut Sunday to 35min.</div>';
+  h+='<div class="prh"><span class="prl">~20\u201322 km/wk</span><span class="prv">3\u00d7 runs \u00b7 83% easy</span></div><div class="prb"><div class="prf" style="width:50%"></div></div>';
   h+='</div>';
 
   h+='<div class="card" style="border-left:3px solid var(--orange)"><div class="ct">Phase 3: Weeks 5\u20138 \u2014 Extend Easy Runs</div>';
@@ -415,18 +408,18 @@ function renderPlan(){
   h+='<div class="card"><div class="ct">Race Time Predictions</div>';
   h+='<p class="ctx">Daniels VDOT projections from actual 5K time. Garmin predictions (based on VO2max + recent training) shown for comparison.</p>';
   h+='<table class="tbl"><thead><tr><th>Distance</th><th class="r">Actual (VDOT 36)</th><th class="r">Garmin Pred</th><th class="r">12wk Target</th></tr></thead><tbody>';
-  h+='<tr><td>5K</td><td class="r m" style="color:var(--text3)">26:26</td><td class="r m">23:31</td><td class="r m" style="color:var(--green)">24:30\u201325:30</td></tr>';
-  h+='<tr><td>10K</td><td class="r m" style="color:var(--text3)">~56:00</td><td class="r m">50:50</td><td class="r m" style="color:var(--green)">~52:00\u201354:00</td></tr>';
-  h+='<tr><td>Half</td><td class="r m" style="color:var(--text3)">~2:05</td><td class="r m">1:55:05</td><td class="r m" style="color:var(--green)">~1:55\u20132:00</td></tr>';
+  h+='<tr><td>5K</td><td class="r m" style="color:var(--text3)">26:26</td><td class="r m">23:28</td><td class="r m" style="color:var(--green)">24:30\u201325:30</td></tr>';
+  h+='<tr><td>10K</td><td class="r m" style="color:var(--text3)">~56:00</td><td class="r m">49:55</td><td class="r m" style="color:var(--green)">~52:00\u201354:00</td></tr>';
+  h+='<tr><td>Half</td><td class="r m" style="color:var(--text3)">~2:05</td><td class="r m">1:53:07</td><td class="r m" style="color:var(--green)">~1:55\u20132:00</td></tr>';
   h+='</tbody></table><p style="font-size:10px;color:var(--text3);margin-top:8px">Garmin predictions optimistic because they weight VO2max heavily. Actual race times closer to VDOT-based estimates until running economy catches up.</p></div>';
 
   h+='<div class="card"><div class="ct">Milestones</div>';
   var ms=[
     {t:"First easy run completed \u2713",s:"Week 1. 47min @ HR 137. Easy pace confirmed at ~6:03/km.",a:true,done:true},
     {t:"Lunch walks started \u2713",s:"Week 1. Logged on Mon + Tue. Zero fatigue cost.",a:true,done:true},
-    {t:"Complete Phase 1 (2 weeks easy run consistency)",s:"End of this week (Week 2). Confirm easy HR stays &lt;148.",a:true},
-    {t:"Add second easy run (Sunday)",s:"Week 3. After 2 weeks of connective tissue adaptation.",a:false},
-    {t:"Consistent 15+ km/week running",s:"By week 4. The minimum effective dose for running improvement.",a:false},
+    {t:"Phase 1 complete \u2713",s:"Week 2. Two consecutive weeks of 2-run structure. Easy/threshold split 73%. HR under control.",a:true,done:true},
+    {t:"Add second easy run (Sunday) \u2192",s:"This week (Week 3). Phase 2 begins. 40min easy on Sunday.",a:true},
+    {t:"Consistent 20+ km/week running",s:"By week 4. Three runs per week sustained.",a:false},
     {t:"Retest 5K + LT field test",s:"After week 8. Validate VDOT and LTHR changes.",a:false},
   ];
   for(var i=0;i<ms.length;i++){var mm=ms[i];
@@ -438,13 +431,13 @@ function renderPlan(){
 
 // ═══════════ PROFILE ═══════════
 function renderProfile(){
-  var h='<div class="card"><div class="ct">Running Baseline (Updated Mar 22)</div><div class="stats">';
-  var stats=[{l:"Running LTHR",v:B.lthr+" bpm",s:"Garmin Feb 24 \u00b7 working value"},{l:"Max HR",v:B.maxHr+" bpm",s:"Observed Mar 18"},{l:"Resting HR",v:B.restHr+" bpm",s:"Mar 22"},{l:"VO2max",v:""+B.vo2max,s:"Garmin estimate \u00b75%"},{l:"VDOT",v:"~"+B.vdot,s:"From 5K: 26:26"},{l:"Best 5K",v:B.best5k,s:"Mar 18 (PR)"},{l:"LT Pace",v:B.ltPace+"/km",s:"Mar 18 fastest 5K"},{l:"Easy Pace",v:"~6:00\u20136:15",s:"HR &lt;148 bpm"}];
+  var h='<div class="card"><div class="ct">Running Baseline (Updated Mar 29)</div><div class="stats">';
+  var stats=[{l:"Running LTHR",v:B.lthr+" bpm",s:"Garmin Feb 24 \u00b7 working value"},{l:"Max HR",v:B.maxHr+" bpm",s:"Observed Mar 18"},{l:"Resting HR",v:B.restHr+" bpm",s:"Mar 29 \u00b7 stable"},{l:"VO2max",v:""+B.vo2max,s:"Garmin estimate \u00b75%"},{l:"VDOT",v:"~"+B.vdot,s:"From 5K: 26:26"},{l:"Best 5K",v:B.best5k,s:"Mar 18 (PR)"},{l:"LT Pace",v:B.ltPace+"/km",s:"Mar 18 fastest 5K"},{l:"Easy Pace",v:"~6:00\u20136:15",s:"HR &lt;148 bpm"}];
   for(var i=0;i<stats.length;i++){var s=stats[i];h+='<div><div class="sl">'+s.l+'</div><div class="sv">'+s.v+'</div>';if(s.s)h+='<div class="ss">'+s.s+'</div>';h+='</div>';}
   h+='</div></div>';
 
   h+='<div class="card"><div class="ct">Understanding VO2max vs VDOT</div>';
-  h+='<p style="font-size:12px;color:var(--text2)">Garmin estimates VO2max at 50.3 (from all activities including cycling and snowshoeing). Your 5K time of 26:26 gives a VDOT of ~35. These are different metrics \u2014 VDOT is a performance index that assumes elite-level running economy (Daniels), while Garmin VO2max is estimated from HR-to-pace ratios across activities. A difference between them is normal and does not necessarily indicate a "gap" to close. What we do know: you have strong cardiovascular fitness from multi-sport training, and more running volume should improve running-specific economy and performance.</p></div>';
+  h+='<p style="font-size:12px;color:var(--text2)">Garmin estimates VO2max at 50.9 (from all activities including cycling and snowshoeing). Your 5K time of 26:26 gives a VDOT of ~36. These are different metrics \u2014 VDOT is a performance index that assumes elite-level running economy (Daniels), while Garmin VO2max is estimated from HR-to-pace ratios across activities. A difference between them is normal and does not necessarily indicate a "gap" to close. What we do know: you have strong cardiovascular fitness from multi-sport training, and more running volume should improve running-specific economy and performance.</p></div>';
 
   h+='<div class="card"><div class="ct">Friel HR Zones (Working LTHR '+B.lthr+')</div>';
   h+='<p style="font-size:10px;color:var(--text3);margin-bottom:8px">Running only. Cycling LTHR typically 5\u201310 bpm lower. Garmin auto-detected 169 on Mar 16 but auto-detect fluctuates \u2014 keeping 174 until 30-min field test (end of Phase 3).</p>';
@@ -480,7 +473,7 @@ function render(){
   var checks=getChecks();var totalSessions=0;for(var di=0;di<DAYS.length;di++)totalSessions+=DAYS[di].ids.length;var doneCount=0;for(var k in checks)if(checks[k])doneCount++;
   var h='<div class="header-row"><div class="header"><h1><span class="a">ENDURANCE</span><span class="b"> COACH</span></h1><span class="badge">by VERTERYN</span></div>';
   h+='<button class="refresh-btn" onclick="location.reload(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>Refresh</button></div>';
-  h+='<div class="sub m">Troms\u00f8 \u00b7 LTHR '+B.lthr+' \u00b7 VDOT ~'+B.vdot+' \u00b7 VO2max '+B.vo2max+' \u00b7 Updated 2026-03-22'+(doneCount>0?' \u00b7 <span style="color:var(--green)">'+doneCount+'/'+totalSessions+' done</span>':'')+'</div>';
+  h+='<div class="sub m">Troms\u00f8 \u00b7 LTHR '+B.lthr+' \u00b7 VDOT ~'+B.vdot+' \u00b7 VO2max '+B.vo2max+' \u00b7 Updated 2026-03-29'+(doneCount>0?' \u00b7 <span style="color:var(--green)">'+doneCount+'/'+totalSessions+' done</span>':'')+'</div>';
   h+='<div class="tabs" id="tabs">';
   for(var i=0;i<TABS.length;i++)h+='<button class="tab'+(activeTab===i?' on':'')+'" data-i="'+i+'">'+TABS[i]+'</button>';
   h+='</div><div id="content">';
