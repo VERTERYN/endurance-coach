@@ -146,12 +146,12 @@ var currentPhase=1;
 
 // Week 2 dates
 var DAYS=[
-  {key:'mon',name:'Monday',date:'Mar 23',color:'var(--blue)',note:'Arms + running = zero interference',
-   ids:['mon-yoga','mon-arms','mon-walk','mon-run']},
+  {key:'mon',name:'Monday',date:'Mar 23',color:'var(--blue)',note:'Easy run day',
+   ids:['mon-yoga','mon-walk','mon-run']},
   {key:'tue',name:'Tuesday',date:'Mar 24',color:'var(--purple)',note:'',
    ids:['tue-yoga','tue-core','tue-walk','tue-chest']},
-  {key:'wed',name:'Wednesday',date:'Mar 25',color:'var(--red)',note:'Key quality session',
-   ids:['wed-yoga','wed-run']},
+  {key:'wed',name:'Wednesday',date:'Mar 25',color:'var(--red)',note:'Arms + threshold = zero interference',
+   ids:['wed-yoga','wed-arms','wed-run']},
   {key:'thu',name:'Thursday',date:'Mar 26',color:'var(--purple)',note:'No running \u2014 recovery from Wed threshold',
    ids:['thu-yoga','thu-arms','thu-walk','thu-core']},
   {key:'fri',name:'Friday',date:'Mar 27',color:'var(--yellow)',note:'No running. 48hrs before next hard effort.',
@@ -210,7 +210,6 @@ function renderThisWeek(){
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
-  h+=sess('mon-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+=sess('mon-walk','tw','Lunch Walk','Easy pace around town',['30 min','Z1','&lt;120 bpm']);
   h+=sess('mon-run','tr','Easy Run','Flat route, conversational pace. Extended 5min from last week.',['50 min','~8 km','6:00\u20136:15/km','HR &lt;148 bpm']);
   h+='</div>';
@@ -224,6 +223,7 @@ function renderThisWeek(){
 
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
+  h+=sess('wed-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+=sess('wed-run','tr','Threshold Run','1.5km warmup \u2192 20min @ threshold \u2192 1.5km cooldown',['~6.5 km','5:10\u20135:20/km','HR 165\u2013172','~37 min']);
   h+='</div>';
 
