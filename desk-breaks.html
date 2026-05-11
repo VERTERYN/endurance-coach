@@ -372,6 +372,46 @@ function renderSupplements(){
     h+='<div class="suppl-streak"><div class="streak-num">'+streak+'</div><div class="streak-label">day streak</div></div>';
   }
 
+  // Weekly history
+  var today=new Date().toISOString().slice(0,10);
+  var dayNames=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  for(var w=0;w<4;w++){
+    var d=new Date();var day=d.getDay();var diff=d.getDate()-day+(day===0?-6:1);
+    var mon=new Date(d);mon.setDate(diff-(w*7));
+    var weekLabel=w===0?"This week":w===1?"Last week":mon.toLocaleDateString("en",{month:"short",day:"numeric"})+" \u2013 "+(function(){var s=new Date(mon);s.setDate(s.getDate()+6);return s.toLocaleDateString("en",{month:"short",day:"numeric"})})();
+    var weekHit=0,weekTotal=0;
+    h+='<div class="hist-week"><div class="hist-label">'+weekLabel+'</div>';
+    h+='<div class="hist-grid" style="grid-template-columns:48px repeat('+SUPPLEMENTS.length+',1fr)">';
+    h+='<div class="hist-hdr"></div>';
+    for(var s=0;s<SUPPLEMENTS.length;s++){
+      h+='<div class="hist-hdr">'+SUPPLEMENTS[s].icon+'</div>';
+    }
+    for(var dd=0;dd<7;dd++){
+      var dateObj=new Date(mon);dateObj.setDate(mon.getDate()+dd);
+      var dateStr=dateObj.toISOString().slice(0,10);
+      var isToday=dateStr===today;
+      var isFuture=dateStr>today;
+      var checks={};
+      try{checks=JSON.parse(localStorage.getItem("suppl-"+dateStr))||{};}catch(e){}
+      h+='<div class="hist-day'+(isToday?" today":"")+'">'+dayNames[dd]+'</div>';
+      for(var s=0;s<SUPPLEMENTS.length;s++){
+        var sid=SUPPLEMENTS[s].id;
+        var cls="hist-dot ";
+        if(isFuture){cls+="future";}
+        else if(checks[sid]){cls+="hit";weekHit++;weekTotal++;}
+        else{cls+="miss";weekTotal++;}
+        h+='<div class="hist-cell"><div class="'+cls+'"></div></div>';
+      }
+    }
+    h+='</div>';
+    if(weekTotal>0){
+      var pct=Math.round(weekHit/weekTotal*100);
+      var color=pct>=75?"var(--green)":pct>=50?"var(--yellow)":"var(--red)";
+      h+='<div class="hist-score" style="color:'+color+'">'+weekHit+'/'+weekTotal+' ('+pct+'%)</div>';
+    }
+    h+='</div>';
+  }
+
   return h;
 }
 
