@@ -359,7 +359,7 @@ function renderSupplements(){
   for(var i=0;i<SUPPLEMENTS.length;i++){
     var s=SUPPLEMENTS[i];
     var checked=isSupplChecked(s.id);
-    h+='<div class="suppl-card'+(checked?" taken":"")+'" onclick="toggleSuppl(\\\''+s.id+'\\\')" style="cursor:pointer">';
+    h+='<div class="suppl-card'+(checked?" taken":"")+'" onclick="toggleSuppl(\''+s.id+'\')" style="cursor:pointer">';
     h+='<div class="chk'+(checked?" done":"")+'"></div>';
     h+='<div class="suppl-icon">'+s.icon+'</div>';
     h+='<div><div class="suppl-name">'+s.name+'</div><div class="suppl-sub">'+s.sub+'</div></div>';
