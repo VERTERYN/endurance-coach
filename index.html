@@ -169,10 +169,10 @@ var DAYS=[
    ids:['tue-yoga','tue-core','tue-walk','tue-chest']},
   {key:'wed',name:'Wednesday',date:'May 13',color:'var(--blue)',note:'Second easy run + arms',
    ids:['wed-yoga','wed-arms','wed-run']},
-  {key:'thu',name:'Thursday',date:'May 14',color:'var(--purple)',note:'Recovery day',
-   ids:['thu-yoga','thu-arms','thu-walk','thu-core']},
-  {key:'fri',name:'Friday',date:'May 15',color:'var(--yellow)',note:'Legs day. 48hrs before next run (Mon).',
-   ids:['fri-yoga','fri-legs','fri-lchest']},
+  {key:'thu',name:'Thursday',date:'May 14',color:'var(--purple)',note:'Lower chest & shoulders',
+   ids:['thu-yoga','thu-lchest','thu-walk','thu-core']},
+  {key:'fri',name:'Friday',date:'May 15',color:'var(--yellow)',note:'Legs + arms. 48hrs before next run (Mon).',
+   ids:['fri-yoga','fri-legs','fri-arms']},
   {key:'sat',name:'Saturday',date:'May 16',color:'var(--blue)',note:'Aerobic base \u2014 Z1\u2013Z2 only',
    ids:['sat-yoga','sat-endurance']},
   {key:'sun',name:'Sunday',date:'May 17',color:'var(--green)',note:'Recovery \u2014 legs tired from Fri+Sat',
@@ -245,7 +245,7 @@ function renderThisWeek(){
 
   h+=dayOpen(3);
   h+=sess('thu-yoga','ty','Yoga','Morning stretch');
-  h+=sess('thu-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
+  h+=sess('thu-lchest','ts','Lower Chest & Shoulders','Incline/decline press, shoulder press, lateral raises',['40 min']);
   h+=sess('thu-walk','tw','Lunch Walk','Aids recovery',['30 min']);
   h+=sess('thu-core','tc','Core','Sit-ups, planks',['30 min']);
   h+='</div>';
@@ -253,7 +253,7 @@ function renderThisWeek(){
   h+=dayOpen(4);
   h+=sess('fri-yoga','ty','Yoga','Morning stretch');
   h+=sess('fri-legs','ts','Legs','Deadlift, squats — heaviest session',['40–50 min']);
-  h+=sess('fri-lchest','ts','Lower Chest','Incline/decline work',['30 min']);
+  h+=sess('fri-arms','ts','Arms','Curls, triceps, etc.',['30 min']);
   h+='</div>';
 
   h+=dayOpen(5);
