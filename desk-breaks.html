@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f172a">
+<title>Desk Breaks</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--border:#334155;--text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--green:#22c55e;--emerald:#10b981;--yellow:#eab308;--orange:#f97316;--accent:#3b82f6}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.m{font-family:'JetBrains Mono',monospace}
+.container{max-width:480px;margin:0 auto;padding:16px 16px 40px}
+.header{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+.header h1{font-size:18px;font-weight:700;letter-spacing:-0.5px}
+.header h1 .a{color:var(--accent)}.header h1 .b{color:var(--text3)}
+.sub{font-size:11px;color:var(--text3);margin-bottom:20px;font-family:'JetBrains Mono',monospace}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.card.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 0 20px rgba(59,130,246,0.1)}
+.card.done{border-color:var(--green);background:rgba(34,197,94,0.06)}
+.card.upcoming{opacity:0.5}
+.ct{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px}
+.timer-ring{width:140px;height:140px;margin:0 auto 16px;position:relative}
+.timer-ring svg{transform:rotate(-90deg)}
+.timer-ring .bg{stroke:var(--bg3);fill:none;stroke-width:6}
+.timer-ring .fg{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.timer-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.timer-min{font-size:32px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.timer-label{font-size:11px;color:var(--text3);margin-top:2px}
+.break-card{background:rgba(15,23,42,0.5);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.break-time{font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;width:50px;flex-shrink:0}
+.break-type{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:600;white-space:nowrap}
+.type-a{background:rgba(59,130,246,0.15);color:var(--blue)}
+.type-b{background:rgba(168,85,247,0.15);color:var(--purple)}
+.break-info{flex:1;min-width:0}
+.break-title{font-size:13px;font-weight:600}
+.break-exercises{font-size:11px;color:var(--text2);margin-top:2px}
+.chk{width:28px;height:28px;border-radius:50%;border:2px solid var(--bg3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.chk:hover{border-color:var(--text3)}
+.chk.done{border-color:var(--green);background:var(--green)}
+.chk.done::after{content:'\2713';color:#fff;font-size:13px;font-weight:700}
+.score{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.score-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--bg3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text3);transition:all .3s}
+.score-dot.hit{border-color:var(--green);background:var(--green);color:#fff}
+.streak-bar{text-align:center;margin-top:8px}
+.streak-num{font-size:28px;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace}
+.streak-label{font-size:11px;color:var(--text3)}
+.exercise-detail{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.ex-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.ex-row:last-child{margin-bottom:0}
+.ex-num{font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.ex-name{font-size:13px;font-weight:600}
+.ex-desc{font-size:11px;color:var(--text2);margin-top:1px}
+.ex-time{font-size:10px;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.notify-btn{display:block;width:100%;padding:12px;border-radius:10px;border:1px solid var(--accent);background:rgba(59,130,246,0.1);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-bottom:12px}
+.notify-btn:hover{background:rgba(59,130,246,0.2)}
+.notify-btn.granted{border-color:var(--green);color:var(--green);background:rgba(34,197,94,0.1)}
+.tabs{display:flex;gap:4px;margin-bottom:16px}
+.tab{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;border:none;background:var(--bg2);color:var(--text3);transition:all .2s;flex:1;text-align:center}
+.tab:hover{background:var(--bg3);color:var(--text2)}.tab.on{background:var(--accent);color:#fff}
+.popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:100;align-items:center;justify-content:center}
+.popup.show{display:flex}
+.popup-card{background:var(--bg2);border:1px solid var(--accent);border-radius:16px;padding:24px;max-width:360px;width:90%;text-align:center;animation:popIn .3s ease}
+@keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+.popup-title{font-size:18px;font-weight:700;margin-bottom:8px}
+.popup-sub{font-size:12px;color:var(--text2);margin-bottom:16px}
+.popup-btn{padding:12px 24px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+</style>
+</head>
+<body>
+<div class="container" id="app"></div>
+<div class="popup" id="popup">
+  <div class="popup-card">
+    <div class="popup-title" id="popup-title">Break Time!</div>
+    <div class="popup-sub" id="popup-sub"></div>
+    <button class="popup-btn" onclick="dismissPopup()">Got it</button>
+  </div>
+</div>
+<script>
+var BREAKS=[
+  {time:"10:00",type:"A",title:"Ankle & Hips",exercises:[
+    {name:"Calf raises (left)",desc:"Hold desk for balance, rise up slow, lower slow",time:"30s"},
+    {name:"Calf raises (right)",desc:"Same other side. Extra focus on injured ankle",time:"30s"},
+    {name:"Hip flexor stretch (left)",desc:"Step back into lunge, tuck pelvis, push hip forward",time:"30s"},
+    {name:"Hip flexor stretch (right)",desc:"Same other side. Feel the stretch in front of hip",time:"30s"}
+  ]},
+  {time:"11:30",type:"B",title:"Glutes & Balance",exercises:[
+    {name:"Split squats (left)",desc:"One foot forward, lower straight down. Longer stance = more glute",time:"30s"},
+    {name:"Split squats (right)",desc:"Same other side. 6\u20138 reps, controlled",time:"30s"},
+    {name:"Single-leg balance (left)",desc:"Stand on one foot. Close eyes if easy",time:"30s"},
+    {name:"Single-leg balance (right)",desc:"Especially the injured ankle. Rebuild proprioception",time:"30s"}
+  ]},
+  {time:"15:00",type:"A",title:"Ankle & Hips",exercises:[
+    {name:"Calf raises (left)",desc:"Hold desk for balance, rise up slow, lower slow",time:"30s"},
+    {name:"Calf raises (right)",desc:"Same other side",time:"30s"},
+    {name:"Hip flexor stretch (left)",desc:"Step back, tuck pelvis, push hip forward",time:"30s"},
+    {name:"Hip flexor stretch (right)",desc:"6+ hours of sitting by now \u2014 this one matters most",time:"30s"}
+  ]},
+  {time:"16:30",type:"B",title:"Glutes & Balance",exercises:[
+    {name:"Split squats (left)",desc:"One foot forward, lower straight down",time:"30s"},
+    {name:"Split squats (right)",desc:"Same other side. Last set of the day",time:"30s"},
+    {name:"Single-leg balance (left)",desc:"Stand on one foot. Close eyes if easy",time:"30s"},
+    {name:"Single-leg balance (right)",desc:"Hold desk if needed. Quality over duration",time:"30s"}
+  ]}
+];
+
+var activeTab=0;
+var notifyPermission=Notification?Notification.permission:"denied";
+var notifiedToday={};
+
+function todayKey(){return new Date().toISOString().slice(0,10);}
+function getChecks(){try{var d=JSON.parse(localStorage.getItem("deskbreaks-"+todayKey()))||{};return d;}catch(e){return {};}}
+function setCheck(i){var c=getChecks();c[i]=1;localStorage.setItem("deskbreaks-"+todayKey(),JSON.stringify(c));}
+function isChecked(i){return !!getChecks()[i];}
+function doneCount(){var c=getChecks();var n=0;for(var k in c)if(c[k])n++;return n;}
+
+function getStreak(){
+  var streak=0;var d=new Date();
+  if(doneCount()>0)streak=0;// today counts only at end
+  // Check backwards from yesterday
+  for(var i=1;i<60;i++){
+    var prev=new Date(d);prev.setDate(prev.getDate()-i);
+    var key=prev.toISOString().slice(0,10);
+    var dow=prev.getDay();
+    if(dow===0||dow===6)continue;// skip weekends
+    var data=null;
+    try{data=JSON.parse(localStorage.getItem("deskbreaks-"+key));}catch(e){}
+    if(data&&Object.keys(data).length>=2)streak++;// at least 2/4 counts
+    else break;
+  }
+  if(doneCount()>=2)streak++;// today counts if 2+ done
+  return streak;
+}
+
+function timeToMin(t){var p=t.split(":");return parseInt(p[0])*60+parseInt(p[1]);}
+function nowMin(){var d=new Date();return d.getHours()*60+d.getMinutes();}
+
+function getNextBreak(){
+  var now=nowMin();
+  for(var i=0;i<BREAKS.length;i++){
+    if(timeToMin(BREAKS[i].time)>now&&!isChecked(i))return i;
+  }
+  return -1;
+}
+
+function getCurrentBreak(){
+  var now=nowMin();
+  for(var i=BREAKS.length-1;i>=0;i--){
+    var bMin=timeToMin(BREAKS[i].time);
+    if(now>=bMin&&now<bMin+5&&!isChecked(i))return i;
+  }
+  return -1;
+}
+
+function getBreakStatus(i){
+  if(isChecked(i))return "done";
+  var now=nowMin();var bMin=timeToMin(BREAKS[i].time);
+  if(now>=bMin&&now<bMin+10)return "active";
+  if(now>=bMin)return "missed";
+  return "upcoming";
+}
+
+function minUntilNext(){
+  var next=getNextBreak();
+  if(next<0)return -1;
+  return timeToMin(BREAKS[next].time)-nowMin();
+}
+
+function requestNotify(){
+  if(!("Notification" in window)){alert("Notifications not supported in this browser");return;}
+  Notification.requestPermission().then(function(p){
+    notifyPermission=p;
+    if(p==="granted")new Notification("Desk Breaks",{body:"Notifications enabled! You\u2019ll get a reminder at each break time."});
+    render();
+  });
+}
+
+function checkNotify(){
+  if(notifyPermission!=="granted")return;
+  var now=nowMin();
+  for(var i=0;i<BREAKS.length;i++){
+    var bMin=timeToMin(BREAKS[i].time);
+    if(now>=bMin&&now<=bMin+1&&!notifiedToday[i]&&!isChecked(i)){
+      notifiedToday[i]=true;
+      var b=BREAKS[i];
+      new Notification("\u23f0 "+b.title+" ("+b.time+")",{body:b.exercises.map(function(e){return e.name}).join(" \u2192 "),icon:"data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>\ud83e\uddd8</text></svg>"});
+      showPopup(i);
+    }
+  }
+}
+
+function showPopup(i){
+  var b=BREAKS[i];
+  document.getElementById("popup-title").textContent="\u23f0 "+b.title;
+  document.getElementById("popup-sub").textContent=b.exercises.map(function(e){return e.name}).join(" \u2192 ");
+  document.getElementById("popup").classList.add("show");
+}
+function dismissPopup(){document.getElementById("popup").classList.remove("show");}
+
+function toggleCheck(i){
+  if(!isChecked(i))setCheck(i);
+  render();
+}
+
+function renderToday(){
+  var h="";
+  var next=getNextBreak();
+  var mins=minUntilNext();
+
+  // Timer
+  if(mins>0){
+    var pct=1-(mins/90);
+    var r=62;var circ=2*Math.PI*r;var offset=circ*(1-pct);
+    h+='<div class="timer-ring"><svg width="140" height="140" viewBox="0 0 140 140">';
+    h+='<circle class="bg" cx="70" cy="70" r="'+r+'"/>';
+    h+='<circle class="fg" cx="70" cy="70" r="'+r+'" stroke="var(--accent)" stroke-dasharray="'+circ+'" stroke-dashoffset="'+offset+'"/>';
+    h+='</svg><div class="timer-center"><div class="timer-min">'+mins+'</div><div class="timer-label">min to next</div></div></div>';
+  } else if(mins===-1){
+    var dc=doneCount();
+    h+='<div style="text-align:center;padding:20px 0"><div style="font-size:32px;margin-bottom:8px">'+(dc>=4?"\ud83c\udf1f":"\ud83c\udf19")+'</div>';
+    h+='<div style="font-size:14px;color:var(--text2)">'+(dc>=4?"All breaks done today!":"Done for today")+'</div></div>';
+  }
+
+  // Score dots
+  h+='<div class="score">';
+  for(var i=0;i<BREAKS.length;i++){
+    var cls="score-dot"+(isChecked(i)?" hit":"");
+    h+='<div class="'+cls+'">'+BREAKS[i].time+'</div>';
+  }
+  h+='</div>';
+
+  // Break cards
+  for(var i=0;i<BREAKS.length;i++){
+    var b=BREAKS[i];
+    var status=getBreakStatus(i);
+    var cardCls="break-card";
+    if(status==="active")cardCls+=" active";
+    var typeCls=b.type==="A"?"type-a":"type-b";
+    h+='<div class="'+cardCls+'" style="'+(status==="done"?"opacity:0.5":"")+(status==="upcoming"?"opacity:0.4":"")+'">';
+    h+='<div class="chk'+(isChecked(i)?" done":"")+'" onclick="toggleCheck('+i+')"></div>';
+    h+='<div class="break-time" style="color:'+(status==="active"?"var(--accent)":status==="missed"?"var(--orange)":"var(--text3)")+'">'+b.time+'</div>';
+    h+='<div class="break-info"><div class="break-title"><span class="break-type '+typeCls+'">'+b.type+'</span> '+b.title+'</div>';
+    h+='<div class="break-exercises">'+b.exercises.map(function(e){return e.name.split("(")[0].trim()}).filter(function(v,i,a){return a.indexOf(v)===i}).join(" \u2192 ")+'</div>';
+    h+='</div></div>';
+  }
+
+  // Streak
+  var streak=getStreak();
+  if(streak>0){
+    h+='<div class="streak-bar"><div class="streak-num">'+streak+'</div><div class="streak-label">day streak (weekdays)</div></div>';
+  }
+
+  // Notify button
+  if(notifyPermission!=="granted"){
+    h+='<button class="notify-btn" onclick="requestNotify()">\ud83d\udd14 Enable notifications to get break reminders</button>';
+  } else {
+    h+='<button class="notify-btn granted">\u2705 Notifications on \u2014 you\u2019ll get reminders at each break</button>';
+  }
+
+  return h;
+}
+
+function renderExercises(){
+  var h="";
+  var routines=[
+    {type:"A",title:"Ankle & Hips",color:"var(--blue)",exercises:BREAKS[0].exercises},
+    {type:"B",title:"Glutes & Balance",color:"var(--purple)",exercises:BREAKS[1].exercises}
+  ];
+  for(var r=0;r<routines.length;r++){
+    var rt=routines[r];
+    h+='<div class="exercise-detail"><div class="ct" style="color:'+rt.color+'">Routine '+rt.type+': '+rt.title+'</div>';
+    for(var i=0;i<rt.exercises.length;i++){
+      var ex=rt.exercises[i];
+      h+='<div class="ex-row"><div class="ex-num">'+(i+1)+'</div><div><div class="ex-name">'+ex.name+'</div><div class="ex-desc">'+ex.desc+'</div><div class="ex-time">'+ex.time+'</div></div></div>';
+    }
+    h+='</div>';
+  }
+  h+='<div class="exercise-detail"><div class="ct">Why These Exercises</div>';
+  h+='<div style="font-size:12px;color:var(--text2);line-height:1.7">';
+  h+='<strong style="color:var(--text)">Calf raises</strong> \u2014 Rebuild ankle strength post-injury. Cornerstone of ankle rehab (AAOS, PLOS One systematic review).<br><br>';
+  h+='<strong style="color:var(--text)">Hip flexor stretch</strong> \u2014 Counteract prolonged sitting. Tight hip flexors contribute to IT band syndrome and altered running gait (Harvard Health).<br><br>';
+  h+='<strong style="color:var(--text)">Split squats</strong> \u2014 Glute activation + single-leg strength. EMG research confirms gluteus maximus/medius activation. Directly transfers to running (J Strength Cond Res).<br><br>';
+  h+='<strong style="color:var(--text)">Single-leg balance</strong> \u2014 Proprioceptive training reduces ankle re-injury risk by 35% (Doherty et al. meta-analysis). Essential after ankle sprain.';
+  h+='</div></div>';
+  return h;
+}
+
+function render(){
+  var a=document.getElementById("app");
+  var dc=doneCount();
+  var h='<div class="header"><h1><span class="a">DESK</span><span class="b"> BREAKS</span></h1></div>';
+  h+='<div class="sub">4\u00d7 2min \u00b7 Mon\u2013Fri \u00b7 '+dc+'/4 today</div>';
+  h+='<div class="tabs">';
+  h+='<button class="tab'+(activeTab===0?" on":"")+'" onclick="activeTab=0;render()">Today</button>';
+  h+='<button class="tab'+(activeTab===1?" on":"")+'" onclick="activeTab=1;render()">Exercises</button>';
+  h+='</div>';
+  if(activeTab===0)h+=renderToday();
+  else h+=renderExercises();
+  h+='<div style="text-align:center;font-size:10px;color:var(--text3);margin-top:20px">Ankle rehab + desk worker mobility \u00b7 Keep this tab open for notifications</div>';
+  a.innerHTML=h;
+}
+
+// Update every 30 seconds
+setInterval(function(){render();checkNotify();},30000);
+render();
+checkNotify();
+</script>
+</body>
+</html>
