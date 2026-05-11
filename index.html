@@ -161,24 +161,23 @@ var activeTab=0;
 var currentWeek=9;
 var currentPhase=1;
 
-// Week 9 dates (Return to base — 2 easy runs only)
+// Week 9 dates (Return to base — 2 easy runs: Mon + Wed)
 var DAYS=[
   {key:'mon',name:'Monday',date:'May 11',color:'var(--blue)',note:'Easy run — keep HR under 148',
    ids:['mon-yoga','mon-walk','mon-run']},
   {key:'tue',name:'Tuesday',date:'May 12',color:'var(--purple)',note:'',
    ids:['tue-yoga','tue-core','tue-walk','tue-chest']},
-  {key:'wed',name:'Wednesday',date:'May 13',color:'var(--purple)',note:'Arms only — no running today',
-   ids:['wed-yoga','wed-arms']},
+  {key:'wed',name:'Wednesday',date:'May 13',color:'var(--blue)',note:'Second easy run + arms',
+   ids:['wed-yoga','wed-arms','wed-run']},
   {key:'thu',name:'Thursday',date:'May 14',color:'var(--purple)',note:'Recovery day',
    ids:['thu-yoga','thu-arms','thu-walk','thu-core']},
-  {key:'fri',name:'Friday',date:'May 15',color:'var(--yellow)',note:'Legs day. 48hrs before any hard running.',
+  {key:'fri',name:'Friday',date:'May 15',color:'var(--yellow)',note:'Legs day. 48hrs before next run (Mon).',
    ids:['fri-yoga','fri-legs','fri-lchest']},
-  {key:'sat',name:'Saturday',date:'May 16',color:'var(--blue)',note:'Aerobic base — Z1–Z2 only',
+  {key:'sat',name:'Saturday',date:'May 16',color:'var(--blue)',note:'Aerobic base \u2014 Z1\u2013Z2 only',
    ids:['sat-yoga','sat-endurance']},
-  {key:'sun',name:'Sunday',date:'May 17',color:'var(--green)',note:'Second easy run — deliberately slow',
-   ids:['sun-yoga','sun-run']}
+  {key:'sun',name:'Sunday',date:'May 17',color:'var(--green)',note:'Recovery \u2014 legs tired from Fri+Sat',
+   ids:['sun-yoga','sun-recovery']}
 ];
-
 // Checkmark persistence
 var checkKey='checks-w'+currentWeek;
 function getChecks(){try{return JSON.parse(localStorage.getItem(checkKey))||{};}catch(e){return {};}}
@@ -241,6 +240,7 @@ function renderThisWeek(){
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
+  h+=sess('wed-run','tr','Easy Run','Flat route. HR governs pace. Arms have zero interference with running.',['40\u201345 min','~7 km','6:00\u20136:15/km','HR <148 bpm']);
   h+='</div>';
 
   h+=dayOpen(3);
@@ -263,7 +263,7 @@ function renderThisWeek(){
 
   h+=dayOpen(6);
   h+=sess('sun-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sun-run','tr','Easy Run','Second easy run. Deliberately slow. If legs tired from Saturday, walk instead.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
+  h+=sess('sun-recovery','tw','Recovery','Light walk or rest. Legs tired from Friday deadlifts + Saturday endurance.',['Walk 20\u201330 min','or full rest','HR <120 bpm']);
   h+='</div>';
   h+='</div>';
 
