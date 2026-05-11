@@ -68,6 +68,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .popup-title{font-size:18px;font-weight:700;margin-bottom:8px}
 .popup-sub{font-size:12px;color:var(--text2);margin-bottom:16px}
 .popup-btn{padding:12px 24px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+.hist-week{margin-bottom:16px}
+.hist-label{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.hist-grid{display:grid;grid-template-columns:48px repeat(4,1fr);gap:2px}
+.hist-hdr{font-size:9px;color:var(--text3);text-align:center;padding:4px 0;font-family:'JetBrains Mono',monospace}
+.hist-day{font-size:11px;color:var(--text2);padding:6px 4px;font-family:'JetBrains Mono',monospace;display:flex;align-items:center}
+.hist-day.today{color:var(--accent);font-weight:700}
+.hist-cell{display:flex;align-items:center;justify-content:center;padding:6px 0;border-radius:6px;background:var(--bg2)}
+.hist-dot{width:10px;height:10px;border-radius:50%}
+.hist-dot.hit{background:var(--green)}
+.hist-dot.miss{background:var(--red);opacity:0.3}
+.hist-dot.skip{background:var(--bg3);opacity:0.2}
+.hist-dot.future{background:var(--bg3);opacity:0.1}
+.hist-score{font-size:12px;font-family:'JetBrains Mono',monospace;text-align:right;padding:4px 0}
+.hist-total{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.hist-total-label{font-size:12px;color:var(--text2)}
+.hist-total-val{font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace}
 </style>
 </head>
 <body>
@@ -288,6 +305,80 @@ function renderExercises(){
   return h;
 }
 
+
+function getWeekDates(weeksAgo){
+  var d=new Date();
+  var day=d.getDay();
+  var diff=d.getDate()-day+(day===0?-6:1); // Monday
+  var mon=new Date(d);mon.setDate(diff - (weeksAgo*7));
+  var dates=[];
+  for(var i=0;i<5;i++){
+    var dd=new Date(mon);dd.setDate(mon.getDate()+i);
+    dates.push(dd);
+  }
+  return dates;
+}
+
+function getChecksForDate(dateStr){
+  try{return JSON.parse(localStorage.getItem("deskbreaks-"+dateStr))||{};}catch(e){return {};}
+}
+
+function renderHistory(){
+  var h="";
+  var today=new Date().toISOString().slice(0,10);
+  var dayNames=["Mon","Tue","Wed","Thu","Fri"];
+  var totalHit=0,totalPossible=0;
+
+  for(var w=0;w<4;w++){
+    var dates=getWeekDates(w);
+    var weekLabel=w===0?"This week":w===1?"Last week":dates[0].toLocaleDateString("en",{month:"short",day:"numeric"})+" \u2013 "+dates[4].toLocaleDateString("en",{month:"short",day:"numeric"});
+    var weekHit=0,weekTotal=0;
+
+    h+='<div class="hist-week"><div class="hist-label">'+weekLabel+'</div>';
+    h+='<div class="hist-grid">';
+    h+='<div class="hist-hdr"></div>';
+    for(var b=0;b<BREAKS.length;b++){
+      h+='<div class="hist-hdr">'+BREAKS[b].time+'</div>';
+    }
+
+    for(var d=0;d<5;d++){
+      var dateStr=dates[d].toISOString().slice(0,10);
+      var isToday=dateStr===today;
+      var isFuture=dateStr>today;
+      var checks=getChecksForDate(dateStr);
+      h+='<div class="hist-day'+(isToday?" today":"")+'">'+dayNames[d]+'</div>';
+      for(var b=0;b<BREAKS.length;b++){
+        var cls="hist-dot ";
+        if(isFuture){cls+="future";}
+        else if(checks[b]){cls+="hit";weekHit++;weekTotal++;}
+        else if(isToday){
+          var bMin=timeToMin(BREAKS[b].time);
+          if(nowMin()<bMin){cls+="future";}
+          else{cls+="miss";weekTotal++;}
+        }
+        else{cls+="miss";weekTotal++;}
+        h+='<div class="hist-cell"><div class="'+cls+'"></div></div>';
+      }
+    }
+    h+='</div>';
+    if(weekTotal>0){
+      var pct=Math.round(weekHit/weekTotal*100);
+      var color=pct>=75?"var(--green)":pct>=50?"var(--yellow)":"var(--red)";
+      h+='<div class="hist-score" style="color:'+color+'">'+weekHit+'/'+weekTotal+' ('+pct+'%)</div>';
+    }
+    h+='</div>';
+    totalHit+=weekHit;totalPossible+=weekTotal;
+  }
+
+  // 4-week summary
+  if(totalPossible>0){
+    var totalPct=Math.round(totalHit/totalPossible*100);
+    h+='<div class="hist-total"><div class="hist-total-label">4-week total</div><div class="hist-total-val">'+totalHit+'/'+totalPossible+' <span style="font-size:12px;color:var(--text3)">'+totalPct+'%</span></div></div>';
+  }
+
+  return h;
+}
+
 function render(){
   var a=document.getElementById("app");
   var dc=doneCount();
@@ -296,9 +387,11 @@ function render(){
   h+='<div class="tabs">';
   h+='<button class="tab'+(activeTab===0?" on":"")+'" onclick="activeTab=0;render()">Today</button>';
   h+='<button class="tab'+(activeTab===1?" on":"")+'" onclick="activeTab=1;render()">Exercises</button>';
+  h+='<button class="tab'+(activeTab===2?" on":"")+'" onclick="activeTab=2;render()">History</button>';
   h+='</div>';
   if(activeTab===0)h+=renderToday();
-  else h+=renderExercises();
+  else if(activeTab===1)h+=renderExercises();
+  else h+=renderHistory();
   h+='<div style="text-align:center;font-size:10px;color:var(--text3);margin-top:20px">Ankle rehab + desk worker mobility \u00b7 Keep this tab open for notifications</div>';
   a.innerHTML=h;
 }
