@@ -85,6 +85,15 @@ html{zoom:1.5}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:v
 .hist-total{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .hist-total-label{font-size:12px;color:var(--text2)}
 .hist-total-val{font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace}
+
+.suppl-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.suppl-card.taken{border-color:var(--green);background:rgba(34,197,94,0.06);opacity:0.6}
+.suppl-icon{font-size:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--bg3);border-radius:10px;flex-shrink:0}
+.suppl-name{font-size:14px;font-weight:600}
+.suppl-sub{font-size:11px;color:var(--text2);margin-top:1px}
+.suppl-score{text-align:center;margin:16px 0 8px}
+.suppl-score-num{font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.suppl-streak{text-align:center;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -306,6 +315,66 @@ function renderExercises(){
 }
 
 
+
+var SUPPLEMENTS=[
+  {id:"protein",name:"Protein Powder",icon:"🥛",sub:"Post-workout or with meal"},
+  {id:"creatine",name:"Creatine",icon:"💪",sub:"5g daily, timing doesn't matter"},
+  {id:"multivit",name:"Multivitamin",icon:"💊",sub:"With food for absorption"}
+];
+
+function getSupplChecks(){try{return JSON.parse(localStorage.getItem("suppl-"+todayKey()))||{};}catch(e){return {};}}
+function setSupplCheck(id){var c=getSupplChecks();c[id]=1;localStorage.setItem("suppl-"+todayKey(),JSON.stringify(c));}
+function isSupplChecked(id){return !!getSupplChecks()[id];}
+function supplDoneCount(){var c=getSupplChecks();var n=0;for(var k in c)if(c[k])n++;return n;}
+
+function getSupplStreak(){
+  var streak=0;var d=new Date();
+  for(var i=1;i<60;i++){
+    var prev=new Date(d);prev.setDate(prev.getDate()-i);
+    var key=prev.toISOString().slice(0,10);
+    var data=null;
+    try{data=JSON.parse(localStorage.getItem("suppl-"+key));}catch(e){}
+    if(data&&Object.keys(data).length>=2)streak++;
+    else break;
+  }
+  if(supplDoneCount()>=2)streak++;
+  return streak;
+}
+
+function toggleSuppl(id){
+  if(!isSupplChecked(id))setSupplCheck(id);
+  render();
+}
+
+function renderSupplements(){
+  var h="";
+  var dc=supplDoneCount();
+  var total=SUPPLEMENTS.length;
+
+  // Score
+  var color=dc===total?"var(--green)":dc>0?"var(--yellow)":"var(--text3)";
+  h+='<div class="suppl-score"><div class="suppl-score-num" style="color:'+color+'">'+dc+'/'+total+'</div><div style="font-size:11px;color:var(--text3)">taken today</div></div>';
+
+  // Cards
+  for(var i=0;i<SUPPLEMENTS.length;i++){
+    var s=SUPPLEMENTS[i];
+    var checked=isSupplChecked(s.id);
+    h+='<div class="suppl-card'+(checked?" taken":"")+'" onclick="toggleSuppl(''+s.id+'')" style="cursor:pointer">';
+    h+='<div class="chk'+(checked?" done":"")+'"></div>';
+    h+='<div class="suppl-icon">'+s.icon+'</div>';
+    h+='<div><div class="suppl-name">'+s.name+'</div><div class="suppl-sub">'+s.sub+'</div></div>';
+    h+='</div>';
+  }
+
+  // Streak
+  var streak=getSupplStreak();
+  if(streak>0){
+    h+='<div class="suppl-streak"><div class="streak-num">'+streak+'</div><div class="streak-label">day streak</div></div>';
+  }
+
+  return h;
+}
+
 function getWeekDates(weeksAgo){
   var d=new Date();
   var day=d.getDay();
@@ -388,10 +457,12 @@ function render(){
   h+='<button class="tab'+(activeTab===0?" on":"")+'" onclick="activeTab=0;render()">Today</button>';
   h+='<button class="tab'+(activeTab===1?" on":"")+'" onclick="activeTab=1;render()">Exercises</button>';
   h+='<button class="tab'+(activeTab===2?" on":"")+'" onclick="activeTab=2;render()">History</button>';
+  h+='<button class="tab'+(activeTab===3?" on":"")+'" onclick="activeTab=3;render()">Supps</button>';
   h+='</div>';
   if(activeTab===0)h+=renderToday();
   else if(activeTab===1)h+=renderExercises();
-  else h+=renderHistory();
+  else if(activeTab===2)h+=renderHistory();
+  else h+=renderSupplements();
   h+='<div style="text-align:center;font-size:10px;color:var(--text3);margin-top:20px">Ankle rehab + desk worker mobility \u00b7 Keep this tab open for notifications</div>';
   a.innerHTML=h;
 }
