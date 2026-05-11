@@ -209,7 +209,7 @@ function checkNotify(){
   var now=nowMin();
   for(var i=0;i<BREAKS.length;i++){
     var bMin=timeToMin(BREAKS[i].time);
-    if(now>=bMin&&now<=bMin+1&&!notifiedToday[i]&&!isChecked(i)){
+    if(now>=bMin&&now<=bMin+10&&!notifiedToday[i]&&!isChecked(i)){
       notifiedToday[i]=true;
       var b=BREAKS[i];
       new Notification("\u23f0 "+b.title+" ("+b.time+")",{body:b.exercises.map(function(e){return e.name}).join(" \u2192 "),icon:"data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>\ud83e\uddd8</text></svg>"});
@@ -508,9 +508,12 @@ function render(){
 }
 
 // Update every 30 seconds
-setInterval(function(){render();checkNotify();},30000);
+setInterval(function(){render();checkNotify();},15000);
 render();
 checkNotify();
+// Re-check when tab becomes visible or window gets focus (catches background throttling)
+document.addEventListener('visibilitychange',function(){if(!document.hidden){render();checkNotify();}});
+window.addEventListener('focus',function(){render();checkNotify();});
 </script>
 </body>
 </html>
