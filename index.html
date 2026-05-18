@@ -167,13 +167,13 @@ var currentPhase=1;
 // Week 9 dates (Return to base — 2 easy runs: Mon + Wed)
 var DAYS=[
   {key:'mon',name:'Monday',date:'May 11',color:'var(--blue)',note:'Easy run — keep HR under 148',
-   ids:['mon-yoga','mon-walk','mon-run']},
+   ids:['mon-yoga','mon-pushups','mon-walk','mon-run']},
   {key:'tue',name:'Tuesday',date:'May 12',color:'var(--purple)',note:'',
-   ids:['tue-yoga','tue-core','tue-walk','tue-chest']},
+   ids:['tue-yoga','tue-pushups','tue-core','tue-walk','tue-chest']},
   {key:'wed',name:'Wednesday',date:'May 13',color:'var(--blue)',note:'Second easy run + arms',
    ids:['wed-yoga','wed-arms','wed-run']},
   {key:'thu',name:'Thursday',date:'May 14',color:'var(--purple)',note:'Lower chest & shoulders',
-   ids:['thu-yoga','thu-lchest','thu-walk','thu-core']},
+   ids:['thu-yoga','thu-pushups','thu-lchest','thu-walk','thu-core']},
   {key:'fri',name:'Friday',date:'May 15',color:'var(--yellow)',note:'Legs + arms. 48hrs before next run (Mon).',
    ids:['fri-yoga','fri-legs','fri-arms']},
   {key:'sat',name:'Saturday',date:'May 16',color:'var(--blue)',note:'Aerobic base \u2014 Z1\u2013Z2 only',
@@ -229,12 +229,14 @@ function renderThisWeek(){
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
+  h+=sess('mon-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
   h+=sess('mon-walk','tw','Lunch Walk','Easy pace around town',['30 min','Z1','<120 bpm']);
   h+=sess('mon-run','tr','Easy Run','Flat route. HR governs pace — slow down if HR climbs above 145.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
   h+='</div>';
 
   h+=dayOpen(1);
   h+=sess('tue-yoga','ty','Yoga','Morning stretch');
+  h+=sess('tue-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
   h+=sess('tue-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
   h+=sess('tue-walk','tw','Lunch Walk','Recovery walk',['30 min']);
   h+=sess('tue-chest','ts','Upper Chest','Bench press, flyes',['40 min']);
@@ -248,6 +250,7 @@ function renderThisWeek(){
 
   h+=dayOpen(3);
   h+=sess('thu-yoga','ty','Yoga','Morning stretch');
+  h+=sess('thu-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
   h+=sess('thu-lchest','ts','Lower Chest & Shoulders','Incline/decline press, shoulder press, lateral raises',['40 min']);
   h+=sess('thu-walk','tw','Lunch Walk','Aids recovery',['30 min']);
   h+=sess('thu-core','tc','Core','Sit-ups, planks',['30 min']);
