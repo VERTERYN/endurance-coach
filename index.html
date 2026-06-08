@@ -171,21 +171,21 @@ var activeTab=0;
 var currentWeek=13;
 var currentPhase=1;
 
-// Week 13 dates (Jun 8-14 — 2 easy runs: Mon + Wed)
+// Week 13 dates (Jun 8-14 — Hold at base, prove the ceiling)
 var DAYS=[
-  {key:'mon',name:'Monday',date:'Jun 8',color:'var(--blue)',note:'Easy run — keep HR under 148',
-   ids:['mon-yoga','mon-pushups','mon-walk','mon-run']},
-  {key:'tue',name:'Tuesday',date:'Jun 9',color:'var(--purple)',note:'',
-   ids:['tue-yoga','tue-pushups','tue-core','tue-walk','tue-chest']},
-  {key:'wed',name:'Wednesday',date:'Jun 10',color:'var(--blue)',note:'Second easy run + arms',
-   ids:['wed-yoga','wed-arms','wed-run']},
-  {key:'thu',name:'Thursday',date:'Jun 11',color:'var(--purple)',note:'Lower chest & shoulders',
-   ids:['thu-yoga','thu-pushups','thu-lchest','thu-walk','thu-core']},
-  {key:'fri',name:'Friday',date:'Jun 12',color:'var(--yellow)',note:'Legs + arms. 48hrs before next run (Mon).',
-   ids:['fri-yoga','fri-legs','fri-arms']},
-  {key:'sat',name:'Saturday',date:'Jun 13',color:'var(--blue)',note:'Endurance — hike or cycle \u2014 Z1\u2013Z2 only',
+  {key:'mon',name:'Monday',date:'Jun 8',color:'var(--blue)',note:'Easy run + Chest',
+   ids:['mon-yoga','mon-pushups','mon-run','mon-chest']},
+  {key:'tue',name:'Tuesday',date:'Jun 9',color:'var(--purple)',note:'Core + Arms',
+   ids:['tue-yoga','tue-pushups','tue-core','tue-arms']},
+  {key:'wed',name:'Wednesday',date:'Jun 10',color:'var(--blue)',note:'Legs + Easy run + Chest',
+   ids:['wed-yoga','wed-pushups','wed-legs','wed-run','wed-chest']},
+  {key:'thu',name:'Thursday',date:'Jun 11',color:'var(--purple)',note:'Core + Arms',
+   ids:['thu-yoga','thu-pushups','thu-core','thu-arms']},
+  {key:'fri',name:'Friday',date:'Jun 12',color:'var(--green)',note:'Rest / walk day',
+   ids:['fri-yoga','fri-pushups','fri-walk']},
+  {key:'sat',name:'Saturday',date:'Jun 13',color:'var(--blue)',note:'Endurance — heavy hiking or cycle',
    ids:['sat-yoga','sat-endurance']},
-  {key:'sun',name:'Sunday',date:'Jun 14',color:'var(--green)',note:'Recovery or light hike \u2014 legs tired from Fri+Sat',
+  {key:'sun',name:'Sunday',date:'Jun 14',color:'var(--green)',note:'Recovery',
    ids:['sun-yoga','sun-recovery']}
 ];
 // Checkmark persistence
@@ -232,60 +232,60 @@ function renderThisWeek(){
   var h=weekDots();
   h+='<div class="card w"><div class="ct">Week '+currentWeek+' — Hold at Base (One More Week)</div>';
   h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">2 easy runs · ~90min</span><span style="color:var(--green)" class="m">100% easy</span></div>';
-  h+='<p class="ctx">Last week showed real progress: Monday\'s run hit HR 143 — your cleanest easy run yet, well under the 148 ceiling. But Wednesday crept to 154 again, with the last 2km escalating to HR 162–165. Same pace both days (5:48/km), very different HR. The pattern is clear: you CAN hold the ceiling when disciplined, but you\'re still pushing the back half of every other run. Meanwhile, the weekend hiking in Tromsø (23km at HR 91–104) is providing excellent Z1 volume. This week: nail BOTH runs under 148. If you do, we add volume next week.</p>';
+  h+='<p class="ctx">Last week showed real progress: Monday\'s run hit HR 143 — your cleanest easy run yet. But Wednesday crept to 154 again, with the last 2km escalating to HR 162–165. Same pace both days (5:48/km), very different HR. Wednesday is tougher because you do legs at lunch before the evening run — tired legs push HR higher for the same pace. That\'s a deliberate trade-off (keeps weekends fresh for heavy hiking). This week: nail BOTH runs under 148. On Wednesday, slow down to 6:15–6:30/km to compensate for leg fatigue.</p>';
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
   h+=sess('mon-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('mon-walk','tw','Lunch Walk','Easy pace',['30 min','Z1','<120 bpm']);
-  h+=sess('mon-run','tr','Easy Run','HR governs pace. Slow down if HR climbs above 145. You hit 143 last Monday — replicate that.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
+  h+=sess('mon-run','tr','Easy Run','HR governs pace. You hit 143 last Monday — replicate that.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
+  h+=sess('mon-chest','ts','Chest','Bench press, flyes',['40 min']);
   h+='</div>';
 
   h+=dayOpen(1);
   h+=sess('tue-yoga','ty','Yoga','Morning stretch');
   h+=sess('tue-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
   h+=sess('tue-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
-  h+=sess('tue-walk','tw','Lunch Walk','Recovery walk',['30 min']);
-  h+=sess('tue-chest','ts','Upper Chest','Bench press, flyes',['40 min']);
+  h+=sess('tue-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+='</div>';
 
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
-  h+=sess('wed-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
-  h+=sess('wed-run','tr','Easy Run','This is the one that keeps creeping. Watch the second half — do NOT push the last 2km.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
+  h+=sess('wed-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
+  h+=sess('wed-legs','ts','Legs','Deadlift, squats — lunch session',['40–50 min']);
+  h+=sess('wed-run','tr','Easy Run','Legs will be tired from gym. Run SLOWER: 6:15–6:30/km. Watch the second half.',['40–45 min','~7 km','6:15–6:30/km','HR <148 bpm']);
+  h+=sess('wed-chest','ts','Chest','Bench press, flyes',['40 min']);
   h+='</div>';
 
   h+=dayOpen(3);
   h+=sess('thu-yoga','ty','Yoga','Morning stretch');
   h+=sess('thu-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('thu-lchest','ts','Lower Chest & Shoulders','Incline/decline press, shoulder press, lateral raises',['40 min']);
-  h+=sess('thu-walk','tw','Lunch Walk','Aids recovery',['30 min']);
   h+=sess('thu-core','tc','Core','Sit-ups, planks',['30 min']);
+  h+=sess('thu-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+='</div>';
 
   h+=dayOpen(4);
   h+=sess('fri-yoga','ty','Yoga','Morning stretch');
-  h+=sess('fri-legs','ts','Legs','Deadlift, squats — heaviest session',['40–50 min']);
-  h+=sess('fri-arms','ts','Arms','Curls, triceps, etc.',['30 min']);
+  h+=sess('fri-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
+  h+=sess('fri-walk','tw','Walk','Easy walk, rest day',['30 min','HR <120 bpm']);
   h+='</div>';
 
   h+=dayOpen(5);
   h+=sess('sat-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sat-endurance','te','Long Endurance','Hike, cycle, or light outdoor — your choice. The Tromsø hikes have been perfect Z1.',['2–4 hrs','Z1–Z2','HR <150','keep it genuinely easy']);
+  h+=sess('sat-endurance','te','Long Endurance','Heavy hiking with weight, or cycle. Fresh legs from Friday rest.',['2–4 hrs','Z1–Z2','HR <150']);
   h+='</div>';
 
   h+=dayOpen(6);
   h+=sess('sun-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sun-recovery','tw','Recovery','Light hike or rest.',['Walk 20–30 min','or full rest','HR <120 bpm']);
+  h+=sess('sun-recovery','tw','Recovery','Light walk or full rest.',['Walk 20–30 min','or full rest']);
   h+='</div>';
   h+='</div>';
 
   h+='<div class="card w"><div class="ct">⚠️ Key This Week: Both Runs Under 148</div><div style="font-size:12px;color:var(--text2)">';
-  h+='<p style="margin-bottom:4px">• Monday HR 143 proved you can do it. Now do it BOTH times in the same week.</p>';
-  h+='<p style="margin-bottom:4px">• Wednesday is the problem run. Watch the back half — last week km5–8 escalated to 162–165.</p>';
-  h+='<p style="margin-bottom:4px">• If it feels too slow, that\'s fine. Easy should feel boring. A 6:30/km pace is fine.</p>';
-  h+='<p style="margin-bottom:4px">• Gym: Tue upper chest, Wed arms, Thu lower chest & shoulders, Fri legs + arms</p>';
-  h+='<p>• If both runs are under 148 → Week 14 adds volume (longer runs or possible 3rd run)</p>';
+  h+='<p style="margin-bottom:4px">• Monday HR 143 proved you can do it. Replicate that.</p>';
+  h+='<p style="margin-bottom:4px">• Wednesday: legs at lunch means tired legs for the run. Slow to 6:15–6:30/km to keep HR down.</p>';
+  h+='<p style="margin-bottom:4px">• If it feels too slow, that\'s fine. Easy should feel boring.</p>';
+  h+='<p style="margin-bottom:4px">• Gym: Mon chest, Tue core+arms, Wed legs+chest, Thu core+arms, Fri rest</p>';
+  h+='<p>• If both runs are under 148 → Week 14 adds volume or threshold</p>';
   h+='</div></div>';
 
   h+='<div class="card"><div class="ct">Current Garmin Status (Jun 7)</div><div class="stats">';
