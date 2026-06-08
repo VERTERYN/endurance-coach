@@ -141,7 +141,11 @@ var RUNS=[
 {d:"May 2",km:7.0,min:36,hr:165,p:"5:08",z:[1,2,3,44,49],lb:"Hard effort"},
 {d:"May 5",km:8.0,min:41,hr:166,p:"5:04",z:[0,1,1,67,31],lb:"Hard effort"},
 {d:"May 11",km:5.0,min:30,hr:145,p:"6:04",z:[5,15,70,10,0],lb:"Easy",easy:true},
-{d:"May 16",km:7.8,min:44,hr:152,p:"5:40",z:[2,8,55,32,3],lb:"Easy (hot)"}];
+{d:"May 16",km:7.8,min:44,hr:152,p:"5:40",z:[2,8,55,32,3],lb:"Easy (hot)"},
+{d:"May 25",km:7.0,min:42,hr:149,p:"6:00",z:[1,1,64,34,1],lb:"Easy (Tromsø)"},
+{d:"May 27",km:7.5,min:42,hr:146,p:"5:38",z:[2,5,60,31,3],lb:"Easy (Tromsø)",easy:true},
+{d:"Jun 1",km:7.6,min:44,hr:143,p:"5:48",z:[1,5,76,18,0],lb:"Easy (Tromsø)",easy:true},
+{d:"Jun 3",km:7.8,min:45,hr:154,p:"5:47",z:[0,2,39,58,1],lb:"Easy (crept)"}];
 
 var WK=[
 {w:"Jan 19",rKm:5.5,sKm:18.5,str:5,rN:1},{w:"Jan 26",rKm:5.5,sKm:9.8,str:6,rN:1},
@@ -156,12 +160,15 @@ var WK=[
 {w:"Apr 20",rKm:7.8,sKm:12.9,cKm:0,str:5,rN:1},
 {w:"Apr 27",rKm:14.5,sKm:0,cKm:0,str:5,rN:2},
 {w:"May 4",rKm:8.0,sKm:0,cKm:68.3,str:5,rN:1},
-{w:"May 11",rKm:12.8,sKm:0,cKm:0,str:4,rN:2}];
+{w:"May 11",rKm:12.8,sKm:0,cKm:0,str:4,rN:2},
+{w:"May 18",rKm:0,sKm:0,cKm:34,str:0,rN:0},
+{w:"May 25",rKm:14.5,sKm:0,cKm:60,str:4,rN:2},
+{w:"Jun 1",rKm:15.4,sKm:0,cKm:0,str:7,rN:2}];
 
 var ZC=["#94a3b8","#60a5fa","#10b981","#f59e0b","#f97316","#ef4444","#dc2626"];
 var TABS=["This Week","Last Week","Progress","Plan","Profile","Methods"];
 var activeTab=0;
-var currentWeek=10;
+var currentWeek=13;
 var currentPhase=1;
 
 // Week 9 dates (Return to base — 2 easy runs: Mon + Wed)
@@ -220,18 +227,18 @@ function dayOpen(idx){
 function zb(z){if(!z)return'';var h='<div class="zb">';for(var i=0;i<z.length;i++){if(z[i]>0)h+='<div style="width:'+z[i]+'%;background:'+ZC[i]+'"></div>';}return h+'</div>';}
 function zl(){var n=["Z1","Z2","Z3","Z4","Z5"];var h='<div class="zl">';for(var i=0;i<5;i++)h+='<span><span class="zd" style="background:'+ZC[i]+'"></span>'+n[i]+'</span>';return h+'</div>';}
 
-// ═══════════ THIS WEEK (Week 10 — Hold at Base) ═══════════
+// ═══════════ THIS WEEK (Week 13 — Hold at Base) ═══════════
 function renderThisWeek(){
   var h=weekDots();
-  h+='<div class="card w"><div class="ct">Week '+currentWeek+' — Hold at Base (Prove the Ceiling)</div>';
-  h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">2 easy runs · ~80–90min</span><span style="color:var(--green)" class="m">100% easy</span></div>';
-  h+='<p class="ctx">Week 9 was a deadline week — you got both runs in (good) but the Saturday run crept above the 148 ceiling again (avg HR 152). Recovery signals are actually strong now (resting HR 41, HRV 67 balanced, readiness 93) which means your body is ready. But discipline on the easy ceiling needs to be proven before adding intensity. Same prescription: 2 easy runs, HR must stay under 148 on both. If you nail this week, we add volume next week.</p>';
+  h+='<div class="card w"><div class="ct">Week '+currentWeek+' — Hold at Base (One More Week)</div>';
+  h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--red)" class="m">2 easy runs · ~90min</span><span style="color:var(--green)" class="m">100% easy</span></div>';
+  h+='<p class="ctx">Last week showed real progress: Monday\'s run hit HR 143 — your cleanest easy run yet, well under the 148 ceiling. But Wednesday crept to 154 again, with the last 2km escalating to HR 162–165. Same pace both days (5:48/km), very different HR. The pattern is clear: you CAN hold the ceiling when disciplined, but you\'re still pushing the back half of every other run. Meanwhile, the weekend hiking in Tromsø (23km at HR 91–104) is providing excellent Z1 volume. This week: nail BOTH runs under 148. If you do, we add volume next week.</p>';
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
   h+=sess('mon-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('mon-walk','tw','Lunch Walk','Easy pace around town',['30 min','Z1','<120 bpm']);
-  h+=sess('mon-run','tr','Easy Run','Flat route. HR governs pace — slow down if HR climbs above 145.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
+  h+=sess('mon-walk','tw','Lunch Walk','Easy pace',['30 min','Z1','<120 bpm']);
+  h+=sess('mon-run','tr','Easy Run','HR governs pace. Slow down if HR climbs above 145. You hit 143 last Monday — replicate that.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
   h+='</div>';
 
   h+=dayOpen(1);
@@ -245,7 +252,7 @@ function renderThisWeek(){
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
-  h+=sess('wed-run','tr','Easy Run','Flat route. HR governs pace. Arms have zero interference with running.',['40\u201345 min','~7 km','6:00\u20136:15/km','HR <148 bpm']);
+  h+=sess('wed-run','tr','Easy Run','This is the one that keeps creeping. Watch the second half — do NOT push the last 2km.',['40–45 min','~7 km','6:00–6:15/km','HR <148 bpm']);
   h+='</div>';
 
   h+=dayOpen(3);
@@ -264,106 +271,106 @@ function renderThisWeek(){
 
   h+=dayOpen(5);
   h+=sess('sat-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sat-endurance','te','Long Endurance','Cycle, hike, or light outdoor — your choice',['2–4 hrs','Z1–Z2','HR <150','keep it genuinely easy']);
+  h+=sess('sat-endurance','te','Long Endurance','Hike, cycle, or light outdoor — your choice. The Tromsø hikes have been perfect Z1.',['2–4 hrs','Z1–Z2','HR <150','keep it genuinely easy']);
   h+='</div>';
 
   h+=dayOpen(6);
   h+=sess('sun-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sun-recovery','tw','Recovery','Light walk or rest. Legs tired from Friday deadlifts + Saturday endurance.',['Walk 20\u201330 min','or full rest','HR <120 bpm']);
+  h+=sess('sun-recovery','tw','Recovery','Light hike or rest.',['Walk 20–30 min','or full rest','HR <120 bpm']);
   h+='</div>';
   h+='</div>';
 
-  h+='<div class="card w"><div class="ct">⚠️ Key This Week: Nail the 148 Ceiling</div><div style="font-size:12px;color:var(--text2)">';
-  h+='<p style="margin-bottom:4px">• Monday\'s run was clean (HR 145). Saturday crept to 152. This week: BOTH runs under 148.</p>';
-  h+='<p style="margin-bottom:4px">• If it\'s warm out, slow down more. Heat adds 5–10 bpm. A 6:30/km easy run is fine.</p>';
-  h+='<p style="margin-bottom:4px">• No threshold, no tempo, no hard efforts. Your physio is strong — earn the right to add intensity.</p>';
-  h+='<p style="margin-bottom:4px">• Gym split: Tue upper chest, Wed arms, Thu lower chest & shoulders, Fri legs + arms</p>';
-  h+='<p>• If both runs are under 148 this week → Week 11 adds volume (longer runs, possible 3rd run)</p>';
+  h+='<div class="card w"><div class="ct">⚠️ Key This Week: Both Runs Under 148</div><div style="font-size:12px;color:var(--text2)">';
+  h+='<p style="margin-bottom:4px">• Monday HR 143 proved you can do it. Now do it BOTH times in the same week.</p>';
+  h+='<p style="margin-bottom:4px">• Wednesday is the problem run. Watch the back half — last week km5–8 escalated to 162–165.</p>';
+  h+='<p style="margin-bottom:4px">• If it feels too slow, that\'s fine. Easy should feel boring. A 6:30/km pace is fine.</p>';
+  h+='<p style="margin-bottom:4px">• Gym: Tue upper chest, Wed arms, Thu lower chest & shoulders, Fri legs + arms</p>';
+  h+='<p>• If both runs are under 148 → Week 14 adds volume (longer runs or possible 3rd run)</p>';
   h+='</div></div>';
 
-  h+='<div class="card"><div class="ct">Current Garmin Status (May 17)</div><div class="stats">';
-  h+='<div><div class="sl">Training Status</div><div class="sv" style="font-size:14px;color:var(--yellow)">Maintaining</div><div class="ss">Was Strained → improving</div></div>';
-  h+='<div><div class="sl">Garmin Feedback</div><div class="sv" style="font-size:14px;color:var(--orange)">Anaerobic Shortage</div></div>';
-  h+='<div><div class="sl">VO2max</div><div class="sv">50.3</div><div class="ss">Stable · unreliable during base</div></div>';
-  h+='<div><div class="sl">Resting HR</div><div class="sv" style="color:var(--green)">41</div><div class="ss">Down from 44 · strong recovery</div></div>';
-  h+='<div><div class="sl">HRV</div><div class="sv" style="color:var(--green)">67</div><div class="ss">Balanced · was 62 unbalanced</div></div>';
-  h+='<div><div class="sl">Readiness</div><div class="sv" style="color:var(--green)">93</div><div class="ss">HIGH · was 51 moderate</div></div>';
-  h+='<div><div class="sl">LTHR</div><div class="sv">174</div><div class="ss">Working value · 170 auto-detect</div></div>';
-  h+='<div><div class="sl">Race Pred 5K</div><div class="sv">23:05</div><div class="ss">Garmin estimate</div></div>';
+  h+='<div class="card"><div class="ct">Current Garmin Status (Jun 7)</div><div class="stats">';
+  h+='<div><div class="sl">Training Status</div><div class="sv" style="font-size:14px;color:var(--yellow)">Maintaining</div><div class="ss">Stable</div></div>';
+  h+='<div><div class="sl">Garmin Feedback</div><div class="sv" style="font-size:14px;color:var(--orange)">Aerobic High Shortage</div></div>';
+  h+='<div><div class="sl">VO2max</div><div class="sv">50.5</div><div class="ss">Stable · unreliable during base</div></div>';
+  h+='<div><div class="sl">Resting HR</div><div class="sv" style="color:var(--green)">43</div><div class="ss">Was 41 · slight uptick (travel/sleep)</div></div>';
+  h+='<div><div class="sl">HRV</div><div class="sv" style="color:var(--green)">65</div><div class="ss">Balanced · stable</div></div>';
+  h+='<div><div class="sl">Readiness</div><div class="sv" style="color:var(--yellow)">50</div><div class="ss">Moderate · poor sleep night (score 36)</div></div>';
+  h+='<div><div class="sl">LTHR</div><div class="sv">174</div><div class="ss">Working value · 168 auto-detect</div></div>';
+  h+='<div><div class="sl">Race Pred 5K</div><div class="sv">23:29</div><div class="ss">Garmin estimate</div></div>';
   h+='</div></div>';
   return h;
 }
 
-// ═══════════ WEEK 9 REVIEW (May 11–17) ═══════════
+// ═══════════ WEEK 12 REVIEW (Jun 1–7) ═══════════
 function renderLastWeek(){
-  var h='<div class="card" style="border-left:3px solid var(--yellow)"><div class="ct">Week 9 Review: Deadline Week</div>';
-  h+='<p class="ctx" style="font-size:13px;color:var(--yellow)"><strong>Summary: Hit both runs despite a busy week. Monday was clean easy. Saturday crept above ceiling.</strong> Gym schedule got shuffled (arms moved, chest moved) but the key running sessions happened. Recovery signals improved dramatically: resting HR 44→41, HRV 62→67 (balanced), readiness 51→93. Body is recovering well.</p>';
+  var h='<div class="card" style="border-left:3px solid var(--yellow)"><div class="ct">Week 12 Review: Tromsø — Progress + Creep</div>';
+  h+='<p class="ctx" style="font-size:13px;color:var(--yellow)"><strong>Summary: Monday\'s run was the cleanest easy run yet (HR 143). Wednesday crept to 154 again.</strong> Same pace (5:48/km) on both runs, very different HR — the second-half escalation pattern continues. Weekend hiking in Tromsø provided 23km of excellent Z1 volume. Strength stayed consistent. HRV balanced, resting HR stable at 43, readiness dropped to 50 on a bad sleep night.</p>';
   h+='</div>';
 
   h+='<div class="card"><div class="ct">Running Log</div>';
-  h+='<table class="tbl"><thead><tr><th>Date</th><th>Type</th><th class="r">Dist</th><th class="r">Pace</th><th class="r">Avg HR</th><th class="r">Load</th></tr></thead><tbody>';
-  h+='<tr><td class="m">May 11</td><td><span class="st tr" style="font-size:9px">Easy</span></td><td class="r m">5.0km</td><td class="r m">6:04</td><td class="r m rv-good">145</td><td class="r m">79</td></tr>';
-  h+='<tr style="background:rgba(234,179,8,0.08)"><td class="m">May 16</td><td><span class="st tr" style="font-size:9px">Easy (hot)</span></td><td class="r m">7.8km</td><td class="r m">5:40</td><td class="r m rv-ok">152</td><td class="r m">135</td></tr>';
+  h+='<table class="tbl"><thead><tr><th>Date</th><th>Type</th><th class="r">Dist</th><th class="r">Pace</th><th class="r">Avg HR</th><th class="r">Max HR</th></tr></thead><tbody>';
+  h+='<tr style="background:rgba(16,185,129,0.08)"><td class="m">Jun 1</td><td><span class="st tr" style="font-size:9px">Easy</span></td><td class="r m">7.6km</td><td class="r m">5:48</td><td class="r m rv-good">143</td><td class="r m">161</td></tr>';
+  h+='<tr style="background:rgba(234,179,8,0.08)"><td class="m">Jun 3</td><td><span class="st tr" style="font-size:9px">Easy (crept)</span></td><td class="r m">7.8km</td><td class="r m">5:47</td><td class="r m rv-ok">154</td><td class="r m">172</td></tr>';
   h+='</tbody></table>';
-  h+='<p class="ctx" style="margin-top:8px">Monday: 5.0km at 6:04/km, avg HR 145 — under the 148 ceiling, good easy run. Saturday: 7.8km at 5:40/km, avg HR 152 — 4 bpm over ceiling. Ran a bit faster and longer. May have been warm. Still much better than the pre-reset runs (HR 153–166).</p>';
+  h+='<p class="ctx" style="margin-top:8px">Monday: 7.6km at 5:48/km, avg HR 143 — 5 bpm under ceiling, your best easy run. Splits: 139, 143, 138, 139, 151, 144, 141, 151. Wednesday: 7.8km at 5:47/km (identical pace!) but avg HR 154. Splits: 147, 152, 147, 149, 162, 159, 153, 165. The last 3km escalated badly into Z3–Z4 territory.</p>';
   h+='</div>';
 
   h+='<div class="card"><div class="ct">Day-by-Day</div>';
 
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Monday May 11</span></div>';
-  h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 29min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">🚶</span><span class="rv-text">Hike 2.9km, 41min, HR 96</span></div>';
-  h+='<div class="rv"><span class="rv-icon">🏃</span><span class="rv-text rv-good">Easy run 5.0km, 30min, 6:04/km, HR 145 ✔</span></div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Monday Jun 1</span></div>';
+  h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 21min</span></div>';
+  h+='<div class="rv"><span class="rv-icon">🚶</span><span class="rv-text">Hike 2.2km, 29min, HR 94</span></div>';
+  h+='<div class="rv"><span class="rv-icon">🏃</span><span class="rv-text rv-good">Easy run 7.6km, 44min, 5:48/km, HR 143 ✔</span></div>';
+  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Strength 38min</span></div>';
   h+='</div>';
 
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Tuesday May 12</span></div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Tuesday Jun 2</span></div>';
+  h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 21min</span></div>';
+  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Strength 42min + 20min + 10min</span></div>';
+  h+='</div>';
+
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Wednesday Jun 3</span></div>';
   h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 19min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Upper chest 38min + Core 20min</span></div>';
+  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Strength 11min + 31min</span></div>';
+  h+='<div class="rv"><span class="rv-icon">🏃</span><span class="rv-text rv-ok">Run 7.8km, 45min, 5:47/km, HR 154 ⚠ above ceiling</span></div>';
+  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Strength 44min</span></div>';
   h+='</div>';
 
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--red)">Wednesday May 13</span></div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Thursday Jun 4</span></div>';
   h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 20min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">❌</span><span class="rv-text rv-miss">Missed: easy run + arms (deadline)</span></div>';
+  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Strength 11min</span></div>';
   h+='</div>';
 
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Thursday May 14</span></div>';
-  h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 12min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Arms 47min + Core 20min (was planned: lower chest & shoulders)</span></div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Friday Jun 5</span></div>';
+  h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 20min</span></div>';
+  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Strength 10min + 20min + 43min</span></div>';
   h+='</div>';
 
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Friday May 15</span></div>';
-  h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 19min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Upper chest & shoulders 41min (was planned: legs + arms)</span></div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Saturday Jun 6</span></div>';
+  h+='<div class="rv"><span class="rv-icon">⛰️</span><span class="rv-text rv-good">Tromsø Hike 13.2km, 4.6hrs, HR 104 — perfect Z1</span></div>';
   h+='</div>';
 
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--yellow)">Saturday May 16</span></div>';
-  h+='<div class="rv"><span class="rv-icon">🧘</span><span class="rv-text">Mobility 18min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">💪</span><span class="rv-text">Arms 42min</span></div>';
-  h+='<div class="rv"><span class="rv-icon">🏃</span><span class="rv-text rv-ok">Run 7.8km, 44min, 5:40/km, HR 152 ⚠ above ceiling</span></div>';
-  h+='<div class="rv"><span class="rv-icon">❌</span><span class="rv-text rv-miss">Missed: long endurance session</span></div>';
-  h+='</div>';
-
-  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Sunday May 17</span></div>';
-  h+='<div class="rv"><span class="rv-icon">😴</span><span class="rv-text">Recovery day</span></div>';
+  h+='<div class="day"><div class="dh"><span class="dn" style="color:var(--green)">Sunday Jun 7</span></div>';
+  h+='<div class="rv"><span class="rv-icon">⛰️</span><span class="rv-text rv-good">Tromsø Hike 10.2km, 3.3hrs, HR 91 — perfect Z1</span></div>';
   h+='</div>';
   h+='</div>';
 
   h+='<div class="card"><div class="ct">Recovery Signal Trend</div>';
-  h+='<table class="tbl"><thead><tr><th>Metric</th><th class="r">May 10</th><th class="r">May 17</th><th class="r">Dir</th></tr></thead><tbody>';
-  h+='<tr><td>Training Status</td><td class="r m rv-miss">Strained</td><td class="r m rv-ok">Maintaining</td><td class="r" style="color:var(--green)">⬆</td></tr>';
-  h+='<tr><td>Readiness</td><td class="r m rv-ok">51 MOD</td><td class="r m rv-good">93 HIGH</td><td class="r" style="color:var(--green)">⬆</td></tr>';
-  h+='<tr><td>HRV Weekly</td><td class="r m rv-ok">62 Unbal</td><td class="r m rv-good">67 Balanced</td><td class="r" style="color:var(--green)">⬆</td></tr>';
-  h+='<tr><td>Resting HR</td><td class="r m rv-ok">44 bpm</td><td class="r m rv-good">41 bpm</td><td class="r" style="color:var(--green)">⬇</td></tr>';
-  h+='<tr><td>VO2max</td><td class="r m">50.1</td><td class="r m">50.3</td><td class="r" style="color:var(--text3)">→</td></tr>';
+  h+='<table class="tbl"><thead><tr><th>Metric</th><th class="r">May 17</th><th class="r">Jun 7</th><th class="r">Dir</th></tr></thead><tbody>';
+  h+='<tr><td>Training Status</td><td class="r m rv-ok">Maintaining</td><td class="r m rv-ok">Maintaining</td><td class="r" style="color:var(--text3)">→</td></tr>';
+  h+='<tr><td>Readiness</td><td class="r m rv-good">93 HIGH</td><td class="r m rv-ok">50 MOD</td><td class="r" style="color:var(--yellow)">↓</td></tr>';
+  h+='<tr><td>HRV Weekly</td><td class="r m rv-good">67 Bal</td><td class="r m rv-good">65 Bal</td><td class="r" style="color:var(--text3)">→</td></tr>';
+  h+='<tr><td>Resting HR</td><td class="r m rv-good">41 bpm</td><td class="r m rv-ok">43 bpm</td><td class="r" style="color:var(--yellow)">↑</td></tr>';
+  h+='<tr><td>VO2max</td><td class="r m">50.3</td><td class="r m">50.5</td><td class="r" style="color:var(--text3)">→</td></tr>';
   h+='</tbody></table>';
-  h+='<p class="ctx" style="margin-top:8px">Every reliable recovery signal improved. Resting HR dropped 3 bpm, HRV regained balance, readiness jumped from moderate to high. The easy running approach is working. Body is ready for more — but first, prove you can hold the HR ceiling on both runs.</p>';
+  h+='<p class="ctx" style="margin-top:8px">HRV remains balanced and stable (65–67 range for weeks). Readiness dropped to 50 but this was a single bad sleep night (score 36), not a training concern. Resting HR ticked up 2 bpm — could be travel/sleep related. VO2max stable. Overall: body is tolerating the training well.</p>';
   h+='</div>';
 
-  h+='<div class="card"><div class="ct">Week 9 Totals</div><div class="stats">';
-  h+='<div><div class="sl">Running</div><div class="sv">12.8<span style="font-size:12px;color:var(--text3)"> km</span></div><div class="ss">2 runs · Mon + Sat</div></div>';
-  h+='<div><div class="sl">Strength</div><div class="sv">4<span style="font-size:12px;color:var(--text3)"> sessions</span></div><div class="ss">Gym split shuffled due to deadline</div></div>';
-  h+='<div><div class="sl">Core</div><div class="sv">2<span style="font-size:12px;color:var(--text3)"> sessions</span></div></div>';
-  h+='<div><div class="sl">Mobility</div><div class="sv">6/7<span style="font-size:12px;color:var(--text3)"> days</span></div><div class="ss">Consistent</div></div>';
+  h+='<div class="card"><div class="ct">Week 12 Totals</div><div class="stats">';
+  h+='<div><div class="sl">Running</div><div class="sv">15.4<span style="font-size:12px;color:var(--text3)"> km</span></div><div class="ss">2 runs · Mon + Wed</div></div>';
+  h+='<div><div class="sl">Hiking</div><div class="sv">25.6<span style="font-size:12px;color:var(--text3)"> km</span></div><div class="ss">3 hikes · Tromsø weekend</div></div>';
+  h+='<div><div class="sl">Strength</div><div class="sv">7<span style="font-size:12px;color:var(--text3)"> sessions</span></div></div>';
+  h+='<div><div class="sl">Mobility</div><div class="sv">5/7<span style="font-size:12px;color:var(--text3)"> days</span></div><div class="ss">Good consistency</div></div>';
   h+='</div></div>';
   return h;
 }
@@ -375,15 +382,15 @@ function renderProgress(){
   h+='<div class="cw"><canvas id="volChart"></canvas></div></div>';
 
   h+='<div class="card"><div class="ct">Run Zone Distribution</div>';
-  h+='<p class="ctx">Each bar shows HR zone split. Yellow/orange = hard (Z4+). Gray/blue = easy (Z1–Z2). The last 3 runs (Apr 29, May 2, May 5) show alarming amounts of Z4–Z5 time. The plan reset aims to make all bars gray/blue for the next 2 weeks.</p>';
+  h+='<p class="ctx">Each bar shows HR zone split. Yellow/orange = hard (Z4+). Gray/blue = easy (Z1–Z2). Since the reset (May 11+), Z4–Z5 time is dropping. The Jun 1 run shows the target pattern: mostly Z3 with minimal Z4.</p>';
   for(var i=0;i<RUNS.length;i++){var r=RUNS[i];
     var col=r.easy?'var(--green)':'var(--text3)';
     h+='<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11px;color:'+col+';margin-bottom:3px" class="m"><span>'+r.d+' · '+r.km+'km · '+r.p+'/km</span><span>avg '+r.hr+'bpm · '+r.lb+'</span></div>'+zb(r.z)+'</div>';}
   h+=zl()+'</div>';
 
   h+='<div class="card"><div class="ct">Intensity Trend (Last 7 Runs)</div>';
-  h+='<p class="ctx">Recent runs got progressively harder. The avg HR trend line went from controlled easy (141) to hard effort (166). This week resets back to &lt;148.</p>';
-  var recent=[{d:"Apr 15",hr:148,l:"Border"},{d:"Apr 22",hr:140,l:"Easy"},{d:"Apr 29",hr:153,l:"Hard"},{d:"May 2",hr:165,l:"V.Hard"},{d:"May 5",hr:166,l:"V.Hard"},{d:"May 11",hr:145,l:"Easy"},{d:"May 16",hr:152,l:"Warm"}];
+  h+='<p class="ctx">Since the reset, HR has been trending down overall (good!) but with a zigzag: clean run, then creep, clean, creep. The Jun 1 run (HR 143) is the best easy run yet.</p>';
+  var recent=[{d:"May 11",hr:145,l:"Easy"},{d:"May 16",hr:152,l:"Warm"},{d:"May 25",hr:149,l:"Border"},{d:"May 27",hr:146,l:"Under"},{d:"Jun 1",hr:143,l:"Clean!"},{d:"Jun 3",hr:154,l:"Crept"}];
   for(var i=0;i<recent.length;i++){var r=recent[i];var pct=(r.hr-130)/(185-130)*100;var col=r.hr<148?"var(--green)":r.hr<155?"var(--yellow)":"var(--red)";
     h+='<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:2px" class="m"><span>'+r.d+' ('+r.l+')</span><span>'+r.hr+' bpm</span></div>';
     h+='<div class="prb"><div class="prf" style="width:'+pct+'%;background:'+col+'"></div></div></div>';}
@@ -414,9 +421,9 @@ function renderPlan(){
   h+='<div class="prh"><span class="prl">~5–15 km/wk running</span><span class="prv">1× run avg · intensity too high</span></div><div class="prb"><div class="prf" style="width:100%;background:var(--yellow)"></div></div>';
   h+='</div>';
 
-  h+='<div class="card" style="border-left:3px solid var(--emerald)"><div class="ct" style="color:var(--emerald)">→ Return to Base: Weeks 9–10 (CURRENT)</div>';
+  h+='<div class="card" style="border-left:3px solid var(--emerald)"><div class="ct" style="color:var(--emerald)">→ Return to Base: Weeks 9–13 (CURRENT)</div>';
   h+='<div class="phase-desc"><strong style="color:var(--text)">What changes:</strong> Reset to 2 easy runs per week. All runs HR <148 bpm. No threshold, no tempo, no hard efforts.<br><br><strong style="color:var(--text)">Why:</strong> Recovery signals all declined simultaneously. Need 2 weeks of easy-only running to let HRV stabilize and readiness climb back above 65.<br><br><strong style="color:var(--text)">Exit criteria:</strong> Readiness consistently >65, HRV back to balanced (>63 weekly avg), resting HR back to 42–43. Then add threshold run back.</div>';
-  h+='<div class="prh"><span class="prl">~14 km/wk easy only</span><span class="prv">2× runs · 100% easy</span></div><div class="prb"><div class="prf" style="width:25%"></div></div>';
+  h+='<div class="prh"><span class="prl">~15 km/wk easy only</span><span class="prv">2× runs · 100% easy</span></div><div class="prb"><div class="prf" style="width:60%"></div></div>';
   h+='</div>';
 
   h+='<div class="card" style="border-left:3px solid var(--blue)"><div class="ct">Phase 2 (Rebuild): Weeks 11–12</div>';
