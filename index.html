@@ -183,14 +183,14 @@ var currentPhase=2;
 
 // Week 16 dates (Jun 29 – Jul 5 — Fix Polarization)
 var DAYS=[
-  {key:'mon',name:'Monday',date:'Jun 29',color:'var(--blue)',note:'Easy run + Chest',
-   ids:['mon-yoga','mon-pushups','mon-run','mon-chest']},
-  {key:'tue',name:'Tuesday',date:'Jun 30',color:'var(--purple)',note:'Core + Arms',
-   ids:['tue-yoga','tue-pushups','tue-core','tue-arms']},
-  {key:'wed',name:'Wednesday',date:'Jul 1',color:'var(--red)',note:'Threshold run + Legs',
-   ids:['wed-yoga','wed-pushups','wed-run','wed-legs']},
-  {key:'thu',name:'Thursday',date:'Jul 2',color:'var(--purple)',note:'Core + Arms + Chest',
-   ids:['thu-yoga','thu-pushups','thu-core','thu-arms','thu-chest']},
+  {key:'mon',name:'Monday',date:'Jun 29',color:'var(--green)',note:'Rest + Chest',
+   ids:['mon-yoga','mon-pushups','mon-chest']},
+  {key:'tue',name:'Tuesday',date:'Jun 30',color:'var(--blue)',note:'Easy run + Core + Arms',
+   ids:['tue-yoga','tue-pushups','tue-run','tue-core','tue-arms']},
+  {key:'wed',name:'Wednesday',date:'Jul 1',color:'var(--purple)',note:'Legs (midday)',
+   ids:['wed-yoga','wed-pushups','wed-legs']},
+  {key:'thu',name:'Thursday',date:'Jul 2',color:'var(--red)',note:'Threshold run + Core + Arms + Chest',
+   ids:['thu-yoga','thu-pushups','thu-run','thu-core','thu-arms','thu-chest']},
   {key:'fri',name:'Friday',date:'Jul 3',color:'var(--green)',note:'Rest / walk day',
    ids:['fri-yoga','fri-pushups','fri-walk']},
   {key:'sat',name:'Saturday',date:'Jul 4',color:'var(--blue)',note:'Endurance — hike or cycle',
@@ -242,18 +242,18 @@ function renderThisWeek(){
   var h=weekDots();
   h+='<div class="card" style="border-left:3px solid var(--blue)"><div class="ct">Week '+currentWeek+' — Fix Polarization</div>';
   h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--blue)" class="m">1 easy + 1 threshold · ~90min</span><span style="color:var(--yellow)" class="m">Must nail easy run</span></div>';
-  h+='<p class="ctx">POLARIZATION FIX: Last week both runs were moderate-to-hard (0% easy). Jun 23 drifted to I-3 tempo (avgHR 155, 36% in I-3). Jun 25 threshold cooldown ran too hot (avgHR 168, maxHR 182). This week: Monday easy run with intentionally low HR target (<150 bpm, mid-I-2). Wednesday threshold with enforced easy cooldown. Seiler 80/20 only works if the easy runs are actually easy.</p>';
+  h+='<p class="ctx">POLARIZATION FIX: Last week both runs were moderate-to-hard (0% easy). Jun 23 drifted to I-3 tempo (avgHR 155, 36% in I-3). Jun 25 threshold cooldown ran too hot (avgHR 168, maxHR 182). This week: Tuesday easy run with intentionally low HR target (<150 bpm, mid-I-2). Thursday threshold with enforced easy cooldown. Seiler 80/20 only works if the easy runs are actually easy.</p>';
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Morning stretch');
   h+=sess('mon-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('mon-run','te','Easy Run','Truly easy. Stay mid-I-2. HR governs everything.',['40–45 min','~7–8 km','6:00–6:30/km','HR <150 bpm (mid I-2)','Conversational pace','If HR creeps to 155+, slow down']);
   h+=sess('mon-chest','ts','Chest','Bench press, flyes',['40 min']);
   h+='</div>';
 
   h+=dayOpen(1);
   h+=sess('tue-yoga','ty','Yoga','Morning stretch');
   h+=sess('tue-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
+  h+=sess('tue-run','te','Easy Run','Truly easy. Stay mid-I-2. HR governs everything.',['40–45 min','~7–8 km','6:00–6:30/km','HR <150 bpm (mid I-2)','Conversational pace','If HR creeps to 155+, slow down']);
   h+=sess('tue-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
   h+=sess('tue-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+='</div>';
@@ -261,13 +261,13 @@ function renderThisWeek(){
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('wed-run','tr','Threshold Run','3×5min at I-4. ENFORCE easy cooldown.',['~45 min total','10min WU easy (I-1/I-2, HR <145)','3×5min @ I-4 (HR 165–175)','2min easy jog between','10min CD EASY (HR <140)','After last rep: SLOW DOWN immediately','Do NOT push the cooldown']);
-  h+=sess('wed-legs','ts','Legs','Deadlift, squats',['40–50 min','48hrs before Sat endurance']);
+  h+=sess('wed-legs','ts','Legs','Deadlift, squats — midday session',['40–50 min','48hrs before Sat endurance']);
   h+='</div>';
 
   h+=dayOpen(3);
   h+=sess('thu-yoga','ty','Yoga','Morning stretch');
   h+=sess('thu-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
+  h+=sess('thu-run','tr','Threshold Run','3×5min at I-4. ENFORCE easy cooldown.',['~45 min total','10min WU easy (I-1/I-2, HR <145)','3×5min @ I-4 (HR 165–175)','2min easy jog between','10min CD EASY (HR <140)','After last rep: SLOW DOWN immediately','Do NOT push the cooldown']);
   h+=sess('thu-core','tc','Core','Sit-ups, planks',['30 min']);
   h+=sess('thu-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+=sess('thu-chest','ts','Chest','Bench press, flyes',['40 min']);
