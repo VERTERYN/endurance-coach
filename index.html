@@ -189,10 +189,10 @@ var DAYS=[
    ids:['tue-yoga','tue-pushups','tue-run','tue-core','tue-arms']},
   {key:'wed',name:'Wednesday',date:'Jul 1',color:'var(--purple)',note:'Legs (midday)',
    ids:['wed-yoga','wed-pushups','wed-legs']},
-  {key:'thu',name:'Thursday',date:'Jul 2',color:'var(--red)',note:'Threshold run + Core + Arms + Chest',
-   ids:['thu-yoga','thu-pushups','thu-run','thu-core','thu-arms','thu-chest']},
-  {key:'fri',name:'Friday',date:'Jul 3',color:'var(--green)',note:'Rest / walk day',
-   ids:['fri-yoga','fri-pushups','fri-walk']},
+  {key:'thu',name:'Thursday',date:'Jul 2',color:'var(--red)',note:'Threshold run + Core + Chest',
+   ids:['thu-yoga','thu-pushups','thu-run','thu-core','thu-chest']},
+  {key:'fri',name:'Friday',date:'Jul 3',color:'var(--purple)',note:'Arms + walk',
+   ids:['fri-yoga','fri-pushups','fri-arms','fri-walk']},
   {key:'sat',name:'Saturday',date:'Jul 4',color:'var(--blue)',note:'Endurance — hike or cycle',
    ids:['sat-yoga','sat-endurance']},
   {key:'sun',name:'Sunday',date:'Jul 5',color:'var(--green)',note:'Recovery',
@@ -269,14 +269,14 @@ function renderThisWeek(){
   h+=sess('thu-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
   h+=sess('thu-run','tr','Threshold Run','3×5min at I-4. ENFORCE easy cooldown.',['~45 min total','10min WU easy (I-1/I-2, HR <145)','3×5min @ I-4 (HR 165–175)','2min easy jog between','10min CD EASY (HR <140)','After last rep: SLOW DOWN immediately','Do NOT push the cooldown']);
   h+=sess('thu-core','tc','Core','Sit-ups, planks',['30 min']);
-  h+=sess('thu-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+=sess('thu-chest','ts','Chest','Bench press, flyes',['40 min']);
   h+='</div>';
 
   h+=dayOpen(4);
   h+=sess('fri-yoga','ty','Yoga','Morning stretch');
   h+=sess('fri-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('fri-walk','tw','Walk','Easy walk, rest day',['30 min','HR <120 bpm']);
+  h+=sess('fri-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
+  h+=sess('fri-walk','tw','Walk','Easy walk',['30 min','HR <120 bpm']);
   h+='</div>';
 
   h+=dayOpen(5);
