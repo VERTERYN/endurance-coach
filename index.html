@@ -189,8 +189,8 @@ var DAYS=[
    ids:['mon-yoga','mon-pushups','mon-core','mon-chest']},
   {key:'tue',name:'Tuesday',date:'Jul 14',color:'var(--blue)',note:'Easy run + Arms',
    ids:['tue-yoga','tue-pushups','tue-run','tue-arms']},
-  {key:'wed',name:'Wednesday',date:'Jul 15',color:'var(--purple)',note:'Core + Lower Chest',
-   ids:['wed-yoga','wed-pushups','wed-core','wed-chest']},
+  {key:'wed',name:'Wednesday',date:'Jul 15',color:'var(--purple)',note:'Legs + Core + Lower Chest',
+   ids:['wed-yoga','wed-pushups','wed-legs','wed-core','wed-chest']},
   {key:'thu',name:'Thursday',date:'Jul 16',color:'var(--red)',note:'Threshold run + Arms',
    ids:['thu-yoga','thu-pushups','thu-run','thu-arms']},
   {key:'fri',name:'Friday',date:'Jul 17',color:'var(--green)',note:'Free day',
@@ -263,6 +263,7 @@ function renderThisWeek(){
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
+  h+=sess('wed-legs','ts','Legs','Deadlift, squats',['40–50 min']);
   h+=sess('wed-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
   h+=sess('wed-chest','ts','Lower Chest','Dips, decline press, flyes',['40 min']);
   h+='</div>';
