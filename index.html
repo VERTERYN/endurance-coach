@@ -185,16 +185,16 @@ var currentWeek=18;
 var currentPhase=2;
 
 var DAYS=[
-  {key:'mon',name:'Monday',date:'Jul 13',color:'var(--green)',note:'Rest day',
-   ids:['mon-yoga']},
-  {key:'tue',name:'Tuesday',date:'Jul 14',color:'var(--blue)',note:'Easy run + Chest + Core',
-   ids:['tue-yoga','tue-pushups','tue-run','tue-chest','tue-core']},
-  {key:'wed',name:'Wednesday',date:'Jul 15',color:'var(--purple)',note:'Legs + Arms',
-   ids:['wed-yoga','wed-pushups','wed-legs','wed-arms']},
-  {key:'thu',name:'Thursday',date:'Jul 16',color:'var(--red)',note:'Threshold run + Core + Chest',
-   ids:['thu-yoga','thu-pushups','thu-run','thu-core','thu-chest']},
-  {key:'fri',name:'Friday',date:'Jul 17',color:'var(--purple)',note:'Arms + Walk',
-   ids:['fri-yoga','fri-pushups','fri-arms','fri-walk']},
+  {key:'mon',name:'Monday',date:'Jul 13',color:'var(--purple)',note:'Core + Upper Chest',
+   ids:['mon-yoga','mon-pushups','mon-core','mon-chest']},
+  {key:'tue',name:'Tuesday',date:'Jul 14',color:'var(--blue)',note:'Easy run + Arms',
+   ids:['tue-yoga','tue-pushups','tue-run','tue-arms']},
+  {key:'wed',name:'Wednesday',date:'Jul 15',color:'var(--purple)',note:'Core + Lower Chest',
+   ids:['wed-yoga','wed-pushups','wed-core','wed-chest']},
+  {key:'thu',name:'Thursday',date:'Jul 16',color:'var(--red)',note:'Threshold run + Arms',
+   ids:['thu-yoga','thu-pushups','thu-run','thu-arms']},
+  {key:'fri',name:'Friday',date:'Jul 17',color:'var(--green)',note:'Free day',
+   ids:['fri-yoga']},
   {key:'sat',name:'Saturday',date:'Jul 18',color:'var(--blue)',note:'Endurance — hike or cycle',
    ids:['sat-yoga','sat-endurance']},
   {key:'sun',name:'Sunday',date:'Jul 19',color:'var(--green)',note:'Recovery',
@@ -247,37 +247,35 @@ function renderThisWeek(){
   h+='<p class="ctx">START SLOW FIX CONFIRMED: Jul 7 easy run averaged HR 147 — first time under 150 since the zone model switch. Key change: km1 at 5:15/km (avgHR 131) vs last week\'s 4:38/km. HR settled into 141-147 for km4-8. BUT: km10 surged to avgHR 160 / maxHR 179 — the old fast-finish pattern. This week: keep the 6:30+ first 2km AND stay conversational the entire run. No surging in the last 2-3km. Threshold intervals were less even (170/159/165 vs last week\'s 171/167/171) — aim for more consistent I-4 effort across all 3 intervals.</p>';
 
   h+=dayOpen(0);
-  h+=sess('mon-yoga','ty','Yoga','Morning stretch — rest day');
+  h+=sess('mon-yoga','ty','Yoga','Physio & mobility');
+  h+=sess('mon-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
+  h+=sess('mon-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
+  h+=sess('mon-chest','ts','Upper Chest','Bench press, flyes',['40 min']);
   h+='</div>';
 
   h+=dayOpen(1);
   h+=sess('tue-yoga','ty','Yoga','Morning stretch');
   h+=sess('tue-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
   h+=sess('tue-run','te','Easy Run','START SLOW + STAY SLOW. No surging at the end.',['50–65 min','~10–12 km','First 2km: 6:30/km or SLOWER','After 2km: let HR govern pace','HR target <150 bpm (mid I-2)','If HR >145 at 2km mark, walk 30s','LAST 3KM: stay conversational','Do NOT speed up in final kms','If pace creeps below 5:20, slow down']);
-  h+=sess('tue-chest','ts','Chest','Bench press, flyes',['40 min']);
-  h+=sess('tue-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
+  h+=sess('tue-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+='</div>';
 
   h+=dayOpen(2);
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('wed-legs','ts','Legs','Deadlift, squats — midday session',['40–50 min','48hrs before Sat endurance']);
-  h+=sess('wed-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
+  h+=sess('wed-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
+  h+=sess('wed-chest','ts','Lower Chest','Dips, decline press, flyes',['40 min']);
   h+='</div>';
 
   h+=dayOpen(3);
   h+=sess('thu-yoga','ty','Yoga','Morning stretch');
   h+=sess('thu-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
   h+=sess('thu-run','tr','Threshold Run','3×5min at I-4. Walk first 2min of cooldown.',['~45 min total','10min WU easy (I-1/I-2, HR <145)','3×5min @ I-4 (HR 165–175)','Aim for even effort: all 3 intervals at ~170','2min easy jog between','COOLDOWN: WALK first 2min','Then jog 8min at HR <140']);
-  h+=sess('thu-core','tc','Core','Sit-ups, planks',['30 min']);
-  h+=sess('thu-chest','ts','Chest','Bench press, flyes',['40 min']);
+  h+=sess('thu-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
   h+='</div>';
 
   h+=dayOpen(4);
-  h+=sess('fri-yoga','ty','Yoga','Morning stretch');
-  h+=sess('fri-pushups','ts','Push-ups Weighted Vest','After mobility',['3–5 sets']);
-  h+=sess('fri-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
-  h+=sess('fri-walk','tw','Walk','Easy walk',['30 min','HR <120 bpm']);
+  h+=sess('fri-yoga','ty','Yoga','Free day — light stretch only');
   h+='</div>';
 
   h+=dayOpen(5);
