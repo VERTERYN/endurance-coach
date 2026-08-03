@@ -193,20 +193,20 @@ var currentWeek=21;
 var currentPhase=3;
 
 var DAYS=[
-  {key:'mon',name:'Monday',date:'Aug 3',color:'var(--purple)',note:'Push-ups + Upper Chest',
-   ids:['mon-yoga','mon-pushups','mon-chest']},
+  {key:'mon',name:'Monday',date:'Aug 3',color:'var(--purple)',note:'Push-ups + Upper Chest + Core',
+   ids:['mon-yoga','mon-pushups','mon-chest','mon-core']},
   {key:'tue',name:'Tuesday',date:'Aug 4',color:'var(--blue)',note:'Easy run + Arms',
    ids:['tue-yoga','tue-pushups','tue-run','tue-arms']},
-  {key:'wed',name:'Wednesday',date:'Aug 5',color:'var(--purple)',note:'Legs + Core + Lower Chest',
-   ids:['wed-yoga','wed-pushups','wed-legs','wed-core','wed-chest']},
-  {key:'thu',name:'Thursday',date:'Aug 6',color:'var(--purple)',note:'Arms + Core (no threshold)',
-   ids:['thu-yoga','thu-pushups','thu-arms','thu-core']},
+  {key:'wed',name:'Wednesday',date:'Aug 5',color:'var(--purple)',note:'Legs + Lower Chest',
+   ids:['wed-yoga','wed-pushups','wed-legs','wed-chest']},
+  {key:'thu',name:'Thursday',date:'Aug 6',color:'var(--blue)',note:'Easy run + Arms',
+   ids:['thu-yoga','thu-pushups','thu-run','thu-arms']},
   {key:'fri',name:'Friday',date:'Aug 7',color:'var(--green)',note:'Free day',
    ids:['fri-yoga']},
-  {key:'sat',name:'Saturday',date:'Aug 8',color:'var(--blue)',note:'Endurance \u2014 hike or cycle',
-   ids:['sat-yoga','sat-endurance']},
-  {key:'sun',name:'Sunday',date:'Aug 9',color:'var(--blue)',note:'Easy run (2nd run)',
-   ids:['sun-yoga','sun-run']}
+  {key:'sat',name:'Saturday',date:'Aug 8',color:'var(--blue)',note:'Short hike',
+   ids:['sat-yoga','sat-hike']},
+  {key:'sun',name:'Sunday',date:'Aug 9',color:'var(--text3)',note:'Rest day',
+   ids:[]}
 ];
 // Checkmark persistence
 var checkKey='checks-w'+currentWeek;
@@ -250,14 +250,15 @@ function zl(){var n=["I-1","I-2","I-3","I-4","I-5"];var h='<div class="zl">';for
 // ═══════════ THIS WEEK (Week 21 — Easy Only, Save Legs) ═══════════
 function renderThisWeek(){
   var h=weekDots();
-  h+='<div class="card" style="border-left:3px solid var(--blue)"><div class="ct">Week '+currentWeek+' — Easy Only (Saving Legs for Hiking Week)</div>';
-  h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--blue)" class="m">2 easy runs · No threshold · Phase 3</span><span style="color:var(--green)" class="m">Status: Productive · Readiness 83 HIGH</span></div>';
-  h+='<p class="ctx">Week 20 was solid: easy run 13.29km (avgHR 149, Start Slow \u2714) + threshold 8.07km (3\u00d74min intervals, HR up to 183). Training status jumped back to Productive, readiness up to 83 HIGH, VO2max holding at 52. This week: skip threshold to save legs for heavy hiking Week 22. Two easy runs only (Tue + Sun). Weightlifting adjusted \u2014 push-ups + upper chest today (Mon).</p>';
+  h+='<div class="card" style="border-left:3px solid var(--blue)"><div class="ct">Week '+currentWeek+' \u2014 Easy Only (Saving Legs for Hiking Week)</div>';
+  h+='<div style="display:flex;gap:16px;margin-bottom:4px;font-size:12px"><span style="color:var(--blue)" class="m">2 easy runs \u00b7 No threshold \u00b7 Phase 3</span><span style="color:var(--green)" class="m">Status: Productive \u00b7 Readiness 83 HIGH</span></div>';
+  h+='<p class="ctx">Week 20 was solid: easy run 13.29km (avgHR 149, Start Slow \u2714) + threshold 8.07km (3\u00d74min intervals, HR up to 183). Training status jumped back to Productive, readiness up to 83 HIGH, VO2max holding at 52. This week: skip threshold to save legs for heavy hiking Week 22. Two easy runs (Tue + Thu). Short hike Saturday. Sunday rest.</p>';
 
   h+=dayOpen(0);
   h+=sess('mon-yoga','ty','Yoga','Physio & mobility');
   h+=sess('mon-pushups','ts','Push-ups Weighted Vest','After mobility',['3\u20135 sets']);
   h+=sess('mon-chest','ts','Upper Chest','Bench press, flyes',['40 min']);
+  h+=sess('mon-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
   h+='</div>';
 
   h+=dayOpen(1);
@@ -271,15 +272,14 @@ function renderThisWeek(){
   h+=sess('wed-yoga','ty','Yoga','Morning stretch');
   h+=sess('wed-pushups','ts','Push-ups Weighted Vest','After mobility',['3\u20135 sets']);
   h+=sess('wed-legs','ts','Legs','Deadlift, squats',['40\u201350 min']);
-  h+=sess('wed-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
   h+=sess('wed-chest','ts','Lower Chest','Dips, decline press, flyes',['40 min']);
   h+='</div>';
 
   h+=dayOpen(3);
   h+=sess('thu-yoga','ty','Yoga','Morning stretch');
   h+=sess('thu-pushups','ts','Push-ups Weighted Vest','After mobility',['3\u20135 sets']);
+  h+=sess('thu-run','te','Easy Run','START SLOW + STAY SLOW. Same protocol as Tuesday.',['50\u201365 min','~10\u201312 km','First 2km: 6:30/km or SLOWER','After 2km: let HR govern pace','HR ceiling: 156 bpm (I-2 top)','Keep it conversational throughout']);
   h+=sess('thu-arms','ts','Arms','Curls, triceps, etc.',['40 min']);
-  h+=sess('thu-core','tc','Core','Sit-ups, planks, trunk',['30 min']);
   h+='</div>';
 
   h+=dayOpen(4);
@@ -288,12 +288,11 @@ function renderThisWeek(){
 
   h+=dayOpen(5);
   h+=sess('sat-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sat-endurance','te','Long Endurance','Hike with pack, or cycle. I-1/I-2 intensity.',['2\u20134 hrs','I-1/I-2','HR <156']);
+  h+=sess('sat-hike','te','Short Hike','Easy pace. Save legs for next week\u2019s big hike.',['1\u20132 hrs','I-1/I-2','HR <156']);
   h+='</div>';
 
   h+=dayOpen(6);
-  h+=sess('sun-yoga','ty','Yoga','Morning stretch');
-  h+=sess('sun-run','te','Easy Run (2nd run)','Short and easy. Same Start Slow protocol.',['30\u201335 min','~5\u20136 km','First 2km: 6:30/km or SLOWER','HR ceiling: 156 bpm (I-2 top)','Keep it conversational throughout','This is an EASY addition \u2014 no racing']);
+  h+='<div class="rv"><span class="rv-icon">\ud83d\udca4</span><span class="rv-text" style="color:var(--text3)">Full rest. Recharge for heavy hiking Week 22.</span></div>';
   h+='</div>';
   h+='</div>';
 
